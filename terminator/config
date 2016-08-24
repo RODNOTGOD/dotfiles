@@ -1,0 +1,31 @@
+[global_config]
+[keybindings]
+  go_down = <Primary><Shift>j
+  go_left = <Primary><Shift>h
+  go_right = <Primary><Shift>l
+  go_up = <Primary><Shift>k
+  resize_down = <Primary><Shift>Down
+[layouts]
+  [[default]]
+    [[[child1]]]
+      parent = window0
+      profile = default
+      type = Terminal
+    [[[window0]]]
+      parent = ""
+      type = Window
+[plugins]
+[profiles]
+  [[default]]
+    background_color = "#201602"
+    background_image = None
+    font = Fantasque Sans Mono 14
+    foreground_color = "#948e48"
+    palette = "#2e3436:#c35359:#18974e:#a88339:#46657b:#8868b3:#75a738:#948e48:#6c6823:#c35359:#18974e:#a88339:#477ca1:#8868b3:#75a738:#faf0a5"
+    scrollbar_position = hidden
+    show_titlebar = False
+    use_system_font = False
+  [[home]]
+    background_image = None
+    font = Fantasque Sans Mono 14
+    use_system_font = False
