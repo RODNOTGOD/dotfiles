@@ -5,10 +5,13 @@ source ~/.vim_runtime/vimrcs/filetypes.vim
 source ~/.vim_runtime/vimrcs/plugins_config.vim
 source ~/.vim_runtime/vimrcs/extended.vim
 
-color delek
+color gruvbox
 set background=light
 set background=dark
-set number
+set nu
+set rnu
+
+let g:syntastic_python_checkers = ['pylink']
 
 map <leader>v :vsplit<CR>
 map <leader>s :split<CR>
@@ -19,7 +22,28 @@ map <leader>v- :vertical-resize -5<CR>
 map <leader>s+ :resize +5<CR>
 map <leader>s- :resize -5<CR>
 
+" ALWAYS USE TABS QUEER BOY
+set tabstop=4
+set noexpandtab
+
 set noshowmode
+set list
+set listchars=eol:¬,tab:»·,trail:·,nbsp:⎵
+
+" Multi-cursor highlight fix
+highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
+highlight link multiple_cursors_visual Visual
+
+" Toggles absolute numbers to relative
+function! NumberToggle()
+    if(&relativenumber == 1)
+        set number
+    else
+        set relativenumber
+    endif
+endfunc
+
+nnoremap <C-n> :call NumberToggle()<cr>
 
 let g:lightline = {
       \ 'colorscheme': 'jellybeans',
