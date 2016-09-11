@@ -46,10 +46,10 @@ bindsym $mod+Shift+D exec rofi -show window -lines 3 -eh 2 -width 100 -padding 6
 # bindsym $mod+d exec --no-startup-id i3-dmenu-desktop
 
 # change focus
-bindsym $mod+j focus left
-bindsym $mod+k focus down
-bindsym $mod+l focus up
-bindsym $mod+semicolon focus right
+bindsym $mod+h focus left
+bindsym $mod+j focus down
+bindsym $mod+k focus up
+bindsym $mod+l focus right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Left focus left
@@ -58,10 +58,10 @@ bindsym $mod+Up focus up
 bindsym $mod+Right focus right
 
 # move focused window
-bindsym $mod+Shift+j move left
-bindsym $mod+Shift+k move down
-bindsym $mod+Shift+l move up
-bindsym $mod+Shift+semicolon move right
+bindsym $mod+Shift+h move left
+bindsym $mod+Shift+j move down
+bindsym $mod+Shift+k move up
+bindsym $mod+Shift+l move right
 
 # alternatively, you can use the cursor keys:
 bindsym $mod+Shift+Left move left
@@ -70,7 +70,7 @@ bindsym $mod+Shift+Up move up
 bindsym $mod+Shift+Right move right
 
 # split in horizontal orientation
-bindsym $mod+h split h
+bindsym $mod+b split h
 
 # split in vertical orientation
 bindsym $mod+v split v
@@ -139,7 +139,7 @@ bindsym $mod+Shift+c reload
 # restart i3 inplace (preserves your layout/session, can be used to upgrade i3)
 bindsym $mod+Shift+r restart
 # exit i3 (logs you out of your X session)
-bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
+# bindsym $mod+Shift+e exec "i3-nagbar -t warning -m 'You pressed the exit shortcut. Do you really want to exit i3? This will end your X session.' -b 'Yes, exit i3' 'i3-msg exit'"
 
 # resize window (you can also use the mouse for that)
 mode "resize" {
@@ -169,10 +169,10 @@ bindsym $mod+r mode "resize"
 
 # i3-theme-window
 # class                 Border  Backgr. Text    indicator
-client.focused          #3c3836 #32302f #fabd2f #fabd2f
-client.focused_inactive #3c3836 #504945 #d5c4a1 #504945
-client.unfocused        #3c3836 #504945 #d5c4a1 #504945
-client.urgent           #7c6f64 #fabd2f #3c3836 #fabd2f
+client.focused          #282828 #1D2021 #F2F2F2 #FABD2F
+client.focused_inactive #282828 #32303F #F2F2F2 #504945
+client.unfocused        #282828 #32303F #F2F2F2 #504945
+client.urgent           #7C6F64 #FABD2F #3C3836 #FABD2F
 
 # Start i3bar to display a workspace bar (plus the system information i3status
 # finds out, if available)
@@ -182,14 +182,14 @@ bar {
         strip_workspace_numbers yes
 
                 colors {
-                    background  #504945
-                    statusline  #d5c4a1
-                    separator   #3c3836 
+                    background  #282828
+                    statusline  #D5C4A1
+                    separator   #3C3836
 
-                    focused_workspace   #3c3836 #32302f #fabd2f
-                    active_workspace    #3c3836 #504945 #d5c4a1
-                    inactive_workspace  #3c3836 #504945 #d5c4a1
-                    urgent_workspace    #7c6f64 #fabd2f #3c3836
+                    focused_workspace   #282828 #1D2021 #928374
+                    active_workspace    #282828 #32302F #928374
+                    inactive_workspace  #282828 #32302F #928374
+                    urgent_workspace    #D79921 #CC241D #FFFFFF
                 }
 }
 
@@ -203,7 +203,7 @@ bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '2%-'"
 bindsym XF86AudioMute exec "amixer -D pulse set Master toggle"
 
 # Background wallpaper
-exec_always feh --bg-scale '/home/kragenarch/Pictures/Minimalist Wallpaper Dump - Imgur/074 - uHaWFt4.png'
+exec_always feh --bg-scale '/home/kragenarch/Pictures/Minimalist Wallpaper Dump - Imgur/005 - PGDsmuE.png'
 
 # i3 Lock
 set $Locker sleep 1 && ~/.config/i3/i3lock-extra.sh
@@ -241,7 +241,7 @@ mode "$mode_system" {
     bindsym e exec --no-startup-id i3-msg exit, mode "default"
     bindsym s exec --no-startup-id $Locker && systemctl suspend, mode "default"
     bindsym r exec --no-startup-id systemctl reboot, mode "default"
-    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"  
+    bindsym Shift+s exec --no-startup-id systemctl poweroff -i, mode "default"
 
     # back to normal: Enter or Escape
     bindsym Return mode "default"
