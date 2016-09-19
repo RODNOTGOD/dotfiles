@@ -5,30 +5,61 @@ source ~/.vim_runtime/vimrcs/filetypes.vim
 source ~/.vim_runtime/vimrcs/plugins_config.vim
 source ~/.vim_runtime/vimrcs/extended.vim
 
-color gruvbox
-set background=light
-set background=dark
-set nu
-set rnu
 
-let g:syntastic_python_checkers = ['pylink']
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Command maps for new plugins and shortcuts
+" All specified here
+"""""""""""""""""""""""""""""""""""""""""""""""
 
-map <leader>v :vsplit<CR>
-map <leader>s :split<CR>
+let maplocalleader = ";"
 
-map <leader>v+ :vertical-resize +5<CR>
-map <leader>v- :vertical-resize -5<CR>
+" Spliting Commands
+map <leader>b :vsplit<CR>
+map <leader>v :split<CR>
 
-map <leader>s+ :resize +5<CR>
-map <leader>s- :resize -5<CR>
+map <leader>b+ :vertical-resize +5<CR>
+map <leader>b- :vertical-resize -5<CR>
+
+map <leader>v+ :resize +5<CR>
+map <leader>v- :resize -5<CR>
 
 " ALWAYS USE TABS QUEER BOY
 set tabstop=4
 set noexpandtab
 
+"""""""""""""""""""""""""""""
+" Fugitive Plugin keybindings
+"""""""""""""""""""""""""""""
+nnoremap <Leader>gs :Gstatus<CR>
+nnoremap <Leader>gd :Gdiff<CR>
+nnoremap <Leader>ge :Gedit<CR>
+nnoremap <Leader>gl :silent! Glog<CR>
+nnoremap <leader>gl :silent! Glog<CR>:set nofoldenable<cr>
+nnoremap <leader>gr :Gread<CR>
+nnoremap <leader>gw :Gwrite<CR>
+nnoremap <leader>gp :Git push<CR>
+nnoremap <leader>gb :Git branch<Space>
+nnoremap <leader>go :Git checkout<Space>
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Color and visual effects
+" Pretties up the place
+""""""""""""""""""""""""""""""
+
+color tender
+set background=light
+set background=dark
+set nu
+set rnu
+
+" Show trailing characters
 set noshowmode
 set list
-set listchars=eol:¬,tab:»·,trail:·,nbsp:⎵
+" set listchars=eol:¬,tab:»\ ,trail:·,nbsp:⎵
+set listchars=eol:¬,tab:»\ ,trail:·
 
 " Multi-cursor highlight fix
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
@@ -45,8 +76,28 @@ endfunc
 
 nnoremap <C-n> :call NumberToggle()<cr>
 
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" Plugin settings all placed under here
+"""""""""""""""""""""""""""""""""""""""""
+
+:let g:gitgutter_enabled = 1
+
+:let g:org_agenda_files=['~/org/index.org']
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" LIGHT LINE SECTION
+" Complete functions to a pretty lightline bar
+" All functions are found on the lightline github
+"""""""""""""""""""""""""""""""""""""""""""""""""""""
+
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
+      \ 'colorscheme': 'tender',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ] ]
@@ -96,6 +147,16 @@ function! LightLineFilename()
        \ ('' != expand('%:t') ? expand('%:t') : '[No Name]') .
        \ ('' != LightLineModified() ? ' ' . LightLineModified() : '')
 endfunction
+
+function! MyFiletype()
+	return winwidth(0) > 70 ? (strlen(&filetype) ? &filetype . ' ' . WebDevIconsGetFileTypeSymbol() : 'no ft') : ''
+endfunction
+
+function! MyFileformat()
+	return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ' '
+endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 try
 source ~/.vim_runtime/my_configs.vim

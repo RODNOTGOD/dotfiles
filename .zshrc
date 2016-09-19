@@ -5,7 +5,7 @@
 # Look in ~/.oh-my-zsh/themes/
 # Optionally, if you set this to "random", it'll load a random theme each
 # time that oh-my-zsh is loaded.
-ZSH_THEME="powerline"
+ZSH_THEME="bullet-train"
 
 POWERLINE_RIGHT_A="exit-status-on-fail"
 POWERLINE_HIDE_HOST_NAME="true"
@@ -66,6 +66,7 @@ plugins=(git)
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
+source ~/.bin/tmuxinator.zsh
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -95,17 +96,45 @@ source $ZSH/oh-my-zsh.sh
 export EDITOR=vim
 export TERM=xterm-256color
 
+stty -ixon
+
 # User defined alias
+
+# UPDATING
 alias sysupdate="pacaur -Syu"
 alias pi="sudo pacman -S"
 alias pr="sudo pacman -R"
 alias pr-full="sudo pacman -Rns"
 
+#LISTING
 alias la="ls -A"
 alias lah="ls -lAhr"
 
 alias godmode="sudo su"
 
+# USEFUL COMMANDS
 alias xc="xclip -sel clipboard"
 alias neofetch="neofetch --ascii"
 alias vi="vim"
+alias emacs="emacs -nw"
+alias py="python3"
+
+# TMUX ALIAS
+alias ta="tmux attach"
+alias tat="tmux attach -t"
+alias tl="tmux list-sessions"
+
+alias tk="tmux kill-session -t"
+alias tka="tmux kill-session -a"
+
+alias ts="tmuxinator start"
+alias tn="tmuxinator new"
+
+# GIT ALIAS
+alias gla="git log --oneline --all --decorate --graph"
+alias glas="git --no-pager log --oneline --all --decorate --graph -40"
+alias glass="git --no-pager log --oneline --all --decorate --graph -10"
+
+alias glb="git log --oneline --decorate --graph"
+alias glbs="git --no-pager log --oneline --decorate --graph -40"
+alias glbss="git --no-pager log --oneline --decorate --graph -10"
