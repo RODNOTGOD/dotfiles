@@ -8,6 +8,6 @@
 
 
 run_segment() {
-  read -r _ amount type _ <<< $(wakatime -t)
-  echo "⏰ " ${amount:5:3}$type
+  amount=$(date)
+  echo "⏰ " ${amount:0:20}
 }

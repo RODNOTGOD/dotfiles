@@ -15,8 +15,12 @@ print_powerline() {
   # If the required PANE_WIDTH isn't met then the segment will be
   # hidden
   if [ $DEBUG_MODE -ne 1 ]; then
-    double_segment "♫" brightgreen blue "now_playing" blue brightgreen 143
-    double_segment "js" brightgreen yellow "node" yellow brightgreen 113
+    double_segment "♫" brightgreen blue "s_now_playing" blue black 143
+    double_segment "♫" brightgreen blue "m_now_playing" blue black 143
+    double_segment "♫" brightgreen blue "volume" blue black 143
+    double_segment "Host" brightgreen blue "hostname" blue black 143
+    double_segment "Time" brightgreen blue "wakatime_today" blue black 144
+    double_segment "js" brightgreen yellow "node" yellow brightgreen 114
     double_segment "rb" brightgreen red "ruby" red brightgreen 113
     double_segment "⎇" brightgreen brightred "vcs_branch" brightred brightgreen
     segment "vcs_compare" black black #this is kind of a hack need to refactor

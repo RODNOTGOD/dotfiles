@@ -23,6 +23,8 @@ map <leader>b- :vertical-resize -5<CR>
 map <leader>v+ :resize +5<CR>
 map <leader>v- :resize -5<CR>
 
+map <leader>x :x<CR>
+
 " ALWAYS USE TABS QUEER BOY
 set tabstop=4
 set noexpandtab
@@ -30,6 +32,7 @@ set noexpandtab
 """""""""""""""""""""""""""""
 " Fugitive Plugin keybindings
 """""""""""""""""""""""""""""
+nnoremap <Leader>gc :Gcommit<Space>
 nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>ge :Gedit<CR>
@@ -38,6 +41,7 @@ nnoremap <leader>gl :silent! Glog<CR>:set nofoldenable<cr>
 nnoremap <leader>gr :Gread<CR>
 nnoremap <leader>gw :Gwrite<CR>
 nnoremap <leader>gp :Git push<CR>
+nnoremap <Leader>gk :!git checkout<Space>
 nnoremap <leader>gb :Git branch<Space>
 nnoremap <leader>go :Git checkout<Space>
 
@@ -50,8 +54,8 @@ nnoremap <leader>go :Git checkout<Space>
 """"""""""""""""""""""""""""""
 
 color tender
-set background=light
-set background=dark
+"set background=light
+"set background=dark
 set nu
 set rnu
 
@@ -86,6 +90,33 @@ nnoremap <C-n> :call NumberToggle()<cr>
 :let g:gitgutter_enabled = 1
 
 :let g:org_agenda_files=['~/org/index.org']
+
+
+" Goyo Vim Plugin
+""""""""""""""""""""
+function! s:goyo_enter()
+	silent !tmux set status off
+	silent !tmux list-panes -F '\#F' | grep -q Z || tmux resize-pane -Z
+	set nolist
+	set noshowcmd
+	set scrolloff=999
+	color tender
+	" ...
+endfunction
+
+function! s:goyo_leave()
+	silent !tmux set status on
+	silent !tmux list-panes -F '\#F' | grep -q Z && tmux resize-pane -Z
+	set list
+	set showcmd
+	set scrolloff=5
+	color tender
+	" ...
+endfunction
+
+autocmd! User GoyoEnter nested call <SID>goyo_enter()
+autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
