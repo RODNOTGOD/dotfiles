@@ -37,13 +37,18 @@ nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>ge :Gedit<CR>
 nnoremap <Leader>gl :silent! Glog<CR>
-nnoremap <leader>gl :silent! Glog<CR>:set nofoldenable<cr>
-nnoremap <leader>gr :Gread<CR>
-nnoremap <leader>gw :Gwrite<CR>
-nnoremap <leader>gp :Git push<CR>
+nnoremap <Leader>gl :silent! Glog<CR>:set nofoldenable<cr>
+nnoremap <Leader>gr :Gread<CR>
+nnoremap <Leader>gw :Gwrite<CR>
+nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gk :!git checkout<Space>
-nnoremap <leader>gb :Git branch<Space>
-nnoremap <leader>go :Git checkout<Space>
+nnoremap <Leader>gb :Git branch<Space>
+nnoremap <Leader>go :Git checkout<Space>
+
+"""""""""""""""""""""""""""
+" CtrlP Pluging keybindings
+"""""""""""""""""""""""""""
+map <Leader>f :CtrlPMRUFiles<CR>
 
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
@@ -72,7 +77,7 @@ highlight link multiple_cursors_visual Visual
 " Toggles absolute numbers to relative
 function! NumberToggle()
     if(&relativenumber == 1)
-        set number
+        set rnu!
     else
         set relativenumber
     endif
@@ -116,6 +121,22 @@ endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+
+" Emmet Vim Plugin
+"""""""""""""""""""""
+let g:user_emmet_install_global = 0
+let g:user_emmet_settings = {
+			\ 'php' : {
+			\   'extends' : 'html',
+			\   'filters' : 'c',
+			\ },
+			\ 'xml' : {
+			\   'extends' : 'html',
+			\ },
+			\ 'haml' : {
+			\   'extends' : 'html',
+			\ },
+			\ }
 
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -186,6 +207,26 @@ endfunction
 function! MyFileformat()
 	return winwidth(0) > 70 ? (&fileformat . ' ' . WebDevIconsGetFileFormatSymbol()) : ' '
 endfunction
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+
+
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+" File type specification
+""""""""""""""""""""""""""""""""""""""
+
+" Org mode
+au Filetype org set expandtab
+
+" Html mode
+au Filetype html,css set tabstop=2
+au Filetype html,css set shiftwidth=2
+au Filetype html,css EmmetInstall
+
+" Lisp mode
+au Filetype lisp set tabstop=2
+au Filetype lisp set shiftwidth=2
+au Filetype lisp set expandtab
 
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 

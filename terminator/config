@@ -1,4 +1,10 @@
 [global_config]
+  suppress_multiple_term_dialog = True
+  title_inactive_bg_color = "#76715e"
+  title_inactive_fg_color = "#f1ebeb"
+  title_receive_fg_color = "#c69494"
+  title_transmit_bg_color = "#48483e"
+  title_transmit_fg_color = "#f1ebeb"
 [keybindings]
   go_down = <Primary><Shift>j
   go_left = <Primary><Shift>h
@@ -17,11 +23,14 @@
 [plugins]
 [profiles]
   [[default]]
-    background_color = "#201602"
+    background_color = "#262626"
     background_image = None
+    cursor_color = "#f1ebeb"
     font = Fantasque Sans Mono 14
-    foreground_color = "#948e48"
-    palette = "#2e3436:#c35359:#18974e:#a88339:#46657b:#8868b3:#75a738:#948e48:#6c6823:#c35359:#18974e:#a88339:#477ca1:#8868b3:#75a738:#faf0a5"
+    foreground_color = "#f1ebeb"
+    palette = "#48483e:#dc2566:#8fc029:#d4c96e:#55bcce:#9358fe:#56b7a5:#f3f3f3:#76715e:#fa2772:#a7e22e:#e7db75:#66d9ee:#ae82ff:#66efd5:#cfd0c2"
+    scroll_on_output = False
+    scrollback_lines = 1000
     scrollbar_position = hidden
     show_titlebar = False
     use_system_font = False
