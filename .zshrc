@@ -100,6 +100,8 @@ stty -ixon
 
 # User defined alias
 
+alias wSteam="wine .wine/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe"
+
 # UPDATING
 alias sysupdate="pacaur -Syu"
 alias pi="sudo pacman -S"
@@ -120,12 +122,13 @@ alias emacs="emacs -nw"
 alias py="python3"
 
 # TMUX ALIAS
+alias tmux="tmux -2"
 alias ta="tmux attach"
 alias tat="tmux attach -t"
 alias tl="tmux list-sessions"
 
 alias tk="tmux kill-session -t"
-alias tka="tmux kill-session -a"
+alias tks="tmux kill-server"
 
 alias ts="tmuxinator start"
 alias tn="tmuxinator new"
