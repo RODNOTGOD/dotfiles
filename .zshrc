@@ -62,11 +62,11 @@ plugins=(git)
 
 # User configuration
 
-# export PATH="/usr/bin:/bin:/usr/sbin:/sbin:$PATH"
+export PATH="/home/kragenarch/.gem/ruby/2.3.0/bin:$PATH"
 # export MANPATH="/usr/local/man:$MANPATH"
 
 source $ZSH/oh-my-zsh.sh
-source ~/.bin/tmuxinator.zsh
+source ~/.bin/*
 
 # You may need to manually set your language environment
 # export LANG=en_US.UTF-8
@@ -93,14 +93,30 @@ source ~/.bin/tmuxinator.zsh
 # alias zshconfig="mate ~/.zshrc"
 # alias ohmyzsh="mate ~/.oh-my-zsh"
 
+# Vim Functions
+fancy-ctrl-z() {
+	if [[ $#BUFFER -eq  0 ]]; then
+		BUFFER="fg"
+		zle accept-line
+	else
+		zle push-input
+		zle clear-screen
+	fi
+}
+
+zle -N fancy-ctrl-z
+bindkey '' fancy-ctrl-z
+
 export EDITOR=vim
 export TERM=xterm-256color
+export NOTES_DIR="/home/kragenarch/notes"
 
 stty -ixon
 
 # User defined alias
 
-alias wSteam="wine .wine/drive_c/Program\ Files\ \(x86\)/Steam/Steam.exe"
+# VIM KEKS
+alias :q="echo \"You're not in vim, dummy\""
 
 # UPDATING
 alias sysupdate="pacaur -Syu"
@@ -116,7 +132,7 @@ alias godmode="sudo su"
 
 # USEFUL COMMANDS
 alias xc="xclip -sel clipboard"
-alias neofetch="neofetch --ascii"
+alias neofetch="clear;neofetch --ascii"
 alias vi="vim"
 alias emacs="emacs -nw"
 alias py="python3"

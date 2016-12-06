@@ -9,5 +9,5 @@
 
 run_segment() {
   amount=$(date)
-  echo "⏰ " ${amount:0:20}
+  echo ${amount:0:20}
 }
