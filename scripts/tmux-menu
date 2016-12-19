@@ -41,7 +41,7 @@ function menu () {
 }
 
 function list_tmuxinator () {
-	tmuxinator_tp=($(tmuxinator list | tail -1))
+	tmuxinator_tp=($(tmuxinator list | cut -d ':' -f2))
 	local templates=()
 	local len=1
 	IFS=$' '
