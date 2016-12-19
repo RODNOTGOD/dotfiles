@@ -35,13 +35,13 @@ function menu () {
 	else
 		printf " Enter a new name: "
 		read new_name
-		. /home/kragenarch/.default-tmux.sh $new_name
+		. $HOME/.default-tmux.sh $new_name
 		clear
 	fi
 }
 
 function list_tmuxinator () {
-	tmuxinator_tp=($(tmuxinator list | tail -1))
+	tmuxinator_tp=($(tmuxinator list | cut -d ':' -f2))
 	local templates=()
 	local len=1
 	IFS=$' '
