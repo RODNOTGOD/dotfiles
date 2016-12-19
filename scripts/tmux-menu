@@ -1,0 +1,101 @@
+#!/usr/bin/env sh
+__ScriptVersion="0.0.0.1"
+
+function menu () {
+	local session_names=()
+	local name
+
+	echo -e " Available session"
+	echo -e " -----------------\n"
+
+	IFS=$'\n'
+	for session in $(tmux list-session 2>/dev/null) ; do
+		session_names+=("$(echo $session | cut -d ':' -f1)")
+	done
+
+	local len=$((${#session_names[@]}))
+	for i in $(seq 0 $len); do
+		name="New session"
+		if [[ $i < ${#session_names[@]} ]]; then
+			name=${session_names[$i]}
+		fi
+		echo " $((i+1)))  $name"
+	done
+	echo " $((len+2)))  Tmuxinator"
+	printf " Please choose your session: "
+	read choice
+	choice=${choice:-$((len+1))}
+
+	if [[ $choice -le $len ]]; then
+		tmux attach-session -t ${session_names[$((choice-1))]} 1>&2
+		clear
+	elif [[ $choice -eq $(($len+2)) ]]; then
+		echo ""
+		list_tmuxinator
+	else
+		printf " Enter a new name: "
+		read new_name
+		. /home/kragenarch/.default-tmux.sh $new_name
+		clear
+	fi
+}
+
+function list_tmuxinator () {
+	tmuxinator_tp=($(tmuxinator list | tail -1))
+	local templates=()
+	local len=1
+	IFS=$' '
+	for arg in ${tmuxinator_tp[@]}; do
+		echo " $len)  $arg"
+		templates+=("$arg")
+		len=$((len+1))
+	done
+	echo " $len)  Back"
+	printf " Please choose your session: "
+	read choice
+	choice=${choice:-$len}
+
+	if [[ $choice -lt $len ]]; then
+		tmuxinator start ${templates[$((choice-1))]}
+		clear
+	else
+		echo ""
+		menu
+	fi
+
+}
+
+#===  FUNCTION  ================================================================
+#         NAME:  usage
+#  DESCRIPTION:  Display usage information.
+#===============================================================================
+function usage ()
+{
+	echo "Usage :  $0 [options] [--]
+
+    Options:
+    -h|help       Display this message
+    -v|version    Display script version"
+
+}    # ----------  end of function usage  ----------
+
+#-----------------------------------------------------------------------
+#  Handle command line arguments
+#-----------------------------------------------------------------------
+
+while getopts ":hv" opt
+do
+  case $opt in
+
+	h|help     )  usage; exit 0   ;;
+
+	v|version  )  echo "$0 -- Version $__ScriptVersion"; exit 0   ;;
+
+	* )  echo -e "\n  Option does not exist : $OPTARG\n"
+		  usage; exit 1   ;;
+
+  esac    # --- end of case ---
+done
+shift $(($OPTIND-1))
+
+menu
