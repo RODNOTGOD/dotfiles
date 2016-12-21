@@ -1,5 +1,5 @@
 #!/usr/bin/env sh
-__ScriptVersion="0.0.0.1"
+__ScriptVersion="0.2"
 
 function menu () {
 	local session_names=()
@@ -33,11 +33,15 @@ function menu () {
 		echo ""
 		list_tmuxinator
 	else
-		printf " Enter a new name: "
-		read new_name
-		. $HOME/.default-tmux.sh $new_name
-		clear
+		new_session
 	fi
+}
+
+function new_session () {
+	printf " Enter a new name: "
+	read new_name
+	. $HOME/.default-tmux.sh $new_name
+	clear
 }
 
 function list_tmuxinator () {
@@ -45,6 +49,8 @@ function list_tmuxinator () {
 	local templates=()
 	local len=1
 	IFS=$' '
+	echo -e " Tmuxinator session"
+	echo -e " ------------------\n"
 	for arg in ${tmuxinator_tp[@]}; do
 		echo " $len)  $arg"
 		templates+=("$arg")
@@ -71,12 +77,14 @@ cat << EOF
 Usage :  $0 [options] [--]
 
 	Options:
+	-t            List only tmuxinator sessions
+	-n            Create new session
 	-h|help       Display this message
 	-v|version    Display script version
 EOF
 }
 
-while getopts ":hv" opt; do
+while getopts ":hvtn" opt; do
 	case $opt in
 		h|help)
 			usage
@@ -84,6 +92,14 @@ while getopts ":hv" opt; do
 			;;
 		v|version)
 			echo "$0 -- Version $__ScriptVersion";
+			exit 0
+			;;
+		t)
+			list_tmuxinator
+			exit 0
+			;;
+		n)
+			new_session
 			exit 0
 			;;
 		*)
