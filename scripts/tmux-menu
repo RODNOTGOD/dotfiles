@@ -1,5 +1,6 @@
 #!/usr/bin/env sh
 __ScriptVersion="0.2"
+check_tmuxinator=$(command -v tmuxinator)
 
 function menu () {
 	local session_names=()
@@ -21,7 +22,9 @@ function menu () {
 		fi
 		echo " $((i+1)))  $name"
 	done
-	echo " $((len+2)))  Tmuxinator"
+	if [ $check_tmuxinator ]; then
+		echo " $((len+2)))  Tmuxinator"
+	fi
 	printf " Please choose your session: "
 	read choice
 	choice=${choice:-$((len+1))}
@@ -29,7 +32,7 @@ function menu () {
 	if [[ $choice -le $len ]]; then
 		tmux attach-session -t ${session_names[$((choice-1))]} 1>&2
 		clear
-	elif [[ $choice -eq $(($len+2)) ]]; then
+	elif [ $choice -eq $(($len+2)) ] && [ $check_tmuxinator ]; then
 		echo ""
 		list_tmuxinator
 	else
@@ -44,6 +47,52 @@ function new_session () {
 	clear
 }
 
+function create_tmuxinator() {
+	tmuxinator_dir=~/.tmuxinator/
+	tmux new-session -s $name
+
+	pane_target=1
+	windows=$(tmux list-windows | grep -oe '^[0-9]\+:.*[\*|-|(]' | cut -d '(' -f1)
+	layouts=$(tmux list-windows | grep -oe '\[layout.*\]' | cut -d ' ' -f2)
+	pane_layout=()
+	win_layout=()
+	len=()
+
+	OLDIFS=$IFS
+	IFS=$'\n'
+	for layout in $layouts; do
+		pane_layout+=(${layout:0:-1})
+	done
+	for window in $windows; do
+		window=$(echo ${window:3:-1} | sed -e 's/[\*|-]//')
+		num_panes=$(tmux list-panes -t$pane_target)
+		((pane_target++))
+		counter=0
+		for item in $num_panes; do
+			((counter++))
+		done
+		len+=($counter)
+		win_layout+=($window)
+	done
+	IFS=$OLDIFS
+
+printf "
+name: $name
+root: $HOME
+windows:
+$(for (( i = 0; i < ${#win_layout[@]}; i++ )); do
+	printf "  - ${win_layout[$i]}:\n"
+	printf "      layout: ${pane_layout[$i]}\n"
+	printf "      panes:\n"
+	for (( x = 0; x < ${len[$i]}; x++ )); do
+		printf "        - \n"
+	done
+done)
+" > $tmuxinator_dir$name.yml
+clear
+echo "Wrote to file: $tmuxinator_dir$name.yml"
+}
+
 function list_tmuxinator () {
 	tmuxinator_tp=($(tmuxinator list | cut -d ':' -f2))
 	local templates=()
@@ -56,14 +105,25 @@ function list_tmuxinator () {
 		templates+=("$arg")
 		len=$((len+1))
 	done
-	echo " $len)  Back"
+	echo " $len)  New template"
+	echo " $((len+1)))  Main menu"
 	printf " Please choose your session: "
 	read choice
-	choice=${choice:-$len}
+	choice=${choice:-((len+1))}
 
 	if [[ $choice -lt $len ]]; then
 		tmuxinator start ${templates[$((choice-1))]}
 		clear
+	elif [[ $choice -eq $len ]]; then
+		name=""
+		while [[ -z ${name} ]]; do
+			printf " Enter a new name: "
+			read name
+			case ${name} in
+				*\ *) name=""; echo " Must be one word";;
+			esac
+		done
+		create_tmuxinator $name
 	else
 		echo ""
 		menu
@@ -71,20 +131,20 @@ function list_tmuxinator () {
 
 }
 
-function usage ()
-{
+function usage () {
 cat << EOF
 Usage :  $0 [options] [--]
 
 	Options:
-	-t            List only tmuxinator sessions
 	-n            Create new session
+	-t            List only tmuxinator sessions
+	-c            Create new tmuxinator template. Requires name
 	-h|help       Display this message
 	-v|version    Display script version
 EOF
 }
 
-while getopts ":hvtn" opt; do
+while getopts ":c:hvtn" opt; do
 	case $opt in
 		h|help)
 			usage
@@ -97,6 +157,16 @@ while getopts ":hvtn" opt; do
 		t)
 			list_tmuxinator
 			exit 0
+			;;
+		c)
+			if [[ $check_tmuxinator ]]; then
+				name=${OPTARG}
+				create_tmuxinator
+				exit 0
+			else
+				echo "You must have tmuxinator installed"
+				exit 1
+			fi
 			;;
 		n)
 			new_session
