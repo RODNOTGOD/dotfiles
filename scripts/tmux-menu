@@ -50,12 +50,14 @@ function new_session () {
 function create_tmuxinator() {
 	tmuxinator_dir=~/.tmuxinator/
 	tmux new-session -s $name
+	clear
 
 	pane_target=1
 	windows=$(tmux list-windows | grep -oe '^[0-9]\+:.*[\*|-|(]' | cut -d '(' -f1)
 	layouts=$(tmux list-windows | grep -oe '\[layout.*\]' | cut -d ' ' -f2)
 	pane_layout=()
 	win_layout=()
+	pane_cmds=()
 	len=()
 
 	OLDIFS=$IFS
@@ -65,17 +67,23 @@ function create_tmuxinator() {
 	done
 	for window in $windows; do
 		window=$(echo ${window:3:-1} | sed -e 's/[\*|-]//')
+		echo -e "\nWindow - $window"
 		num_panes=$(tmux list-panes -t$pane_target)
 		((pane_target++))
 		counter=0
 		for item in $num_panes; do
 			((counter++))
+			printf "Enter a command for pane $counter: "
+			read pane_cmd
+			pane_cmd=${pane_cmd:-"clear"}
+			pane_cmds+=($pane_cmd)
 		done
 		len+=($counter)
 		win_layout+=($window)
 	done
 	IFS=$OLDIFS
 
+counter=0
 printf "
 name: $name
 root: $HOME
@@ -85,7 +93,8 @@ $(for (( i = 0; i < ${#win_layout[@]}; i++ )); do
 	printf "      layout: ${pane_layout[$i]}\n"
 	printf "      panes:\n"
 	for (( x = 0; x < ${len[$i]}; x++ )); do
-		printf "        - \n"
+		printf "        - ${pane_cmds[$counter]}\n"
+		((counter++))
 	done
 done)
 " > $tmuxinator_dir$name.yml
