@@ -1,12 +1,12 @@
-[submodule ".tmux/tmux-plugins/tpm"]
-	path = .tmux/tmux-plugins/tpm
-	url = https://github.com/tmux-plugins/tpm
-[submodule ".tmux/tmux-plugins/tmux-resurrect"]
-	path = .tmux/tmux-plugins/tmux-resurrect
-	url = https://github.com/tmux-plugins/tmux-resurrect
-[submodule ".tmux/tmux-plugins/tmux-yank"]
-	path = .tmux/tmux-plugins/tmux-yank
-	url = https://github.com/tmux-plugins/tmux-yank
-[submodule ".tmux/tmux-plugins/tmux-copycat"]
-	path = .tmux/tmux-plugins/tmux-copycat
+[submodule ".tmux/plugins/tpm"]
+	path = .tmux/plugins/tpm
+	url = https://github.com/tmux-plugins/tpm.git
+[submodule ".tmux/plugins/tmux-resurrect"]
+	path = .tmux/plugins/tmux-resurrect
+	url = https://github.com/tmux-plugins/tmux-resurrect.git
+[submodule ".tmux/plugins/tmux-yank"]
+	path = .tmux/plugins/tmux-yank
+	url = https://github.com/tmux-plugins/tmux-yank.git
+[submodule ".tmux/plugins/tmux-copycat"]
+	path = .tmux/plugins/tmux-copycat
 	url = https://github.com/tmux-plugins/tmux-copycat.git
