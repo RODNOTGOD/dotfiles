@@ -23,7 +23,7 @@ roll_text() {
 
 	# Skip rolling if the output is less than max_len.
 	if [ "${#text}" -le "$max_len" ]; then
-		echo "$text"
+		echo "♫ $text"
 		return
 	fi
 
@@ -59,5 +59,5 @@ roll_text() {
 		text="${text} "
 	done
 
-	echo "${text}"
+	echo "♫ ${text}"
 }
