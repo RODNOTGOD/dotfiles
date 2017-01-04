@@ -1,5 +1,5 @@
-#!/usr/bin/env sh
-__ScriptVersion="0.2"
+#!/usr/bin/env bash
+__ScriptVersion="1.0"
 check_tmuxinator=$(command -v tmuxinator)
 
 function menu () {
@@ -43,13 +43,14 @@ function menu () {
 function new_session () {
 	printf " Enter a new name: "
 	read new_name
-	. $HOME/.default-tmux.sh $new_name
+	. $HOME/.tmux/default-tmux.sh $new_name
 	clear
 }
 
 function create_tmuxinator() {
 	tmuxinator_dir=~/.tmuxinator/
 	tmux new-session -s $name
+	name=$(tmux display-message -p "#S")
 	clear
 
 	pane_target=1
@@ -59,6 +60,10 @@ function create_tmuxinator() {
 	win_layout=()
 	pane_cmds=()
 	len=()
+
+	printf "Enter root directory: "
+	read root
+	root=${root:-$HOME}
 
 	OLDIFS=$IFS
 	IFS=$'\n'
@@ -84,9 +89,9 @@ function create_tmuxinator() {
 	IFS=$OLDIFS
 
 counter=0
-printf "
+printf "# ~/.tmuxinator/$name.yml\n
 name: $name
-root: $HOME
+root: $root
 windows:
 $(for (( i = 0; i < ${#win_layout[@]}; i++ )); do
 	printf "  - ${win_layout[$i]}:\n"
