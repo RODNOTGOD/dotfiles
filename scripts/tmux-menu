@@ -1,6 +1,16 @@
 #!/usr/bin/env bash
-__ScriptVersion="1.0"
+__ScriptVersion="1.1"
 check_tmuxinator=$(command -v tmuxinator)
+
+is_attached() {
+	local flag=$(tmux ls -F "#{session_name}: #{?session_attached,attached,nil}" 2>/dev/null| \
+		grep "$(tmux display-message -p "#S" 2>/dev/null): attached")
+	if [[ (-z $flag || -z $TMUX) ]]; then
+		echo False
+	else
+		echo True
+	fi
+}
 
 function menu () {
 	local session_names=()
@@ -195,4 +205,10 @@ while getopts ":c:hvtn" opt; do
 done
 shift $(($OPTIND-1))
 
-menu
+flag=$(is_attached)
+if [[ $flag != True ]]; then
+	menu
+else
+	echo currently attached to session
+	echo sessions should be nested with care, unset \$TMUX to force
+fi
