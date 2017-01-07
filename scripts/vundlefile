@@ -1,0 +1,53 @@
+#!/usr/bin/env bash
+
+vimdir=~/.vim/vim_scripts/
+
+create_git() {
+	dir=$(echo $1|cut -d'.' -f1)
+	cd $vimdir$dir
+
+	git init $vimdir$dir 1>/dev/null
+	echo initializing $vimdir$dir
+	git add plugin/${files[i]} 2>/dev/null
+	git commit -m 'Add ${files[i]}' >/dev/null
+
+	cd $vimdir
+}
+
+create_dir() {
+	files=$1
+	newdir=$(echo $1}|cut -d'.' -f1)
+	mkdir -p $newdir/plugin
+	mv $1 $newdir/plugin/
+}
+
+create_file() {
+	mkdir -p $vimdir
+	local files=()
+
+	cd $vimdir
+
+	wget $1 2>/dev/null
+	echo Downloading $filename
+	if [[ $? -ne 0 ]]; then
+		rm filename
+		exit 2
+	fi
+	files+=($filename)
+}
+
+if [[ ($# -gt 0 && $(command -v git)) ]]; then
+	vim_files=($@)
+	plugins=()
+	for (( i = 0; i < ${#vim_files[@]}; i++ )); do
+		filename=$(echo ${vim_files[i]}|rev|cut -d'/' -f1|rev)
+		create_file ${vim_files[i]}
+		create_dir  $filename
+		create_git  $filename
+		plugins+=("Plugin 'file://$vimdir$dir'\n")
+	done
+	echo -e "\n${plugins[@]}"
+else
+	echo $0 requires input vim plugins
+	exit 2
+fi
