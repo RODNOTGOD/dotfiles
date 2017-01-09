@@ -47,7 +47,7 @@ au Filetype markdown highlight ColorColumn ctermbg=red
 au Filetype markdown call matchadd('ColorColumn', '\%81v', 100)
 au Filetype markdown command! Openmd !firefox % >/dev/null 2>/dev/null &
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
-au Filetype markdown nnoremap <localleader>[ :Ngrep
+au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
 au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -s --latex-engine=lualatex -f markdown_mmd -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
 au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>

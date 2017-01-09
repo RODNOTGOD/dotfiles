@@ -22,6 +22,7 @@ Plugin 'amix/vim-zenroom2'
 Plugin 'vim-syntastic/syntastic'
 Plugin 'godlygeek/tabular'
 Plugin 'jacoborus/tender.vim'
+Plugin 'morhetz/gruvbox'
 Plugin 'terryma/vim-expand-region'
 Plugin 'terryma/vim-multiple-cursors'
 Plugin 'tpope/vim-surround'
@@ -154,6 +155,8 @@ func! CurrentFileDir(cmd)
     return a:cmd . " " . expand("%:p:h") . "/"
 endfunc
 
+command! MakeTags !ctags -f .tags -R .
+
 " Visual modes
 """""""""""""""
 vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
@@ -189,8 +192,13 @@ endfunction
 
 " Windows and pane movement
 """"""""""""""""""""""""""""
+
+nnoremap 0 ^
+
+" Clear highlighting
 map <silent> <leader><cr> :noh<cr>
 
+" Swtich through panes
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
