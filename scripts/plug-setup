@@ -1,17 +1,17 @@
 #!/usr/bin/env bash
 
-vimdir=~/.vim/vim_scripts/
+nvimdir=~/.local/share/nvim/local-plugs/
 
 create_git() {
 	dir=$(echo $1|cut -d'.' -f1)
-	cd $vimdir$dir
+	cd $nvimdir$dir
 
-	git init $vimdir$dir 1>/dev/null
-	echo initializing $vimdir$dir
+	git init $nvimdir$dir 1>/dev/null
+	echo initializing $nvimdir$dir
 	git add plugin/${files[i]} 2>/dev/null
 	git commit -m 'Add ${files[i]}' >/dev/null
 
-	cd $vimdir
+	cd $nvimdir
 }
 
 create_dir() {
@@ -22,10 +22,10 @@ create_dir() {
 }
 
 create_file() {
-	mkdir -p $vimdir
+	mkdir -p $nvimdir
 	local files=()
 
-	cd $vimdir
+	cd $nvimdir
 
 	wget $1 2>/dev/null
 	echo Downloading $filename
@@ -44,7 +44,7 @@ if [[ ($# -gt 0 && $(command -v git)) ]]; then
 		create_file ${vim_files[i]}
 		create_dir  $filename
 		create_git  $filename
-		plugins+=("Plugin 'file://$vimdir$dir'\n")
+		plugins+=("Plug 'file://$nvimdir$dir'\n")
 	done
 	echo -e "\n${plugins[@]}"
 else
