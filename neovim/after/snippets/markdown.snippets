@@ -1,0 +1,24 @@
+# Youtube video grab
+snippet yt
+	[![${1:IMAGE ALT TEXT}](http://img.youtube.com/vi/${2:`@+`}/0.jpg)](http://www.youtube.com/watch?v=$2 "$1")
+
+# Note taking
+
+snippet title
+	# ${1:`expand('%:h:t')`} - ${2:`vim_snippets#Filename()`}
+	> Date: `strftime("%b %d, %Y")`  
+	> Instructor: ${3:Name}
+
+snippet table
+	| ${1:Header One} | ${2:Header Two} |
+	|:-----------|:-----------|
+	| ${3:Item One}   | ${4:Item Two}   |
+
+snippet t
+	- [ ] 
+
+snippet b
+	**${1:bold}**
+
+snippet i
+	_${1:italics}_

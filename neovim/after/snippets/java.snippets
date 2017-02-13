@@ -1,0 +1,27 @@
+snippet base
+	package ${1:`expand('%:h:t')`};
+
+	import java.io.*;
+
+	public class ${2:`vim_snippets#Filename('$1', 'name')`} {
+
+		public static void main (String[] args) {
+			${3}
+		}
+	}
+
+snippet pac
+	package ${1:`expand('%:h:t')`};
+
+snippet fore
+	for ( ${1} : ${2} ) {
+		${3}
+	}
+
+snippet method
+	${1:public} ${2:void} ${3:function_name}(${4}) {
+		${5}
+	}
+
+snippet pfv
+	${1:private} final ${2:var} ;
