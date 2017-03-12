@@ -48,13 +48,17 @@ Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/neomru.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
+Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
+Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp'] }
+Plug 'zchee/deoplete-jedi', {'for' : 'python'}
+Plug 'Raimondi/delimitMate'
 
 " Non maintained plugins
-Plug 'file:///home/kragentu/.local/share/nvim/local-plugs/betterdigraphs_utf8'
-Plug 'file:///home/kragentu/.local/share/nvim/local-plugs/dragvisuals'
-Plug 'file:///home/kragentu/.local/share/nvim/local-plugs/listtrans'
-Plug 'file:///home/kragentu/.local/share/nvim/local-plugs/hlnext'
-Plug 'file:///home/kragentu/.local/share/nvim/local-plugs/vmath'
+Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
+Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/dragvisuals'
+Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/listtrans'
+Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/hlnext'
+Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/vmath'
 
 call plug#end()
 
@@ -82,7 +86,7 @@ nnoremap <leader>i :set cursorline!<CR>
 " Terminal mapping
 """""""""""""""""""
 noremap <F2> :vsplit<CR><C-w>l:terminal<CR>
-tnoremap <C-]> <C-\><C-n>
+tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
 """""""""""""""""""""""""
@@ -331,10 +335,11 @@ inoremap <expr> <C-l> "\<Right>"
 inoremap <expr> <C-h> "\<Left>"
 
 " Delete empty brackets: {{{1
-inoremap <expr> <BS> CloseBrackets()
+" inoremap <expr> <BS> CloseBrackets("\<BS>")
+" inoremap <expr> <C-w> CloseBrackets("\<C-w>")
 
 " Delete Brackets if together
-function! CloseBrackets()
+function! CloseBrackets(cmd)
 	let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
 	let line = getline('.')
 	let position = col('.') - 2
@@ -348,9 +353,11 @@ function! CloseBrackets()
 	endtry
 
 	if match_pair == next_char
-		return "\<BS>\<DEL>"
+		" return "\<BS>\<DEL>"
+		return a:cmd+"\<DEL>"
 	else
-		return "\<BS>"
+		" return "\<BS>"
+		return a:cmd
 	endif
 endfunction
 
@@ -409,5 +416,4 @@ catch
 endtry
 
 color gruvbox
-set background=dark
 hi MatchParen cterm=bold ctermbg=0 ctermfg=6

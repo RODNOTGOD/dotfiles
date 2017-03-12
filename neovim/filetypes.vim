@@ -19,6 +19,9 @@ au FileType python map <buffer> <leader>D ?def
 au FileType python set cindent
 au FileType python set cinkeys-=0#
 au FileType python set indentkeys-=0#
+" au FileType python let g:doxygen_enhanced_color=1
+au FileType python runtime! syntax/doxygen.vim
+au FileType python syn region doxygenComment matchgroup=pythonString start=+[uU]\=\z('''\|"""\)+ end="\z1" contains=doxygenSyncStart,doxygenStart,doxygenTODO keepend fold containedin=pythonString
 
 " -> Html section
 """"""""""""""""""""""""""""""

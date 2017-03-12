@@ -341,6 +341,8 @@ let g:rainbow_conf = {
    \       'css': 0,
    \   }
    \}
+let g:vimfiler_force_overwrite_statusline = 0
+let g:unite_force_overwrite_statusline = 0
 
 " -> Vim-Devicons
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -372,3 +374,10 @@ fun! SetupProject()
 		!cp ~/Templates/JavaVim.template .local.vim
 	endif
 endf
+
+
+" -> Deoplete
+"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
+let g:deoplete#enable_at_startup = 1
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang/'

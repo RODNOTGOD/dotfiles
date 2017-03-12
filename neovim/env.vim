@@ -18,19 +18,20 @@ try
     set undofile
 catch
 endtry
-
 set mouse=n
 set path+=**
 
 " -> Gui
 """""""""
+let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 syntax on
 
 set so=7
 set scrolloff=3
 
 set wildmenu
-set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
+set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
+" set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
 set ruler
 
