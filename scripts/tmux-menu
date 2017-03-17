@@ -168,7 +168,7 @@ Usage :  $0 [options] [--]
 EOF
 }
 
-while getopts ":c:hvtn" opt; do
+while getopts "c:hvtn" opt; do
 	case $opt in
 		h|help)
 			usage
