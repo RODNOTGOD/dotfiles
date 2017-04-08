@@ -1,18 +1,19 @@
-" -> bufExplorer plugin
+"{{{ -> bufExplorer plugin
 """"""""""""""""""""""""""""""
 " let g:bufExplorerDefaultHelp=0
 " let g:bufExplorerShowRelativePath=1
 " let g:bufExplorerFindActive=1
 " let g:bufExplorerSortBy='name'
 " map <Leader>o :BufExplorer<cr>
+"}}}
 
-
-" -> YankStack
+"{{{ -> YankStack
 """"""""""""""""""""""""""""""
 nmap <c-p> <Plug>yankstack_substitute_older_paste
 nmap <c-P> <Plug>yankstack_substitute_newer_paste
+"}}}
 
-" -> CTRL-P
+"{{{ -> CTRL-P
 """"""""""""""""""""""""""""""
 " let g:ctrlp_working_path_mode = 0
 
@@ -23,53 +24,61 @@ nmap <c-P> <Plug>yankstack_substitute_newer_paste
 
 " let g:ctrlp_max_height = 20
 " let g:ctrlp_custom_ignore = 'node_modules\|^\.DS_Store\|^\.git\|^\.coffee'
+"}}}
 
-" -> ZenCoding
+"{{{ -> ZenCoding
 """"""""""""""""""""""""""""""
 " Enable all functions in all modes
 let g:user_zen_mode='a'
+"}}}
 
-" -> snipMate (beside <TAB> support <CTRL-j>)
+"{{{ -> snipMate (beside <TAB> support <CTRL-j>)
 """"""""""""""""""""""""""""""
 ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
 snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
+"}}}
 
-
-" -> Vim grep
+"{{{ -> Vim grep
 """"""""""""""""""""""""""""""
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
 set grepprg=/bin/grep\ -nH
+"}}}
 
-" -> Gundo
+"{{{ -> Gundo
 """"""""""""""""""""""""""""""
 nnoremap <F5> :GundoToggle<CR>
 let g:gundo_preview_bottom = 1
 let g:gundo_right = 1
 let g:gundo_help = 0
+"}}}
 
-" -> Drag Visual
+"{{{ -> Drag Visual
 """"""""""""""""""""""""""""""
 vmap  <expr>  <S-LEFT>   DVB_Drag('left')
 vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
 vmap  <expr>  <S-DOWN>   DVB_Drag('down')
 vmap  <expr>  <S-UP>     DVB_Drag('up')
 let g:DVB_TrimWS = 1
+"}}}
 
-" -> Better Digraphs
+"{{{ -> Better Digraphs
 """"""""""""""""""""""""""""""
 inoremap <expr> <C-K> BDG_GetDigraph()
+"}}}
 
-" -> List Trans
+"{{{ -> List Trans
 """"""""""""""""""""""""""""""
 nmap <localleader>l :call ListTrans_toggle_format()<CR>
 vmap <localleader>l :call ListTrans_toggle_format('visual')<CR>
+"}}}
 
-" -> Vmath
+"{{{ -> Vmath
 """"""""""""""""""""""""""""""
 vmap <silent><expr> <leader>m++ VMATH_YankAndAnalyse()
 nmap <silent>       <leader>m++ vip++
+"}}}
 
-" -> Nerd Tree
+"{{{ -> Nerd Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 " let g:NERDTreeWinPos = "left"
 " let NERDTreeShowHidden=0
@@ -78,24 +87,28 @@ nmap <silent>       <leader>m++ vip++
 " map <leader>nn :NERDTreeToggle<cr>
 " map <leader>nb :NERDTreeFromBookmark
 " map <leader>nf :NERDTreeFind<cr>
+"}}}
 
-" -> VimFiler
+"{{{ -> VimFiler
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vimfiler_as_default_explorer = 1
 map <leader>nn :VimFiler<CR>
 map <leader>nf :VimFilerBufferDir<CR>
+"}}}
 
-" -> vim-multiple-cursors
+"{{{ -> vim-multiple-cursors
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:multi_cursor_next_key="\<C-s>"
 highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 highlight link multiple_cursors_visual Visual
+"}}}
 
-" -> Better White Space
+"{{{ -> Better White Space
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:better_whitespace_filetypes_blacklist=['markdown', 'diff', 'gitcommit', 'unite', 'qf', 'help']
+"}}}
 
-" -> Emmet
+"{{{ -> Emmet
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:user_emmet_install_global = 0
 let g:user_emmet_settings = {
@@ -110,11 +123,12 @@ let g:user_emmet_settings = {
 			\   'extends' : 'html',
 			\ },
 			\ }
+"}}}
 
-" -> lightline
+"{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
+      \ 'colorscheme': 'tender',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
@@ -221,8 +235,9 @@ function! LightLineNeomakeWarnings()
   endif
   return '⚠:'.(get(neomake#statusline#LoclistCounts(), '⚠', 0) + get(neomake#statusline#QflistCounts(), '⚠', 0))
 endfunction
+"}}}
 
-" -> Goyo
+"{{{ -> Goyo
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:goyo_width=100
 let g:goyo_margin_top = 2
@@ -251,8 +266,9 @@ endfunction
 
 autocmd! User GoyoEnter nested call <SID>goyo_enter()
 autocmd! User GoyoLeave nested call <SID>goyo_leave()
+"}}}
 
-" -> Syntastic (syntax checker)
+"{{{ -> Syntastic (syntax checker)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 set statusline+=%#warningmsg#
 set statusline+=%{SyntasticStatuslineFlag()}
@@ -268,8 +284,9 @@ let g:syntastic_python_checkers=['flake8']
 
 " Javascript
 let g:syntastic_javascript_checkers = ['jslint']
+"}}}
 
-" -> neomake (syntax checker)
+"{{{ -> neomake (syntax checker)
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Every write
@@ -284,7 +301,7 @@ let g:neomake_python_flake8_maker = {
         \ '%A%f:%l: %t%n %m,' .
         \ '%-G%.%#',
     \ }
-let g:neomake_python_enabled_makers = ['flake8']
+" let g:neomake_python_enabled_makers = ['flake8']
 
 " Cpp
 let g:neomake_cpp_enabled_makers = ['clang']
@@ -295,13 +312,15 @@ let g:neomake_cpp_clang_maker = {
 
 autocmd User NeomakeFinished nested call lightline#update()
 set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
+"}}}
 
-" -> Git gutter (Git diff)
+"{{{ -> Git gutter (Git diff)
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:gitgutter_enabled=1
 nnoremap <silent> <leader>d :GitGutterToggle<cr>
+"}}}
 
-" -> Fugitive
+"{{{ -> Fugitive
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <Leader>gc :Gcommit<Space>
 nnoremap <Leader>gs :Gstatus<CR>
@@ -313,10 +332,12 @@ nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gp :Git push<CR>
 nnoremap <Leader>gk :!git checkout<Space>
-nnoremap <Leader>gb :Gblame<CR> nnoremap <Leader>go :Git checkout<Space>
+nnoremap <Leader>gb :Gblame<CR>
+" nnoremap <Leader>gb :Gblame<CR> nnoremap <Leader>go :Git checkout<Space>
 set diffopt+=filler,vertical
+"}}}
 
-" -> Rainbow
+"{{{ -> Rainbow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1
 let g:rainbow_conf = {
@@ -343,13 +364,15 @@ let g:rainbow_conf = {
    \}
 let g:vimfiler_force_overwrite_statusline = 0
 let g:unite_force_overwrite_statusline = 0
+"}}}
 
-" -> Vim-Devicons
+"{{{ -> Vim-Devicons
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:WebDevIconsUnicodeGlyphDoubleWidth = 0
 let g:webdevicons_enable_vimfiler = 1
+"}}}
 
-" -> Unite
+"{{{ -> Unite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 nnoremap <C-f> :Unite -no-split -buffer-name=files -start-insert file_rec/async<CR>
 nnoremap <C-o> :Unite -no-split -buffer-name=buffer -start-insert buffer<CR>
@@ -363,8 +386,9 @@ function! s:unite_settings()
 	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
 	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
 endfunction
+"}}}
 
-" -> Eclim
+"{{{ -> Eclim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:EclimFileTypeValidate = 0
 
@@ -374,10 +398,11 @@ fun! SetupProject()
 		!cp ~/Templates/JavaVim.template .local.vim
 	endif
 endf
+"}}}
 
-
-" -> Deoplete
+"{{{ -> Deoplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-3.8/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/llvm-3.8/lib/clang/'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang/'
+"}}}

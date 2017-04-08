@@ -70,8 +70,18 @@ set tm=500
 
 set foldcolumn=1
 
+set foldmethod=marker
+set foldmarker={{{,}}}
 
 set tags+=.tags
+
+" hidden characters
+set nu
+set rnu
+
+set noshowmode
+set list
+set listchars=eol:¬,tab:»\ ,trail:·
 
 " -> Color
 """""""""""

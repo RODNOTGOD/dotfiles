@@ -1,4 +1,4 @@
-" -> Python section
+"{{{ -> Python section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
 au FileType python syn keyword pythonDecorator True None False self
@@ -19,36 +19,37 @@ au FileType python map <buffer> <leader>D ?def
 au FileType python set cindent
 au FileType python set cinkeys-=0#
 au FileType python set indentkeys-=0#
-" au FileType python let g:doxygen_enhanced_color=1
-au FileType python runtime! syntax/doxygen.vim
-au FileType python syn region doxygenComment matchgroup=pythonString start=+[uU]\=\z('''\|"""\)+ end="\z1" contains=doxygenSyncStart,doxygenStart,doxygenTODO keepend fold containedin=pythonString
+"}}}
 
-" -> Html section
+"{{{ -> Html section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
 au Filetype html,css set tabstop=2
 au Filetype html,css set shiftwidth=2
 au Filetype html,css EmmetInstall
-au Filetype html command! Openhtml !chromium-browser % >/dev/null 2>/dev/null &
+au Filetype html command! Openhtml !google-chrome % >/dev/null 2>/dev/null &
 au Filetype html nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
+"}}}
 
-" -> Lisp section
+"{{{ -> Lisp section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
 au Filetype lisp set tabstop=2
 au Filetype lisp set shiftwidth=2
 au Filetype lisp set expandtab
+"}}}
 
-" -> Git section
+"{{{ -> Git section
 """"""""""""""""""""""""""""""
 au Filetype gitcommit set spell
+"}}}
 
-" -> Markdown section
+"{{{ -> Markdown section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
 au Filetype markdown highlight ColorColumn ctermbg=red
 au Filetype markdown call matchadd('ColorColumn', '\%81v', 100)
-au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
+au Filetype markdown command! Openmd !google-chrome % >/dev/null 2>/dev/null &
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
@@ -61,8 +62,9 @@ au Filetype markdown set spell
 
 highlight ColorColumn ctermbg=red
 call matchadd('ColorColumn', '\%101v', 100)
+"}}}
 
-" -> JavaScript section
+"{{{ -> JavaScript section
 """""""""""""""""""""""""""""""
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
@@ -88,8 +90,10 @@ endfunction
 if exists('$TMUX')
     " set term=screen-256color
 endif
+"}}}
 
-" -> Assembly section
+"{{{ -> Assembly section
 """""""""""""""""""""""""""""""
 au FileType asm set ft=nasm
 au FileType asm setlocal commentstring=;\ %s
+"}}}

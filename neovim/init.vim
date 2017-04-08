@@ -1,15 +1,16 @@
 set nocompatible
 filetype off
 
-" set rtp+=~/.vim/bundle/Vundle.vim
+"{{{ Env Variables
 set rtp+=~/.local/share/nvim/plugged
 call plug#begin('~/.local/share/nvim/plugged')
 
 let $NVIM_CONF='~/.config/nvim/init.vim'
 let $NVIM_CONFDIR='~/.config/nvim'
 let $NVIM_DIR='/home/kragentu/.local/share/nvim'
+"}}}
 
-" Github Plugins
+"{{{ Github Plugins
 Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
 Plug 'mileszs/ack.vim'
 Plug 'jlanzarotta/bufexplorer'
@@ -22,6 +23,7 @@ Plug 'amix/vim-zenroom2'
 Plug 'godlygeek/tabular'
 Plug 'jacoborus/tender.vim'
 Plug 'tomasr/molokai'
+Plug 'altercation/vim-colors-solarized'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'terryma/vim-expand-region'
@@ -30,7 +32,7 @@ Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'nvie/vim-flake8', {'for': 'python'}
+" Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -61,7 +63,9 @@ Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/hlnext'
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/vmath'
 
 call plug#end()
+"}}}
 
+"{{{ Mappings
 
 " Leader mapping
 """""""""""""""""
@@ -120,6 +124,186 @@ nnoremap <localleader>co :call OpenMenu()<CR>
 nnoremap <localleader>cc :call CloseMenu()<CR>
 nnoremap <localleader>cn :call NextFix()<CR>
 nnoremap <localleader>cp :call PrevFix()<CR>
+
+
+nnoremap <C-n> :call NumberToggle()<cr>
+
+
+" -> Parenthesis/bracket
+"""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+
+" Command mode related
+"""""""""""""""""""""""
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $j e ./
+cno $c e <C-\>eCurrentFileDir("e")<cr>
+cno $q <C-\>eDeleteTillSlash()<cr>
+cnoremap <C-A>		<Home>
+cnoremap <C-E>		<End>
+cnoremap <C-K>		<C-U>
+
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+
+command! MakeTags !ctags -f .tags -R .
+
+" Visual modes
+"""""""""""""""
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+
+nnoremap v <C-v>
+nnoremap <C-v> v
+vnoremap v <C-v>
+vnoremap <C-v> v
+
+"}}}
+
+"{{{ Functions
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
+
+function! VisualSelection(direction, extra_filter) range
+    let l:saved_reg = @"
+    execute "normal! vgvy"
+
+    let l:pattern = escape(@", "\\/.*'$^~[]")
+    let l:pattern = substitute(l:pattern, "\n$", "", "")
+
+    if a:direction == 'gv'
+        call CmdLine("Ag '" . l:pattern . "' " )
+    elseif a:direction == 'replace'
+        call CmdLine("%s" . '/'. l:pattern . '/')
+    endif
+
+    let @/ = l:pattern
+    let @" = l:saved_reg
+endfunction
+
+" Windows and pane movement
+""""""""""""""""""""""""""""
+nnoremap 0 ^
+
+" Clear highlighting
+map <silent> <leader><cr> :noh<cr>
+
+" Swtich through panes
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Splitting Commands
+map <leader>v :vsplit<CR>
+map <leader>s :split<CR>
+
+map <leader>vl :vertical-resize +5<CR>
+map <leader>vh :vertical-resize -5<CR>
+
+map <leader>sj :resize +5<CR>
+map <leader>sk :resize -5<CR>
+
+" Character Skip trick
+inoremap <expr> <C-l> "\<Right>"
+inoremap <expr> <C-h> "\<Left>"
+
+" Tab commands
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+
+map <leader>ba :bufdo bd<cr>
+
+map <leader>l :bnext<cr>
+map <leader>h :bprevious<cr>
+
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove
+map <leader>t<leader> :tabnext
+
+let g:lasttab = 1
+nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
+au TabLeave * let g:lasttab = tabpagenr()
+
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+inoremap <C-E> <C-X><C-E>
+inoremap <C-Y> <C-X><C-Y>
+
+command! Bclose call <SID>BufcloseCloseIt()
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+func! DeleteTillSlash()
+    let g:cmd = getcmdline()
+
+    if has("win16") || has("win32")
+        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+    else
+        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+    endif
+
+    if g:cmd == g:cmd_edited
+        if has("win16") || has("win32")
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+        else
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+        endif
+    endif
+
+    return g:cmd_edited
+endfunc
+
+func! CurrentFileDir(cmd)
+    return a:cmd . " " . expand("%:p:h") . "/"
+endfunc
+
+function! NumberToggle()
+	RainbowToggle
+    if(&relativenumber == 1)
+        set rnu!
+    else
+        set relativenumber
+    endif
+endfunc
+
 fun! NextFix()
 	try
 		try
@@ -198,146 +382,6 @@ fun! CloseMenu()
 	endtry
 endf
 
-" hidden characters
-set nu
-set rnu
-
-set noshowmode
-set list
-set listchars=eol:¬,tab:»\ ,trail:·
-
-nnoremap <C-n> :call NumberToggle()<cr>
-
-function! NumberToggle()
-	RainbowToggle
-    if(&relativenumber == 1)
-        set rnu!
-    else
-        set relativenumber
-    endif
-endfunc
-
-" -> Parenthesis/bracket
-"""""""""""""""""""""""""
-vnoremap $1 <esc>`>a)<esc>`<i(<esc>
-vnoremap $2 <esc>`>a]<esc>`<i[<esc>
-vnoremap $3 <esc>`>a}<esc>`<i{<esc>
-vnoremap $$ <esc>`>a"<esc>`<i"<esc>
-vnoremap $q <esc>`>a'<esc>`<i'<esc>
-vnoremap $e <esc>`>a"<esc>`<i"<esc>
-
-" Map auto complete of (, ", ', [
-inoremap $1 ()<esc>i
-inoremap $2 []<esc>i
-inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
-inoremap $q ''<esc>i
-inoremap $e ""<esc>i
-
-" Command mode related
-"""""""""""""""""""""""
-cno $h e ~/
-cno $d e ~/Desktop/
-cno $j e ./
-cno $c e <C-\>eCurrentFileDir("e")<cr>
-cno $q <C-\>eDeleteTillSlash()<cr>
-cnoremap <C-A>		<Home>
-cnoremap <C-E>		<End>
-cnoremap <C-K>		<C-U>
-
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
-
-func! DeleteTillSlash()
-    let g:cmd = getcmdline()
-
-    if has("win16") || has("win32")
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-    else
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-    endif
-
-    if g:cmd == g:cmd_edited
-        if has("win16") || has("win32")
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-        else
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-        endif
-    endif
-
-    return g:cmd_edited
-endfunc
-
-func! CurrentFileDir(cmd)
-    return a:cmd . " " . expand("%:p:h") . "/"
-endfunc
-
-command! MakeTags !ctags -f .tags -R .
-
-" Visual modes
-"""""""""""""""
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
-
-nnoremap v <C-v>
-nnoremap <C-v> v
-vnoremap v <C-v>
-vnoremap <C-v> v
-
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
-endfunction
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ag '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
-endfunction
-
-" Windows and pane movement
-""""""""""""""""""""""""""""
-nnoremap 0 ^
-
-" Clear highlighting
-map <silent> <leader><cr> :noh<cr>
-
-" Swtich through panes
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Splitting Commands
-map <leader>v :vsplit<CR>
-map <leader>s :split<CR>
-
-map <leader>vl :vertical-resize +5<CR>
-map <leader>vh :vertical-resize -5<CR>
-
-map <leader>sj :resize +5<CR>
-map <leader>sk :resize -5<CR>
-
-" Character Skip trick
-inoremap <expr> <C-l> "\<Right>"
-inoremap <expr> <C-h> "\<Left>"
-
-" Delete empty brackets: {{{1
-" inoremap <expr> <BS> CloseBrackets("\<BS>")
-" inoremap <expr> <C-w> CloseBrackets("\<C-w>")
-
 " Delete Brackets if together
 function! CloseBrackets(cmd)
 	let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
@@ -361,52 +405,9 @@ function! CloseBrackets(cmd)
 	endif
 endfunction
 
-" Tab commands
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
+"}}}
 
-map <leader>ba :bufdo bd<cr>
-
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
-
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
-
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-inoremap <C-E> <C-X><C-E>
-inoremap <C-Y> <C-X><C-Y>
-
-command! Bclose call <SID>BufcloseCloseIt()
-function! <SID>BufcloseCloseIt()
-   let l:currentBufNum = bufnr("%")
-   let l:alternateBufNum = bufnr("#")
-
-   if buflisted(l:alternateBufNum)
-     buffer #
-   else
-     bnext
-   endif
-
-   if bufnr("%") == l:currentBufNum
-     new
-   endif
-
-   if buflisted(l:currentBufNum)
-     execute("bdelete! ".l:currentBufNum)
-   endif
-endfunction
-
-" Source local environment
+"{{{ Source local environment
 source $NVIM_CONFDIR/env.vim
 source $NVIM_CONFDIR/plugins.vim
 source $NVIM_CONFDIR/filetypes.vim
@@ -414,6 +415,9 @@ try
 	source .local.vim
 catch
 endtry
+"}}}
 
-color gruvbox
+"{{{ Colors
+color tender
 hi MatchParen cterm=bold ctermbg=0 ctermfg=6
+"}}}
