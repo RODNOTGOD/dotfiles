@@ -128,7 +128,7 @@ let g:user_emmet_settings = {
 "{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'tender',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
@@ -250,7 +250,7 @@ function! s:goyo_enter()
 	set nolist
 	set noshowcmd
 	set scrolloff=999
-	color gruvbox
+	color onedark
 	" ...
 endfunction
 
@@ -260,7 +260,7 @@ function! s:goyo_leave()
 	set list
 	set showcmd
 	set scrolloff=3
-	color gruvbox
+	color onedark
 	" ...
 endfunction
 
@@ -301,7 +301,7 @@ let g:neomake_python_flake8_maker = {
         \ '%A%f:%l: %t%n %m,' .
         \ '%-G%.%#',
     \ }
-" let g:neomake_python_enabled_makers = ['flake8']
+let g:neomake_python_enabled_makers = ['flake8']
 
 " Cpp
 let g:neomake_cpp_enabled_makers = ['clang']
@@ -309,6 +309,9 @@ let g:neomake_cpp_clang_maker = {
    \ 'exe': 'clang++',
    \ 'args': ['-std=c++11', '-fsyntax-only', '-Wunused', '-Wall', '-Wextra'],
    \ }
+
+" JS
+let g:neomake_javascript_enabled_makers = ['eslint']
 
 autocmd User NeomakeFinished nested call lightline#update()
 set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
@@ -403,6 +406,17 @@ endf
 "{{{ -> Deoplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang/'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang-4.0.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/clang/'
+
+let g:deoplete#omni#functions = {}
+let g:deoplete#omni#functions.javascript = [
+  \ 'tern#Complete',
+  \ 'jspc#omni'
+\]
+
+let g:tern_request_timeout = 1
+let g:tern_request_timeout = 6000
+let g:tern#command = ["tern"]
+let g:tern#arguments = ["--persistent"]
 "}}}

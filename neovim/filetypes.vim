@@ -24,11 +24,15 @@ au FileType python set indentkeys-=0#
 "{{{ -> Html section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
-au Filetype html,css set tabstop=2
-au Filetype html,css set shiftwidth=2
+au Filetype html set tabstop=2
+au Filetype html set shiftwidth=2
 au Filetype html,css EmmetInstall
-au Filetype html command! Openhtml !google-chrome % >/dev/null 2>/dev/null &
+au Filetype html command! Openhtml !chromium-browser % >/dev/null 2>/dev/null &
 au Filetype html nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
+au Filetype html RainbowToggleOff
+au Filetype css set tabstop=4
+au Filetype css set shiftwidth=4
+autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
 "}}}
 
 "{{{ -> Lisp section
@@ -75,6 +79,8 @@ au FileType javascript imap <c-a> alert();<esc>hi
 
 au FileType javascript inoremap <buffer> $r return
 au FileType javascript inoremap <buffer> $f //--- PH<esc>FP2xi
+au Filetype javascript set tabstop=4
+au Filetype javascript set shiftwidth=4
 
 function! JavaScriptFold()
     setl foldmethod=syntax

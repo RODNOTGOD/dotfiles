@@ -24,6 +24,7 @@ set path+=**
 " -> Gui
 """""""""
 let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax on
 
 set so=7
@@ -81,7 +82,8 @@ set rnu
 
 set noshowmode
 set list
-set listchars=eol:¬,tab:»\ ,trail:·
+set listchars=eol:¬,tab:¦\ ,trail:·
+" set listchars=eol:¬,tab:»\ ,trail:·
 
 " -> Color
 """""""""""

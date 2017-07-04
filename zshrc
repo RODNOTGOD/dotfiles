@@ -1,26 +1,19 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/kragentu/.oh-my-zsh
+export ZSH=/home/kragendor/.oh-my-zsh
 
 # Zsh theme settings
 ZSH_THEME="bullet-train"
 
 # Bullet train format
-if [ ! -n "${BULLETTRAIN_PROMPT_ORDER+1}" ]; then
-  BULLETTRAIN_PROMPT_ORDER=(
-    status
-    custom
-    context
-    dir
-    perl
-    ruby
-    virtualenv
-    nvm
-    go
-    git
-    hg
-    cmd_exec_time
-  )
-fi
+BULLETTRAIN_PROMPT_ORDER=(
+  status
+  custom
+  dir
+  perl
+  ruby
+  virtualenv
+  git
+)
 BULLETTRAIN_PROMPT_CHAR="»"
 BULLETTRAIN_GIT_BG=green
 BULLETTRAIN_GIT_CLEAN=" %F{black}✔%F{black}"
@@ -29,7 +22,7 @@ BULLETTRAIN_GIT_CLEAN=" %F{black}✔%F{black}"
 ENABLE_CORRECTION="true"
 COMPLETION_WAITING_DOTS="true"
 HIST_STAMPS="mm/dd/yyyy"
-plugins=(git sudo ubuntu zsh-autosuggestions)
+plugins=(git sudo ubuntu zsh-autosuggestions you-should-use)
 
 # User configuration
 source $ZSH/oh-my-zsh.sh
@@ -45,15 +38,17 @@ fancy-ctrl-z() {
 	fi
 }
 
+fork() { (setsid "$@" &); }
+
 # Key bindings
 zle -N fancy-ctrl-z
 bindkey '' fancy-ctrl-z
-bindkey '^N' autosuggest-accept
 bindkey '^P' up-line-or-search
+bindkey '^N' down-line-or-search
 
 export EDITOR=nvim
 export TERM=xterm-256color
-export NOTES_DIRECTORY="/home/kragentu/.notes"
+export NOTES_DIRECTORY="/home/kragendor/.notes"
 
 # Disable tty scroll lock
 stty -ixon
@@ -97,6 +92,9 @@ alias tks="tmux kill-server"
 
 alias ts="tmuxinator start"
 alias tn="tmuxinator new"
+
+#YOUTUBE-DL
+alias yt-music="youtube-dl -o \"~/Music/%(title)s.%(ext)s\" -x --audio-format opus --audio-quality 0"
 
 # GIT ALIAS
 alias gla="git log --oneline --all --decorate --graph"

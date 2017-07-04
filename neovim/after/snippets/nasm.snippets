@@ -1,6 +1,6 @@
 snippet base
 	section .data
-		${1}
+		${1:$}
 	section .text
 		global _start
 
@@ -8,8 +8,20 @@ snippet base
 
 snippet macro
 	%macro ${1:macro_name} ${2:params}
-		${3}
+		${$}
 	%endmacro
 
 snippet inc
 	%include '${1:file}'
+
+snippet stack
+	push ebp
+	mov  ebp, esp
+
+	${1:$}
+
+	leave
+	ret
+
+snippet def
+	%define ${1:$}

@@ -1,13 +1,21 @@
 set nocompatible
 filetype off
 
+"{{{ Vim-Plug Check
+if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
+  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
+      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
+"}}}
+
 "{{{ Env Variables
 set rtp+=~/.local/share/nvim/plugged
 call plug#begin('~/.local/share/nvim/plugged')
 
 let $NVIM_CONF='~/.config/nvim/init.vim'
 let $NVIM_CONFDIR='~/.config/nvim'
-let $NVIM_DIR='/home/kragentu/.local/share/nvim'
+let $NVIM_DIR='~/.local/share/nvim'
 "}}}
 
 "{{{ Github Plugins
@@ -23,16 +31,17 @@ Plug 'amix/vim-zenroom2'
 Plug 'godlygeek/tabular'
 Plug 'jacoborus/tender.vim'
 Plug 'tomasr/molokai'
-Plug 'altercation/vim-colors-solarized'
+Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
+Plug 'joshdick/onedark.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-" Plug 'nvie/vim-flake8', {'for': 'python'}
+Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'MarcWeber/vim-addon-mw-utils'
@@ -53,7 +62,10 @@ Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
 Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp'] }
 Plug 'zchee/deoplete-jedi', {'for' : 'python'}
+Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx']}
+Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'npm install && npm install -g tern' }
 Plug 'Raimondi/delimitMate'
+Plug 'maksimr/vim-jsbeautify'
 
 " Non maintained plugins
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
@@ -71,7 +83,7 @@ call plug#end()
 """""""""""""""""
 let mapleader = "\<Space>"
 let g:mapleader = "\<Space>"
-let maplocalleader = ";"
+let maplocalleader = ","
 
 " Movement
 """""""""""
@@ -89,7 +101,7 @@ nnoremap <leader>i :set cursorline!<CR>
 
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:terminal<CR>
+noremap <F2> :vsplit<CR><C-w>l:set rnu!<CR>:set nu!<CR>:terminal<CR>
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -199,6 +211,34 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 
+function! Internetify()
+	let l:currLine = getline('.')
+	let l:splice = join(split(l:currLine))
+
+	for l:name in ["-o-", "-moz-", "-webkit-"]
+		let l:compatLine = "\t" . l:name . l:splice . "\n"
+		let o = @o
+		let @o = l:compatLine
+		normal! "oP
+		let @o = o
+	endfor
+endfunction
+
+function! Beautify()
+	let l:fileType = &ft
+	if l:fileType ==  'html'
+		call HtmlBeautify()
+	elseif l:fileType == 'css'
+		call CSSBeautify()
+	elseif l:fileType == 'javascript'
+		call JsBeautify()
+	elseif l:fileType == 'json'
+		call JsonBeautify()
+	elseif l:fileType == 'jsx'
+		call JsxBeautify()
+	endif
+endfunction
+
 " Windows and pane movement
 """"""""""""""""""""""""""""
 nnoremap 0 ^
@@ -206,7 +246,7 @@ nnoremap 0 ^
 " Clear highlighting
 map <silent> <leader><cr> :noh<cr>
 
-" Swtich through panes
+" Switch through panes
 map <C-j> <C-W>j
 map <C-k> <C-W>k
 map <C-h> <C-W>h
@@ -226,19 +266,22 @@ map <leader>sk :resize -5<CR>
 inoremap <expr> <C-l> "\<Right>"
 inoremap <expr> <C-h> "\<Left>"
 
-" Tab commands
+" buffer commands
+nnoremap <TAB> :b#<cr>
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
-
 map <leader>ba :bufdo bd<cr>
-
+map <leader>bn :Bnew<cr><C-w>L
 map <leader>l :bnext<cr>
 map <leader>h :bprevious<cr>
 
+" Tab commands
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove
 map <leader>t<leader> :tabnext
+
+nnoremap <M-l> :call Beautify()<cr>
 
 let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
@@ -270,6 +313,14 @@ function! <SID>BufcloseCloseIt()
      execute("bdelete! ".l:currentBufNum)
    endif
 endfunction
+
+command! Bnew call <SID>CreateNewBuf()
+fun! <SID>CreateNewBuf()
+	new
+	setlocal buftype=nofile
+	setlocal bufhidden=hide
+	setlocal noswapfile
+endf
 
 func! DeleteTillSlash()
     let g:cmd = getcmdline()
@@ -303,26 +354,6 @@ function! NumberToggle()
         set relativenumber
     endif
 endfunc
-
-fun! NextFix()
-	try
-		try
-			cn
-		catch
-			cfir
-		endtry
-	catch
-		try
-			lne
-		catch
-			try
-				lfir
-			catch
-				echom "No errors"
-			endtry
-		endtry
-	endtry
-endf
 
 fun! NextFix()
 	try
@@ -418,6 +449,6 @@ endtry
 "}}}
 
 "{{{ Colors
-color tender
-hi MatchParen cterm=bold ctermbg=0 ctermfg=6
+color onedark
+hi MatchParen cterm=bold ctermbg=6 ctermfg=7
 "}}}
