@@ -47,6 +47,8 @@ if [[ ($# -gt 0 && $(command -v git)) ]]; then
 		plugins+=("Plug 'file://$nvimdir$dir'\n")
 	done
 	echo -e "\n${plugins[@]}"
+elif [[ ($# -gt 0) ]]; then
+	echo git not installed
 else
 	echo $0 requires input vim plugins
 	exit 2
