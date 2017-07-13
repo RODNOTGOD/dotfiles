@@ -53,6 +53,17 @@ function menu () {
 function new_session () {
 	printf " Enter a new name: "
 	read new_name
+	new_name=${new_name:-default}
+	OLDIFS=$IFS
+	for session in $(tmux list-session 2>/dev/null); do
+		if [ "$new_name" == "$(echo $session | cut -d ':' -f1)" ]; then
+			echo $session
+			tmux attach-session -t $(echo $session | cut -d ':' -f1)
+			IFS=$OLDIFS
+			return
+		fi
+	done
+	IFS=$OLDIFS
 	. $HOME/.tmux/default-tmux.sh $new_name
 	clear
 }
