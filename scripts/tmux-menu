@@ -12,59 +12,46 @@ is_attached() {
 	fi
 }
 
-function menu () {
-	local session_names=()
-	local name
 
+function menu () {
+	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
+	if [ $check_tmuxinator ]; then
+		session_names+=("Tmuxinator")
+	fi
+
+	PS3="Please choose your session: "
 	echo -e " Available session"
 	echo -e " -----------------\n"
-
-	IFS=$'\n'
-	for session in $(tmux list-session 2>/dev/null) ; do
-		session_names+=("$(echo $session | cut -d ':' -f1)")
+	select session in "${session_names[@]}"; do
+		case $session in
+			"New Session")
+				new_session
+				break
+				;;
+			"Tmuxinator")
+				clear
+				list_tmuxinator
+				break
+				;;
+			*)
+				tmux attach-session -t $session
+				clear
+				break
+				;;
+		esac
 	done
-
-	local len=$((${#session_names[@]}))
-	for i in $(seq 0 $len); do
-		name="New session"
-		if [[ $i < ${#session_names[@]} ]]; then
-			name=${session_names[$i]}
-		fi
-		echo " $((i+1)))  $name"
-	done
-	if [ $check_tmuxinator ]; then
-		echo " $((len+2)))  Tmuxinator"
-	fi
-	printf " Please choose your session: "
-	read choice
-	choice=${choice:-$((len+1))}
-
-	if [[ $choice -le $len ]]; then
-		tmux attach-session -t ${session_names[$((choice-1))]} 1>&2
-		clear
-	elif [ $choice -eq $(($len+2)) ] && [ $check_tmuxinator ]; then
-		echo ""
-		list_tmuxinator
-	else
-		new_session
-	fi
 }
 
+
 function new_session () {
-	printf " Enter a new name: "
+	printf "Enter a new name: "
 	read new_name
-	new_name=${new_name:-default}
-	OLDIFS=$IFS
-	for session in $(tmux list-session 2>/dev/null); do
-		if [ "$new_name" == "$(echo $session | cut -d ':' -f1)" ]; then
-			echo $session
-			tmux attach-session -t $(echo $session | cut -d ':' -f1)
-			IFS=$OLDIFS
-			return
-		fi
-	done
-	IFS=$OLDIFS
-	. $HOME/.tmux/default-tmux.sh $new_name
+	local new_name=${new_name:-default}
+	if [[ $(tmux list-sessions -F "#S") == *"$new_name"* ]]; then
+		tmux attach-session -t $new_name
+	else
+		. $HOME/.tmux/default-tmux.sh $new_name
+	fi
 	clear
 }
 
@@ -128,43 +115,29 @@ clear
 echo "Wrote to file: $tmuxinator_dir$name.yml"
 }
 
-function list_tmuxinator () {
-	tmuxinator_tp=($(tmuxinator list | cut -d ':' -f2))
-	local templates=()
-	local len=1
-	IFS=$' '
-	echo -e " Tmuxinator session"
-	echo -e " ------------------\n"
-	for arg in ${tmuxinator_tp[@]}; do
-		echo " $len)  $arg"
-		templates+=("$arg")
-		len=$((len+1))
+
+function list_tmuxinator() {
+	templates=($(tmuxinator list | cut -d ':' -f2) "New Template" "Main Menu")
+	PS3="Please choose your session: "
+	select template in "${templates[@]}"; do
+		case "$template" in
+			"New Template")
+				create_tmuxinator
+				break
+				;;
+			"Main Menu")
+				menu
+				break
+				;;
+			*)
+				tmuxinator start $template
+				clear
+				break
+				;;
+		esac
 	done
-	echo " $len)  New template"
-	echo " $((len+1)))  Main menu"
-	printf " Please choose your session: "
-	read choice
-	choice=${choice:-((len+1))}
-
-	if [[ $choice -lt $len ]]; then
-		tmuxinator start ${templates[$((choice-1))]}
-		clear
-	elif [[ $choice -eq $len ]]; then
-		name=""
-		while [[ -z ${name} ]]; do
-			printf " Enter a new name: "
-			read name
-			case ${name} in
-				*\ *) name=""; echo " Must be one word";;
-			esac
-		done
-		create_tmuxinator $name
-	else
-		echo ""
-		menu
-	fi
-
 }
+
 
 function usage () {
 cat << EOF
