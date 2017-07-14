@@ -29,7 +29,6 @@ function menu () {
 				break
 				;;
 			"Tmuxinator")
-				clear
 				list_tmuxinator
 				break
 				;;
@@ -57,6 +56,14 @@ function new_session () {
 
 function create_tmuxinator() {
 	tmuxinator_dir=~/.tmuxinator/
+	name=""
+	while [[ -z ${name} ]]; do
+		printf " Enter a new name: "
+		read name
+		case ${name} in
+			*\ *) name=""; echo " Must be one word";;
+		esac
+	done
 	tmux new-session -s $name
 	name=$(tmux display-message -p "#S")
 	clear
@@ -119,6 +126,8 @@ echo "Wrote to file: $tmuxinator_dir$name.yml"
 function list_tmuxinator() {
 	templates=($(tmuxinator list | cut -d ':' -f2) "New Template" "Main Menu")
 	PS3="Please choose your session: "
+	echo -e " Tmuxinator sessions"
+	echo -e " -------------------\n"
 	select template in "${templates[@]}"; do
 		case "$template" in
 			"New Template")
