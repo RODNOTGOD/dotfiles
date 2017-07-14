@@ -13,36 +13,6 @@ is_attached() {
 }
 
 
-function menu () {
-	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
-	if [ $check_tmuxinator ]; then
-		session_names+=("Tmuxinator")
-	fi
-
-	PS3="Please choose your session: "
-	echo -e " Available session"
-	echo -e " -----------------\n"
-	select session in "${session_names[@]}"; do
-		case $session in
-			"New Session")
-				new_session
-				break
-				;;
-			"Tmuxinator")
-				clear
-				list_tmuxinator
-				break
-				;;
-			*)
-				tmux attach-session -t $session
-				clear
-				break
-				;;
-		esac
-	done
-}
-
-
 function new_session () {
 	printf "Enter a new name: "
 	read new_name
@@ -55,8 +25,17 @@ function new_session () {
 	clear
 }
 
+
 function create_tmuxinator() {
 	tmuxinator_dir=~/.tmuxinator/
+	name=""
+	while [[ -z ${name} ]]; do
+		printf " Enter a new name: "
+		read name
+		case ${name} in
+			*\ *) name=""; echo " Must be one word";;
+		esac
+	done
 	tmux new-session -s $name
 	name=$(tmux display-message -p "#S")
 	clear
@@ -119,6 +98,8 @@ echo "Wrote to file: $tmuxinator_dir$name.yml"
 function list_tmuxinator() {
 	templates=($(tmuxinator list | cut -d ':' -f2) "New Template" "Main Menu")
 	PS3="Please choose your session: "
+	echo -e " Tmuxinator sessions"
+	echo -e " -------------------\n"
 	select template in "${templates[@]}"; do
 		case "$template" in
 			"New Template")
@@ -126,11 +107,42 @@ function list_tmuxinator() {
 				break
 				;;
 			"Main Menu")
+				echo -e '\n'
 				menu
 				break
 				;;
 			*)
 				tmuxinator start $template
+				clear
+				break
+				;;
+		esac
+	done
+}
+
+
+function menu () {
+	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
+	if [ $check_tmuxinator ]; then
+		session_names+=("Tmuxinator")
+	fi
+
+	PS3="Please choose your session: "
+	echo -e " Available session"
+	echo -e " -----------------\n"
+	select session in "${session_names[@]}"; do
+		case $session in
+			"New Session")
+				new_session
+				break
+				;;
+			"Tmuxinator")
+				echo -e '\n'
+				list_tmuxinator
+				break
+				;;
+			*)
+				tmux attach-session -t $session
 				clear
 				break
 				;;
@@ -151,6 +163,7 @@ Usage :  $0 [options] [--]
 	-v|version    Display script version
 EOF
 }
+
 
 while getopts "c:hvtn" opt; do
 	case $opt in
