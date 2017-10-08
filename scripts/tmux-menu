@@ -13,7 +13,7 @@ is_attached() {
 }
 
 
-function new_session () {
+new_session () {
 	printf "Enter a new name: "
 	read new_name
 	local new_name=${new_name:-default}
@@ -26,7 +26,7 @@ function new_session () {
 }
 
 
-function create_tmuxinator() {
+create_tmuxinator() {
 	tmuxinator_dir=~/.tmuxinator/
 	name=""
 	while [[ -z ${name} ]]; do
@@ -95,7 +95,7 @@ echo "Wrote to file: $tmuxinator_dir$name.yml"
 }
 
 
-function list_tmuxinator() {
+list_tmuxinator() {
 	templates=($(tmuxinator list | cut -d ':' -f2) "New Template" "Main Menu")
 	PS3="Please choose your session: "
 	echo -e " Tmuxinator sessions"
@@ -121,7 +121,7 @@ function list_tmuxinator() {
 }
 
 
-function menu () {
+menu () {
 	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
 	if [ $check_tmuxinator ]; then
 		session_names+=("Tmuxinator")
@@ -151,7 +151,7 @@ function menu () {
 }
 
 
-function usage () {
+usage () {
 cat << EOF
 Usage :  $0 [options] [--]
 
