@@ -3,9 +3,9 @@ filetype off
 
 "{{{ Vim-Plug Check
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-  curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs \
-      https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 "}}}
 
@@ -28,19 +28,20 @@ Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/snipmate-snippets'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'amix/vim-zenroom2'
-Plug 'godlygeek/tabular'
-Plug 'jacoborus/tender.vim'
-Plug 'tomasr/molokai'
-Plug 'iCyMind/NeoSolarized'
+Plug 'junegunn/vim-easy-align'
+" Plug 'jacoborus/tender.vim'
+" Plug 'tomasr/molokai'
+" Plug 'iCyMind/NeoSolarized'
 Plug 'morhetz/gruvbox'
+" Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
-Plug 'joshdick/onedark.vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-unimpaired'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
@@ -49,7 +50,7 @@ Plug 'tomtom/tlib_vim'
 Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'maxbrunsfeld/vim-yankstack'
-Plug 'mattn/emmet-vim', {'for': ['html', 'css', 'javascript', 'xml']}
+Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml']}
 Plug 'vim-scripts/vis'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
@@ -65,7 +66,9 @@ Plug 'zchee/deoplete-jedi', {'for' : 'python'}
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx']}
 Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'npm install && npm install -g tern' }
 Plug 'Raimondi/delimitMate'
-Plug 'maksimr/vim-jsbeautify'
+Plug 'AndrewRadev/splitjoin.vim'
+Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
+" Plug 'skammer/vim-css-color', {'for' : ['css', 'html', 'htmldjango']}
 
 " Non maintained plugins
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
@@ -92,16 +95,25 @@ nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
 
-nnoremap <C-e> 3<C-e>
-nnoremap <C-y> 3<C-y>
+" nnoremap <C-e> 3<C-e>
+" nnoremap <C-y> 3<C-y>
+
+noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
+noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 
 inoremap <C-H> <C-W>
 
 nnoremap <leader>i :set cursorline!<CR>
 
+vnoremap >> >gv
+vnoremap << <gv
+
+nmap <M-;> oi<ESC>gcckJfis
+imap <M-;> <ESC>oi<ESC>gcckJfis
+
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:set rnu!<CR>:set nu!<CR>:terminal<CR>
+noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:terminal<CR>i
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -132,10 +144,10 @@ vmap <leader>P "+P
 map <leader>ss :setlocal spell!<cr>
 
 " quickfix menu
-nnoremap <localleader>co :call OpenMenu()<CR>
-nnoremap <localleader>cc :call CloseMenu()<CR>
-nnoremap <localleader>cn :call NextFix()<CR>
-nnoremap <localleader>cp :call PrevFix()<CR>
+nnoremap <localleader>co :silent! copen <BAR> lopen<CR>
+nnoremap <localleader>cc :silent! cclose <BAR> lclose<CR>
+" nnoremap <localleader>cn :silent! cn <BAR> lN<CR>
+" nnoremap <localleader>cp :silent! cp <BAR> lp<CR>
 
 
 nnoremap <C-n> :call NumberToggle()<cr>
@@ -171,7 +183,6 @@ cnoremap <C-K>		<C-U>
 
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
-
 
 command! MakeTags !ctags -f .tags -R .
 
@@ -271,14 +282,14 @@ nnoremap <TAB> :b#<cr>
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
 map <leader>ba :bufdo bd<cr>
 map <leader>bn :Bnew<cr><C-w>L
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
+" map <leader>l :bnext<cr>
+" map <leader>h :bprevious<cr>
 
 " Tab commands
 map <leader>tn :tabnew<cr>
 map <leader>to :tabonly<cr>
 map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
+map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext
 
 nnoremap <M-l> :call Beautify()<cr>
@@ -347,11 +358,11 @@ func! CurrentFileDir(cmd)
 endfunc
 
 function! NumberToggle()
-	RainbowToggle
     if(&relativenumber == 1)
-        set rnu!
+        set nornu
     else
         set relativenumber
+		set nu
     endif
 endfunc
 
@@ -449,6 +460,7 @@ endtry
 "}}}
 
 "{{{ Colors
-color onedark
-hi MatchParen cterm=bold ctermbg=6 ctermfg=7
+color gruvbox
+let g:gruvbox_italic=1
+hi MatchParen cterm=bold ctermbg=8 ctermfg=5
 "}}}

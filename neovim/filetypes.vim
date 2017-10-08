@@ -6,7 +6,7 @@ au FileType python syn keyword pythonDecorator True None False self
 au BufNewFile,BufRead *.jinja set syntax=htmljinja
 au BufNewFile,BufRead *.mako set ft=mako
 
-au FileType python map <buffer> F :set foldmethod=indent<cr>
+" au FileType python map <buffer> F :set foldmethod=indent<cr>
 
 au FileType python inoremap <buffer> $r return
 au FileType python inoremap <buffer> $i import
@@ -24,12 +24,14 @@ au FileType python set indentkeys-=0#
 "{{{ -> Html section
 """"""""""""""""""""""""""""""
 let python_highlight_all = 1
-au Filetype html set tabstop=2
-au Filetype html set shiftwidth=2
-au Filetype html,css EmmetInstall
-au Filetype html command! Openhtml !chromium-browser % >/dev/null 2>/dev/null &
-au Filetype html nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
-au Filetype html RainbowToggleOff
+au Filetype html,htmldjango set tabstop=2
+au Filetype html,htmldjango set shiftwidth=2
+" au Filetype html,css,htmldjango EmmetInstall
+au Filetype html,htmldjango command! Openhtml !$BROWSER % >/dev/null 2>/dev/null &
+au Filetype html,htmldjango nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
+au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
+au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
+au Filetype html,htmldjango RainbowToggleOff
 au Filetype css set tabstop=4
 au Filetype css set shiftwidth=4
 autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
@@ -53,11 +55,11 @@ au Filetype gitcommit set spell
 let python_highlight_all = 1
 au Filetype markdown highlight ColorColumn ctermbg=red
 au Filetype markdown call matchadd('ColorColumn', '\%81v', 100)
-au Filetype markdown command! Openmd !google-chrome % >/dev/null 2>/dev/null &
+au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
-au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -s --latex-engine=lualatex -f markdown_mmd -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
+au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
 au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
 au Filetype markdown set shiftwidth=2
 au Filetype markdown set tabstop=2

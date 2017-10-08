@@ -21,9 +21,12 @@ endtry
 set mouse=n
 set path+=**
 
+autocmd InsertEnter * :set nu | set rnu
+autocmd InsertLeave * :set nornu
+
 " -> Gui
 """""""""
-let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
 let $NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax on
 
@@ -36,7 +39,7 @@ set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
 
 set ruler
 
-set cmdheight=2
+set cmdheight=1
 
 set hid
 
@@ -78,12 +81,19 @@ set tags+=.tags
 
 " hidden characters
 set nu
-set rnu
 
 set noshowmode
 set list
-set listchars=eol:¬,tab:¦\ ,trail:·
-" set listchars=eol:¬,tab:»\ ,trail:·
+" set listchars=eol:¬,tab:¦\ ,trail:·
+" set listchars=tab:\ \ ,trail:·
+set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+
+highlight Comment cterm=italic
+highlight htmlArg cterm=italic
+highlight xmlAttrib cterm=italic
+highlight Type cterm=italic
+highlight Normal ctermbg=none
 
 " -> Color
 """""""""""
@@ -91,6 +101,10 @@ set listchars=eol:¬,tab:¦\ ,trail:·
 if $COLORTERM == 'gnome-terminal'
 	set t_Co=256
 endif
+
+" if (empty($TMUX) && has("termguicolors"))
+" 	set termguicolors
+" endif
 
 try
 	colorscheme tender
@@ -137,7 +151,8 @@ set wrap
 
 " Specify the behavior when switching between buffers
 try
-  set switchbuf=useopen,usetab,newtab
+  " set switchbuf=useopen,usetab,newtab
+  set switchbuf=useopen,usetab
   set stal=2
 catch
 endtry

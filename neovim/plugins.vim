@@ -94,6 +94,7 @@ nmap <silent>       <leader>m++ vip++
 let g:vimfiler_as_default_explorer = 1
 map <leader>nn :VimFiler<CR>
 map <leader>nf :VimFilerBufferDir<CR>
+map <leader>nt :VimFilerExplorer<CR>
 "}}}
 
 "{{{ -> vim-multiple-cursors
@@ -110,7 +111,7 @@ let g:better_whitespace_filetypes_blacklist=['markdown', 'diff', 'gitcommit', 'u
 
 "{{{ -> Emmet
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:user_emmet_install_global = 0
+" let g:user_emmet_install_global = 0
 let g:user_emmet_settings = {
 			\ 'php' : {
 			\   'extends' : 'html',
@@ -128,7 +129,7 @@ let g:user_emmet_settings = {
 "{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'gruvbox',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
@@ -250,7 +251,8 @@ function! s:goyo_enter()
 	set nolist
 	set noshowcmd
 	set scrolloff=999
-	color onedark
+	color gruvbox
+	Limelight
 	" ...
 endfunction
 
@@ -260,7 +262,8 @@ function! s:goyo_leave()
 	set list
 	set showcmd
 	set scrolloff=3
-	color onedark
+	color gruvbox
+	Limelight!
 	" ...
 endfunction
 
@@ -343,8 +346,9 @@ set diffopt+=filler,vertical
 "{{{ -> Rainbow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:rainbow_active = 1
+" \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
 let g:rainbow_conf = {
-   \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
+   \   'guifgs': ['royalblue1', 'darkgoldenrod3', 'seagreen3', 'indianred1'],
    \   'ctermfgs': ['37', '109', '132', '75'],
    \   'operators': '_,_',
    \   'parentheses': ['start=/(/ end=/)/ fold', 'start=/\[/ end=/\]/ fold', 'start=/{/ end=/}/ fold'],
@@ -388,8 +392,8 @@ function! s:unite_settings()
 	" Enable navigation with control-j and control-k in insert mode
 	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
 	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-endfunction
-"}}}
+endfunc
+""}}}
 
 "{{{ -> Eclim
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
@@ -419,4 +423,9 @@ let g:tern_request_timeout = 1
 let g:tern_request_timeout = 6000
 let g:tern#command = ["tern"]
 let g:tern#arguments = ["--persistent"]
+"}}}
+
+"{{{ -> Vim-Easy-Align
+xmap ga <Plug>(EasyAlign)
+nmap ga <Plug>(EasyAlign)
 "}}}
