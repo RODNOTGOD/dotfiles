@@ -1,5 +1,5 @@
 #!/usr/bin/env bash
-__ScriptVersion="1.1"
+__ScriptVersion="1.2"
 check_tmuxinator=$(command -v tmuxinator)
 
 is_attached() {
@@ -10,6 +10,35 @@ is_attached() {
 	else
 		echo True
 	fi
+}
+
+
+menu () {
+	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
+	if [ $check_tmuxinator ]; then
+		session_names+=("Tmuxinator")
+	fi
+
+	PS3="Please choose your session: "
+	echo -e " Available session"
+	echo -e " -----------------\n"
+	select session in "${session_names[@]}"; do
+		case $session in
+			"New Session")
+				new_session
+				break
+				;;
+			"Tmuxinator")
+				list_tmuxinator
+				break
+				;;
+			*)
+				tmux attach-session -t $session
+				clear
+				break
+				;;
+		esac
+	done
 }
 
 
@@ -48,9 +77,14 @@ create_tmuxinator() {
 	pane_cmds=()
 	len=()
 
-	printf "Enter root directory: "
-	read root
-	root=${root:-$HOME}
+	read -e -p "Enter root directory: " root
+	if [[ -z $root ]]; then
+		read -e -p "Set root at home? (y/n)" answer
+		if [[ $answer == 'y' ]]; then
+			root=${root:-$HOME}
+		fi
+	fi
+
 
 	OLDIFS=$IFS
 	IFS=$'\n'
@@ -107,42 +141,11 @@ list_tmuxinator() {
 				break
 				;;
 			"Main Menu")
-				echo -e '\n'
 				menu
 				break
 				;;
 			*)
 				tmuxinator start $template
-				clear
-				break
-				;;
-		esac
-	done
-}
-
-
-menu () {
-	local session_names=($(tmux list-sessions -F "#S" 2>/dev/null) "New Session" )
-	if [ $check_tmuxinator ]; then
-		session_names+=("Tmuxinator")
-	fi
-
-	PS3="Please choose your session: "
-	echo -e " Available session"
-	echo -e " -----------------\n"
-	select session in "${session_names[@]}"; do
-		case $session in
-			"New Session")
-				new_session
-				break
-				;;
-			"Tmuxinator")
-				echo -e '\n'
-				list_tmuxinator
-				break
-				;;
-			*)
-				tmux attach-session -t $session
 				clear
 				break
 				;;
