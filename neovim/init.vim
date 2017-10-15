@@ -20,20 +20,12 @@ let $NVIM_DIR='~/.local/share/nvim'
 
 "{{{ Github Plugins
 Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
-Plug 'mileszs/ack.vim'
-Plug 'jlanzarotta/bufexplorer'
-Plug 'junegunn/goyo.vim'
 Plug 'sjl/gundo.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'scrooloose/snipmate-snippets'
 Plug 'amix/open_file_under_cursor.vim'
-Plug 'amix/vim-zenroom2'
-Plug 'junegunn/vim-easy-align'
-" Plug 'jacoborus/tender.vim'
-" Plug 'tomasr/molokai'
-" Plug 'iCyMind/NeoSolarized'
+" Plug 'amix/vim-zenroom2'
 Plug 'morhetz/gruvbox'
-" Plug 'joshdick/onedark.vim'
 Plug 'arcticicestudio/nord-vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
@@ -56,9 +48,13 @@ Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'ryanoasis/vim-devicons'
 Plug 'neomake/neomake'
-Plug 'Shougo/vimfiler.vim'
 Plug 'Shougo/unite.vim'
-Plug 'Shougo/neomru.vim'
+Plug 'Shougo/vimfiler.vim', {'on': ['VimFiler', 'VimFilerExplorer']}
+" Plug 'Shougo/neomru.vim'
+Plug 'junegunn/goyo.vim'
+Plug 'junegunn/vim-easy-align'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
 Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp'] }
@@ -68,13 +64,14 @@ Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'n
 Plug 'Raimondi/delimitMate'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
-" Plug 'skammer/vim-css-color', {'for' : ['css', 'html', 'htmldjango']}
+Plug 'lervag/vimtex', {'for' : ['tex', 'plaintex']}
+Plug 'wincent/loupe'
 
 " Non maintained plugins
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/dragvisuals'
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/listtrans'
-Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/hlnext'
+" Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/hlnext'
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/vmath'
 
 call plug#end()
@@ -255,7 +252,7 @@ endfunction
 nnoremap 0 ^
 
 " Clear highlighting
-map <silent> <leader><cr> :noh<cr>
+" map <silent> <leader><cr> :noh<cr>
 
 " Switch through panes
 map <C-j> <C-W>j
@@ -460,7 +457,6 @@ endtry
 "}}}
 
 "{{{ Colors
-color gruvbox
 let g:gruvbox_italic=1
-hi MatchParen cterm=bold ctermbg=8 ctermfg=5
+color gruvbox
 "}}}

@@ -1,0 +1,51 @@
+
+function fork
+	eval ($argv &; disown);
+end
+
+function utsa
+	eval ssh euw112@fox0$argv[1].cs.utsa.edu;
+end
+
+set sudope_sequence \e\e
+
+set -U theme_color_scheme base16-dark
+
+set -g EDITOR nvim
+set -g NOTES_DIRECTORY ~/.notes
+set -g FZF_DEFAULT_OPTS "--extended"
+
+set -g theme_nerd_fonts yes
+
+alias la "ls -A"
+alias lah "ls -lAh"
+
+alias ai "sudo apt install"
+alias ar "sudo apt remove"
+alias as "apt search"
+
+alias tm "tmux-menu"
+
+alias d "dirs | head -10"
+alias 1 "cd -"
+alias 2 "cd -2"
+alias 3 "cd -3"
+alias 4 "cd -4"
+alias 5 "cd -5"
+alias 6 "cd -6"
+alias 7 "cd -7"
+alias 8 "cd -8"
+alias 9 "cd -9"
+
+alias md "mkdir -p"
+
+# Git status
+alias gst "git status"
+
+alias gla "git log --oneline --all --decorate --graph"
+alias glas "git --no-pager log --oneline --all --decorate --graph -40"
+alias glass "git --no-pager log --oneline --all --decorate --graph -10"
+
+alias glb "git log --oneline --decorate --graph"
+alias glbs "git --no-pager log --oneline --decorate --graph -40"
+alias glbss "git --no-pager log --oneline --decorate --graph -10"

@@ -105,3 +105,11 @@ endif
 au FileType asm set ft=nasm
 au FileType asm setlocal commentstring=;\ %s
 "}}}
+
+"{{{ -> Latex section
+au FileType plaintex set ft=tex
+au FileType tex set expandtab
+au Filetype tex set tabstop=2
+au Filetype tex set shiftwidth=2
+au Filetype tex set spell
+"}}}
