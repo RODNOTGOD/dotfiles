@@ -13,6 +13,15 @@ nmap <c-p> <Plug>yankstack_substitute_older_paste
 nmap <c-P> <Plug>yankstack_substitute_newer_paste
 "}}}
 
+"{{{ -> FZF
+""""""""""""""""""""""""""""""
+nmap <C-o> :Buffers<CR>
+nmap <leader>f :History<CR>
+nmap <leader>/ :Ag<CR>
+nmap <C-_> :Lines<CR>
+nmap <C-F> :Files<CR>
+"}}}
+
 "{{{ -> CTRL-P
 """"""""""""""""""""""""""""""
 " let g:ctrlp_working_path_mode = 0
@@ -80,13 +89,13 @@ nmap <silent>       <leader>m++ vip++
 
 "{{{ -> Nerd Tree
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-" let g:NERDTreeWinPos = "left"
-" let NERDTreeShowHidden=0
-" let NERDTreeIgnore = ['\.pyc$', '__pycache__']
-" let g:NERDTreeWinSize=35
-" map <leader>nn :NERDTreeToggle<cr>
-" map <leader>nb :NERDTreeFromBookmark
-" map <leader>nf :NERDTreeFind<cr>
+let g:NERDTreeWinPos = "left"
+let NERDTreeShowHidden=0
+let NERDTreeIgnore = ['\.pyc$', '__pycache__']
+let g:NERDTreeWinSize=35
+map <leader>nn :NERDTreeToggle<cr>
+map <leader>nb :NERDTreeFromBookmark
+map <leader>nf :NERDTreeFind<cr>
 "}}}
 
 "{{{ -> VimFiler
@@ -252,7 +261,6 @@ function! s:goyo_enter()
 	set noshowcmd
 	set scrolloff=999
 	color gruvbox
-	Limelight
 	" ...
 endfunction
 
@@ -263,7 +271,6 @@ function! s:goyo_leave()
 	set showcmd
 	set scrolloff=3
 	color gruvbox
-	Limelight!
 	" ...
 endfunction
 
@@ -381,18 +388,18 @@ let g:webdevicons_enable_vimfiler = 1
 
 "{{{ -> Unite
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-nnoremap <C-f> :Unite -no-split -buffer-name=files -start-insert file_rec/async<CR>
-nnoremap <C-o> :Unite -no-split -buffer-name=buffer -start-insert buffer<CR>
-nnoremap <Leader>u :Unite grep:. -buffer-name=grep<CR>
-nnoremap <Leader>f :Unite -no-split -buffer-name=mru -start-insert file_mru<CR>
+" nnoremap <C-f> :Unite -no-split -buffer-name=files -start-insert file_rec/async<CR>
+" nnoremap <C-o> :Unite -no-split -buffer-name=buffer -start-insert buffer<CR>
+" nnoremap <Leader>u :Unite grep:. -buffer-name=grep<CR>
+" nnoremap <Leader>f :Unite -no-split -buffer-name=mru -start-insert file_mru<CR>
 
-" Custom mappings for the unite buffer
-autocmd FileType unite call s:unite_settings()
-function! s:unite_settings()
-	" Enable navigation with control-j and control-k in insert mode
-	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
-	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
-endfunc
+" " Custom mappings for the unite buffer
+" autocmd FileType unite call s:unite_settings()
+" function! s:unite_settings()
+" 	" Enable navigation with control-j and control-k in insert mode
+" 	imap <buffer> <C-j>   <Plug>(unite_select_next_line)
+" 	imap <buffer> <C-k>   <Plug>(unite_select_previous_line)
+" endfunc
 ""}}}
 
 "{{{ -> Eclim
@@ -428,4 +435,8 @@ let g:tern#arguments = ["--persistent"]
 "{{{ -> Vim-Easy-Align
 xmap ga <Plug>(EasyAlign)
 nmap ga <Plug>(EasyAlign)
+"}}}
+
+"{{{ -> Loupe
+map <silent> <leader><cr> <Plug>(LoupeClearHighlight)
 "}}}
