@@ -20,9 +20,10 @@ set -g theme_nerd_fonts yes
 alias la "ls -A"
 alias lah "ls -lAh"
 
-alias ai "sudo apt install"
-alias ar "sudo apt remove"
-alias as "apt search"
+alias pi "sudo pacman -S"
+alias pr "sudo pacman -R"
+alias pr-full "sudo pacman -Rs"
+alias ps "pacman -Ss"
 
 alias tm "tmux-menu"
 
@@ -49,3 +50,6 @@ alias glass "git --no-pager log --oneline --all --decorate --graph -10"
 alias glb "git log --oneline --decorate --graph"
 alias glbs "git --no-pager log --oneline --decorate --graph -40"
 alias glbss "git --no-pager log --oneline --decorate --graph -10"
+
+#YOUTUBE-DL
+alias yt-music "youtube-dl -o \"~/Music/%(title)s.%(ext)s\" -x --audio-format opus --audio-quality 0"
