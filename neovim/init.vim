@@ -92,10 +92,10 @@ nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
 
-" nnoremap <C-e> 3<C-e>
+" noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
 " nnoremap <C-y> 3<C-y>
 
-noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
+nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 
 inoremap <C-H> <C-W>

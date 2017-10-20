@@ -5,7 +5,7 @@ if [[ -z $(command -v ffmpeg) ]]; then
 	exit 1
 fi
 
-__ScriptVersion="version"
+__ScriptVersion="0.1"
 
 #===  FUNCTION  ================================================================
 #         NAME:  usage
@@ -21,7 +21,7 @@ function usage ()
     Options:
     -h|help       Display this message
     -v|version    Display script version
-    -c|codec      What codec to use for convert (ffmpeg help | grep {your codec})
+    -c|codec      What codec to use for convert (ffmpeg -codec | grep {your codec})
     -e|extension  Extension to append to the end of the file
     -b|bitrate    (default 320k) optional setting to set bitrate"
 
@@ -33,6 +33,7 @@ function usage ()
 
 ext=""
 codec=""
+bitrate="320k"
 
 while getopts "c:e:hvb:" opt
 do
@@ -86,15 +87,28 @@ if [[ $# -lt 1 ]]; then
 	exit 99
 fi
 
+answer="y"
+
+OLDIFS=$IFS
 IFS=""
 for file in $@; do
+	convert="${file%.*}.$ext"
 	if [[ -e $file ]]; then
 		printf "\xE2\x86\x92 Converting $(tput smul)$file$(tput rmul)\n"
-		$(ffmpeg -i "$file" -acodec "$codec" -ab $bitrate "${file%.*}.$ext" &> /dev/null)
-		if [[ $? -eq 0 ]]; then
-			printf "$(tput setaf 2)\xE2\x9C\x93 Created ${file%.*}.$ext $(tput sgr 0)\n"
+		if [[ -e $convert ]]; then
+			read -p "$(tput setaf 5)» \"$convert\" exists replace file? [y/n]$(tput setaf 7) " answer
+		fi
+		if [[ "yes" == *$answer* ]]; then
+			rm -f $convert
+			$(ffmpeg -i "$file" -acodec "$codec" -ab $bitrate "$convert" &> /dev/null)
+			if [[ $? -eq 0 ]]; then
+				printf "$(tput setaf 2)\xE2\x9C\x93 Created $convert $(tput sgr 0)\n"
+			else
+				printf "$(tput setaf 1)\xE2\x9D\x8C Failed to convert $file $(tput sgr 0)\n"
+			fi
 		else
-			printf "$(tput setaf 1)\xE2\x9D\x8C Failed to convert $file $(tput sgr 0)\n"
+			printf "$(tput setaf 4)Perserved $convert$(tput sgr 0)\n"
 		fi
 	fi
 done
+IFS=$OLDIFS

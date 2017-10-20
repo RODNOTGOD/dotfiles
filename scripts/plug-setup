@@ -1,5 +1,7 @@
 #!/usr/bin/env bash
 
+__ScriptVersion="1.0"
+
 nvimdir=~/.local/share/nvim/local-plugs/
 
 create_git() {
@@ -35,6 +37,48 @@ create_file() {
 	fi
 	files+=($filename)
 }
+
+remove_plugs() {
+	
+}
+
+function usage () {
+	echo "Usage :  $0 [options] [--]
+
+    Options:
+    -h|help       Display this message
+    -v|version    Display script version
+    -r|remove     Remove local plugins"
+
+}
+
+while getopts ":hv" opt
+do
+  case $opt in
+
+	h|help)
+		usage
+		exit 0
+		;;
+
+	v|version)
+		echo "$0 -- Version $__ScriptVersion"
+		exit 0
+		;;
+
+	r|remove)
+		remove_plugs
+		exit 0
+		;;
+
+	* )  echo -e "\n  Option does not exist : $OPTARG\n"
+		 usage
+		 exit 1
+		 ;;
+
+  esac    # --- end of case ---
+done
+shift $(($OPTIND-1))
 
 if [[ ($# -gt 0 && $(command -v git)) ]]; then
 	vim_files=($@)
