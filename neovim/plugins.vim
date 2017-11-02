@@ -47,6 +47,13 @@ ino <c-j> <c-r>=snipMate#TriggerSnippet()<cr>
 snor <c-j> <esc>i<right><c-r>=snipMate#TriggerSnippet()<cr>
 "}}}
 
+"{{{ -> ultisnips
+""""""""""""""""""""""""""""""
+let g:UltiSnipsExpandTrigger="<tab>"
+let g:UltiSnipsJumpForwardTrigger="<c-b>"
+let g:UltiSnipsJumpBackwardTrigger="<c-z>"
+"}}}
+
 "{{{ -> Vim grep
 """"""""""""""""""""""""""""""
 let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
@@ -138,7 +145,7 @@ let g:user_emmet_settings = {
 "{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'gruvbox',
+      \ 'colorscheme': 'onedark',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
@@ -260,7 +267,7 @@ function! s:goyo_enter()
 	set nolist
 	set noshowcmd
 	set scrolloff=999
-	color gruvbox
+	color onedark
 	" ...
 endfunction
 
@@ -270,7 +277,7 @@ function! s:goyo_leave()
 	set list
 	set showcmd
 	set scrolloff=3
-	color gruvbox
+	color onedark
 	" ...
 endfunction
 
@@ -316,7 +323,7 @@ let g:neomake_python_enabled_makers = ['flake8']
 " Cpp
 let g:neomake_cpp_enabled_makers = ['clang']
 let g:neomake_cpp_clang_maker = {
-   \ 'exe': 'clang++',
+   \ 'exe': 'clang++-5.0',
    \ 'args': ['-std=c++11', '-fsyntax-only', '-Wunused', '-Wall', '-Wextra'],
    \ }
 
@@ -417,7 +424,7 @@ endf
 "{{{ -> Deoplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/libclang.so.3.9'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-5.0/lib/libclang.so'
 let g:deoplete#sources#clang#clang_header = '/usr/lib/clang/'
 
 let g:deoplete#omni#functions = {}

@@ -27,7 +27,7 @@ let python_highlight_all = 1
 au Filetype html,htmldjango set tabstop=2
 au Filetype html,htmldjango set shiftwidth=2
 " au Filetype html,css,htmldjango EmmetInstall
-au Filetype html,htmldjango command! Openhtml !$BROWSER % >/dev/null 2>/dev/null &
+au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
 au Filetype html,htmldjango nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
 au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
 au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
@@ -67,7 +67,7 @@ au Filetype markdown set expandtab
 au Filetype markdown set spell
 
 highlight ColorColumn ctermbg=red
-call matchadd('ColorColumn', '\%101v', 100)
+call matchadd('ColorColumn', '\%101v', 110)
 "}}}
 
 "{{{ -> JavaScript section

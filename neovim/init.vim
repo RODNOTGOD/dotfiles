@@ -22,9 +22,9 @@ let $NVIM_DIR='~/.local/share/nvim'
 Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
 Plug 'sjl/gundo.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'scrooloose/snipmate-snippets'
+Plug 'SirVer/ultisnips'
 Plug 'amix/open_file_under_cursor.vim'
-" Plug 'amix/vim-zenroom2'
+Plug 'joshdick/onedark.vim'
 Plug 'morhetz/gruvbox'
 Plug 'arcticicestudio/nord-vim'
 Plug 'terryma/vim-expand-region'
@@ -39,7 +39,6 @@ Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
-Plug 'garbas/vim-snipmate'
 Plug 'honza/vim-snippets'
 Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml']}
@@ -69,10 +68,6 @@ Plug 'dag/vim-fish', {'for': 'fish'}
 
 " Non maintained plugins
 Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
-Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/dragvisuals'
-Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/listtrans'
-" Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/hlnext'
-Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/vmath'
 
 call plug#end()
 "}}}
@@ -110,7 +105,7 @@ imap <M-;> <ESC>oi<ESC>gcckJfis
 
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:terminal<CR>i
+noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:terminal<CR>
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -457,6 +452,5 @@ endtry
 "}}}
 
 "{{{ Colors
-let g:gruvbox_italic=1
-color gruvbox
+color onedark
 "}}}

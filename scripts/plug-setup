@@ -39,7 +39,7 @@ create_file() {
 }
 
 remove_plugs() {
-	
+	echo "ok"
 }
 
 function usage () {

@@ -99,7 +99,7 @@ highlight Normal ctermbg=none
 """""""""""
 
 if $COLORTERM == 'gnome-terminal'
-	set t_Co=256
+	" set t_Co=256
 endif
 
 " if (empty($TMUX) && has("termguicolors"))

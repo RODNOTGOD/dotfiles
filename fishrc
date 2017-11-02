@@ -9,9 +9,13 @@ end
 
 set sudope_sequence \e\e
 
-set -U theme_color_scheme base16-dark
+# set -U theme_color_scheme base16-dark
+
+# set -e PATH[1..2]
+# set -U fish_user_paths $fish_user_paths
 
 set -gx EDITOR nvim
+set -gx BROWSER firefox-trunk
 set -g NOTES_DIRECTORY ~/.notes
 set -g FZF_DEFAULT_OPTS "--extended"
 
@@ -20,10 +24,10 @@ set -g theme_nerd_fonts yes
 alias la "ls -A"
 alias lah "ls -lAh"
 
-alias pi "sudo pacman -S"
-alias pr "sudo pacman -R"
-alias pr-full "sudo pacman -Rs"
-alias ps "pacman -Ss"
+alias ai "sudo apt install"
+alias ar "sudo apt remove"
+alias ar-full "sudo apt remove"
+alias as "apt search"
 
 alias tm "tmux-menu"
 
