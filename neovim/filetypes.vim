@@ -112,4 +112,5 @@ au FileType tex set expandtab
 au Filetype tex set tabstop=2
 au Filetype tex set shiftwidth=2
 au Filetype tex set spell
+au FileType tex let b:delimitMate_quotes = "\" ' $"
 "}}}

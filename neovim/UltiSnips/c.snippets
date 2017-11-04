@@ -1,2 +1,35 @@
-snippet sc
-	scanf("${1:%d}", ${0});
+global !p
+def create_comment(matches):
+    func_name = matches(1)
+    args = [arg.strip() for arg in matches(2).split(',')]
+    header_len = 100 if 100 > len(matches(0)) else len (matches(0))
+    max_len = len(max(args, key=len))
+    comment = '/' + '{:*^{width}}'.format(' ' + func_name + ' ', width=header_len)  + '\n'                          \
+              + matches(0) + '\nPurpose:\n\tdescription...\nParameters:\n'                                          \
+              + '\n'.join(['\tI/O {:{width}}description...'.format(arg, width=max_len + 4) for arg in args]) + '\n' \
+              + 'Notes:\n\tdescription...\nReturn:\n\tvalues...\n'                                                  \
+              + '*' * header_len + '/'
+    return comment
+endglobal
+
+
+snippet clark_comment "Commenting for clark's course" "re.match('\w+ (\w+)\((.*)\)', snip.buffer[snip.line + 1]) if len(snip.buffer) > snip.line + 1 else None" ie
+`!p snip.rv = create_comment(snip.context.group)`
+endsnippet
+
+
+snippet clark_source "Source file header comment"
+`!p snip.rv = '/' + '*' * 75`
+	`!p snip.rv = fn` by ${1:NAME}
+Purpose:
+
+Command Parameters:
+	${2:Usage -- file commands}
+
+Result:
+
+Return:
+
+`!p snip.rv = '*' * 75 + '/'`
+$0
+endsnippet

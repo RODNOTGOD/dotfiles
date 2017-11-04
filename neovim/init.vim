@@ -22,6 +22,7 @@ let $NVIM_DIR='~/.local/share/nvim'
 Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
 Plug 'sjl/gundo.vim'
 Plug 'itchyny/lightline.vim'
+Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'amix/open_file_under_cursor.vim'
 Plug 'joshdick/onedark.vim'
