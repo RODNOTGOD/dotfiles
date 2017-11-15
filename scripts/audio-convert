@@ -16,7 +16,7 @@ function usage ()
 	if [[ ! -z $1 ]]; then
 		echo "Error: $(tput setaf 1)$1$(tput sgr 0)"
 	fi
-	echo "Usage :  $0 [options] [--]
+	echo "Usage :  $(basename $0) {dir} [options] [--]
 
     Options:
     -h|help       Display this message
@@ -31,9 +31,17 @@ function usage ()
 #  Handle command line arguments
 #-----------------------------------------------------------------------
 
+if [[ ! -d $1 ]]; then
+	usage "'$1' is not a directory"
+	exit 1
+fi
+
 ext=""
 codec=""
 bitrate="320k"
+outputDir=$1
+shift 1
+
 
 while getopts "c:e:hvb:" opt
 do
@@ -81,7 +89,6 @@ if [[ -z $ext ]]; then
 	exit -1
 fi
 
-
 if [[ $# -lt 1 ]]; then
 	usage "Missing convert files"
 	exit 99
@@ -100,9 +107,9 @@ for file in $@; do
 		fi
 		if [[ "yes" == *$answer* ]]; then
 			rm -f $convert
-			$(ffmpeg -i "$file" -acodec "$codec" -ab $bitrate "$convert" &> /dev/null)
+			$(ffmpeg -i "$file" -acodec "$codec" -ab $bitrate "$outputDir/$(basename $convert)" &> /dev/null)
 			if [[ $? -eq 0 ]]; then
-				printf "$(tput setaf 2)\xE2\x9C\x93 Created $convert $(tput sgr 0)\n"
+				printf "$(tput setaf 2)\xE2\x9C\x93 Created $(basename $convert) $(tput sgr 0)\n"
 			else
 				printf "$(tput setaf 1)\xE2\x9D\x8C Failed to convert $file $(tput sgr 0)\n"
 			fi

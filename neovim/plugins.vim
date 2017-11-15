@@ -41,12 +41,12 @@ nmap <C-F> :Files<CR>
 let g:user_zen_mode='a'
 "}}}
 
-
 "{{{ -> ultisnips
 """"""""""""""""""""""""""""""
 " let g:UltiSnipsExpandTrigger="<tab>"
 let g:UltiSnipsJumpForwardTrigger="<tab>"
 let g:UltiSnipsJumpBackwardTrigger="s-<tab>"
+let g:ultisnips_python_style="jedi"
 "}}}
 
 "{{{ -> Vim grep

@@ -134,7 +134,7 @@ vmap <leader>p "+p
 vmap <leader>P "+P
 
 " spell checking
-map <leader>ss :setlocal spell!<cr>
+" map <leader>ss :setlocal spell!<cr>
 
 " quickfix menu
 nnoremap <localleader>co :silent! copen <BAR> lopen<CR>

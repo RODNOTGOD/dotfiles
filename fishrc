@@ -7,6 +7,12 @@ function utsa
 	eval ssh euw112@fox0$argv[1].cs.utsa.edu;
 end
 
+function fsize
+	for file in $argv
+		stat --printf="%n: %s\n" $file
+	end
+end
+
 set sudope_sequence \e\e
 
 # set -U theme_color_scheme base16-dark
