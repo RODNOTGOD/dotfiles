@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/kragendor/.oh-my-zsh
+export ZSH=/home/Kragendor/.oh-my-zsh
 
 # Zsh theme settings
 ZSH_THEME="bullet-train"
@@ -40,6 +40,8 @@ fancy-ctrl-z() {
 
 fork() { (setsid "$@" &); }
 
+utsa() { ssh "euw112@fox0$@.cs.utsa.edu" }
+
 # Key bindings
 zle -N fancy-ctrl-z
 bindkey '' fancy-ctrl-z
@@ -48,7 +50,7 @@ bindkey '^N' down-line-or-search
 
 export EDITOR=nvim
 export TERM=xterm-256color
-export NOTES_DIRECTORY="/home/kragendor/.notes"
+export NOTES_DIRECTORY="/home/Kragendor/.notes"
 
 # Disable tty scroll lock
 stty -ixon
@@ -60,11 +62,10 @@ alias notes\ open="cd $NOTES_DIRECTORY"
 alias :q="echo \"You're not in vim, dummy\""
 
 # UPDATING
-alias update="sudo apt update"
-alias upgrade="sudo apt update; sudo apt upgrade"
-alias ai="sudo apt install"
-alias ar="sudo apt remove"
-alias ar-full="sudo apt remove --purge"
+alias update="sudo dnf update"
+# alias upgrade="sudo dnf update; sudo apt upgrade"
+alias di="sudo dnf install"
+alias dr="sudo dnf remove"
 
 #LISTING
 alias la="ls -A"

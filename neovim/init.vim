@@ -47,7 +47,9 @@ Plug 'vim-scripts/vis'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'ryanoasis/vim-devicons'
-Plug 'neomake/neomake'
+" Plug 'neomake/neomake'
+Plug 'w0rp/ale'
+Plug 'maximbaz/lightline-ale'
 Plug 'Shougo/unite.vim'
 Plug 'Shougo/vimfiler.vim'
 Plug 'junegunn/goyo.vim'
@@ -260,11 +262,10 @@ map <C-l> <C-W>l
 map <leader>v :vsplit<CR>
 map <leader>s :split<CR>
 
-map <leader>vl :vertical-resize +5<CR>
-map <leader>vh :vertical-resize -5<CR>
-
-map <leader>sj :resize +5<CR>
-map <leader>sk :resize -5<CR>
+nmap <C-Up> :resize -5<CR>
+nmap <C-Down> :resize +5<CR>
+nmap <C-Left> :vertical resize +5<CR>
+nmap <C-Right> :vertical resize -5<CR>
 
 " Character Skip trick
 inoremap <expr> <C-l> "\<Right>"
