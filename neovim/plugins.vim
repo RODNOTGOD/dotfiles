@@ -144,7 +144,7 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype', 'neomake_errors', 'neomake_warnings', ] ]
+      \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ], ['linter_errors', 'linter_warnings', 'linter_ok' ]]
       \ },
       \ 'component_function': {
       \   'filetype': 'MyFiletype',
@@ -156,11 +156,13 @@ let g:lightline = {
       \   'ctrlpmark': 'CtrlPMark',
       \ },
       \ 'component_expand': {
-      \   'neomake_errors': 'LightLineNeomakeErrors',
-      \   'neomake_warnings': 'LightLineNeomakeWarnings',
+      \   'linter_warnings': 'lightline#ale#warnings',
+	  \   'linter_errors': 'lightline#ale#errors',
+	  \   'linter_ok': 'lightline#ale#ok',
       \ },
       \ 'component_type': {
-      \   'neomake': 'error',
+	  \   'linter_warnings': 'warning',
+	  \   'linter_errors': 'error',
       \ },
       \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
       \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
@@ -302,7 +304,7 @@ let g:syntastic_javascript_checkers = ['jslint']
 """"""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 
 " Every write
-autocmd! BufWritePost * nested Neomake
+" autocmd! BufWritePost * nested Neomake
 
 " Python
 let g:neomake_python_flake8_maker = {
@@ -327,6 +329,17 @@ let g:neomake_javascript_enabled_makers = ['eslint']
 
 autocmd User NeomakeFinished nested call lightline#update()
 set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
+"}}}
+
+"{{{ -> ALE
+let g:ale_set_loclist = 0
+let g:ale_set_quickfix = 1
+
+nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+nmap <silent> <C-j> <Plug>(ale_next_wrap)
+
+" CPP CHECKER
+let g:ale_cpp_clang_options='-std=c++14 -Wall -Wextra'
 "}}}
 
 "{{{ -> Git gutter (Git diff)
@@ -419,8 +432,8 @@ endf
 "{{{ -> Deoplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib/llvm-5.0/lib/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib/clang/'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
+let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang/'
 
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = [
