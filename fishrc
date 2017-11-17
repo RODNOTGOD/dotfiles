@@ -21,21 +21,40 @@ set sudope_sequence \e\e
 # set -U fish_user_paths $fish_user_paths
 
 set -gx EDITOR nvim
-set -gx BROWSER firefox-trunk
+set -gx BROWSER firefox
 set -g NOTES_DIRECTORY ~/.notes
 set -g FZF_DEFAULT_OPTS "--extended"
 
 set -g theme_nerd_fonts yes
 
+alias :q "echo \"You're not in vim, dummy\""
+
+# LISTING
 alias la "ls -A"
 alias lah "ls -lAh"
 
-alias ai "sudo apt install"
-alias ar "sudo apt remove"
-alias ar-full "sudo apt remove"
-alias as "apt search"
+alias di "sudo dnf install"
+alias dr "sudo dnf remove"
+alias ds "apt search"
 
+# USERFUL COMMANDS
+alias vi "vim"
+alias vim "nvim"
+alias emacs "emacs -nw"
+alias py "python3"
+
+# TMUX ALIAS
 alias tm "tmux-menu"
+alias tmux "tmux -2"
+alias ta "tmux attach"
+alias tat "tmux attach -t"
+alias tl "tmux list-sessions"
+
+alias tk "tmux kill-session -t"
+alias tks "tmux kill-server"
+
+alias ts "tmuxinator start"
+alias tn "tmuxinator new"
 
 alias d "dirs | head -10"
 alias 1 "cd -"
