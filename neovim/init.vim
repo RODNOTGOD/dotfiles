@@ -3,9 +3,9 @@ filetype off
 
 "{{{ Vim-Plug Check
 if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-	silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-				\ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-	autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
+                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
 endif
 "}}}
 
@@ -47,7 +47,6 @@ Plug 'vim-scripts/vis'
 Plug 'ntpeters/vim-better-whitespace'
 Plug 'luochen1990/rainbow'
 Plug 'ryanoasis/vim-devicons'
-" Plug 'neomake/neomake'
 Plug 'w0rp/ale'
 Plug 'maximbaz/lightline-ale'
 Plug 'Shougo/unite.vim'
@@ -70,7 +69,7 @@ Plug 'wincent/loupe'
 Plug 'dag/vim-fish', {'for': 'fish'}
 
 " Non maintained plugins
-Plug 'file:///home/kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
+Plug 'file:///home/Kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
 
 call plug#end()
 "}}}
@@ -79,9 +78,8 @@ call plug#end()
 
 " Leader mapping
 """""""""""""""""
-let mapleader = "\<Space>"
 let g:mapleader = "\<Space>"
-let maplocalleader = ","
+let g:maplocalleader = ','
 
 " Movement
 """""""""""
@@ -89,9 +87,6 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
-
-" noremap <expr> <C-e> (line("w$") >= line('$') ? "j" : "3\<C-e>")
-" nnoremap <C-y> 3<C-y>
 
 nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
@@ -108,7 +103,7 @@ imap <M-;> <ESC>oi<ESC>gcckJfis
 
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:terminal<CR>
+noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -123,8 +118,8 @@ nmap <silent> <leader>sv :source $NVIM_CONF<CR>
 nmap <silent> <leader>ez :e ~/.zshrc<CR>
 
 augroup reload_vimrc
-	autocmd!
-	autocmd bufwritepost $NVIM_CONF nested source $NVIM_CONF
+    autocmd!
+    autocmd bufwritepost $NVIM_CONF nested source $NVIM_CONF
 augroup END
 
 " copy and paste
@@ -141,8 +136,6 @@ vmap <leader>P "+P
 " quickfix menu
 nnoremap <localleader>co :silent! copen <BAR> lopen<CR>
 nnoremap <localleader>cc :silent! cclose <BAR> lclose<CR>
-" nnoremap <localleader>cn :silent! cn <BAR> lN<CR>
-" nnoremap <localleader>cp :silent! cp <BAR> lp<CR>
 
 
 nnoremap <C-n> :call NumberToggle()<cr>
@@ -172,9 +165,9 @@ cno $d e ~/Desktop/
 cno $j e ./
 cno $c e <C-\>eCurrentFileDir("e")<cr>
 cno $q <C-\>eDeleteTillSlash()<cr>
-cnoremap <C-A>		<Home>
-cnoremap <C-E>		<End>
-cnoremap <C-K>		<C-U>
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
 
 cnoremap <C-P> <Up>
 cnoremap <C-N> <Down>
@@ -194,6 +187,7 @@ vnoremap <C-v> v
 "}}}
 
 "{{{ Functions
+
 function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
@@ -218,39 +212,47 @@ function! VisualSelection(direction, extra_filter) range
 endfunction
 
 function! Internetify()
-	let l:currLine = getline('.')
-	let l:splice = join(split(l:currLine))
+    let l:currLine = getline('.')
+    let l:splice = join(split(l:currLine))
 
-	for l:name in ["-o-", "-moz-", "-webkit-"]
-		let l:compatLine = "\t" . l:name . l:splice . "\n"
-		let o = @o
-		let @o = l:compatLine
-		normal! "oP
-		let @o = o
-	endfor
+    for l:name in ["-o-", "-moz-", "-webkit-"]
+        let l:compatLine = "\t" . l:name . l:splice . "\n"
+        let o = @o
+        let @o = l:compatLine
+        normal! "oP
+        let @o = o
+    endfor
 endfunction
 
 function! Beautify()
-	let l:fileType = &ft
-	if l:fileType ==  'html'
-		call HtmlBeautify()
-	elseif l:fileType == 'css'
-		call CSSBeautify()
-	elseif l:fileType == 'javascript'
-		call JsBeautify()
-	elseif l:fileType == 'json'
-		call JsonBeautify()
-	elseif l:fileType == 'jsx'
-		call JsxBeautify()
-	endif
+    let l:fileType = &ft
+    if l:fileType ==  'html'
+        call HtmlBeautify()
+    elseif l:fileType == 'css'
+        call CSSBeautify()
+    elseif l:fileType == 'javascript'
+        call JsBeautify()
+    elseif l:fileType == 'json'
+        call JsonBeautify()
+    elseif l:fileType == 'jsx'
+        call JsxBeautify()
+    endif
 endfunction
+
+function! ScratchEdit(cmd, options)
+    exe a:cmd tempname()
+    setl buftype=nofile bufhidden=wipe nobuflisted
+    if !empty(a:options) | exe 'setl' a:options | endif
+endfunction
+
+command! -bar -nargs=* Sedit call ScratchEdit('edit', <q-args>)
+command! -bar -nargs=* Ssplit call ScratchEdit('split', <q-args>)
+command! -bar -nargs=* Svsplit call ScratchEdit('vsplit', <q-args>)
+command! -bar -nargs=* Stabedit call ScratchEdit('tabe', <q-args>)
 
 " Windows and pane movement
 """"""""""""""""""""""""""""
 nnoremap 0 ^
-
-" Clear highlighting
-" map <silent> <leader><cr> :noh<cr>
 
 " Switch through panes
 map <C-j> <C-W>j
@@ -262,10 +264,10 @@ map <C-l> <C-W>l
 map <leader>v :vsplit<CR>
 map <leader>s :split<CR>
 
-nmap <C-Up> :resize -5<CR>
-nmap <C-Down> :resize +5<CR>
-nmap <C-Left> :vertical resize +5<CR>
-nmap <C-Right> :vertical resize -5<CR>
+nmap <M-k> <C-W>+
+nmap <M-j> <C-W>-
+nmap <M-h> <C-W><
+nmap <M-l> <C-W>>
 
 " Character Skip trick
 inoremap <expr> <C-l> "\<Right>"
@@ -276,8 +278,6 @@ nnoremap <TAB> :b#<cr>
 map <leader>bd :Bclose<cr>:tabclose<cr>gT
 map <leader>ba :bufdo bd<cr>
 map <leader>bn :Bnew<cr><C-w>L
-" map <leader>l :bnext<cr>
-" map <leader>h :bprevious<cr>
 
 " Tab commands
 map <leader>tn :tabnew<cr>
@@ -286,7 +286,7 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext
 
-nnoremap <M-l> :call Beautify()<cr>
+" nnoremap <M-l> :call Beautify()<cr>
 
 let g:lasttab = 1
 nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
@@ -321,19 +321,48 @@ endfunction
 
 command! Bnew call <SID>CreateNewBuf()
 fun! <SID>CreateNewBuf()
-	new
-	setlocal buftype=nofile
-	setlocal bufhidden=hide
-	setlocal noswapfile
+    new
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
 endf
+
+function! CloseCodeBlock(filename, lower_bound, upper_bound)
+    exe "normal! gg\"iyG"
+    exe 'wincmd l'
+    exe a:lower_bound . ',' . a:upper_bound 'd'
+    exe (a:lower_bound - 1) . 'pu i'
+    echo a:lower_bound
+endfunction
+
+function! EditCodeBlock()
+    let g:saved_line = line('.')
+    let g:buf_name = expand('%:t')
+    let g:lower_bound = search("^```\\s*.*$", "bcn")
+    let g:upper_bound = search("^```\\s*$", "cn")
+    if g:lower_bound < g:upper_bound
+        try
+            let g:ft = split(getline(g:lower_bound), '\s')[1]
+            exe "silent " . (g:lower_bound + 1) . ',' . (g:upper_bound - 1) . 'y  u'
+            call ScratchEdit('vsplit', 0)
+            exe 'pu! u'
+            exe 'set ft=' . g:ft
+            autocmd BufWipeout <buffer> call CloseCodeBlock(g:buf_name, (g:lower_bound + 1), (g:upper_bound - 1))
+        catch
+            echo 'bad block'
+        endtry
+    else
+        echo 'Not valid code block'
+    endif
+endfunction
 
 func! DeleteTillSlash()
     let g:cmd = getcmdline()
 
-    if has("win16") || has("win32")
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
+    if has('win16') || has('win32')
+        let g:cmd_edited = substitute(g:cmd, '\\(.*\[\\\\]\\).*', '\\1', '')
     else
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
+        let g:cmd_edited = substitute(g:cmd, '\\(.*\[/\]\\).*', '\\1', '')
     endif
 
     if g:cmd == g:cmd_edited
@@ -356,89 +385,31 @@ function! NumberToggle()
         set nornu
     else
         set relativenumber
-		set nu
+        set nu
     endif
 endfunc
 
-fun! NextFix()
-	try
-		try
-			cn
-		catch
-			cfir
-		endtry
-	catch
-		try
-			lne
-		catch
-			try
-				lfir
-			catch
-				echom "No errors"
-			endtry
-		endtry
-	endtry
-endf
-
-fun! PrevFix()
-	try
-		try
-			cp
-		catch
-			cla
-		endtry
-	catch
-		try
-			lprev
-		catch
-			try
-				lla
-			catch
-				echom "No errors"
-			endtry
-		endtry
-	endtry
-endf
-
-fun! OpenMenu()
-	try
-		cfir
-		copen
-	catch
-		lopen
-	endtry
-endf
-
-fun! CloseMenu()
-	try
-		cfir
-		cclose
-	catch
-		lclose
-	endtry
-endf
-
 " Delete Brackets if together
 function! CloseBrackets(cmd)
-	let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
-	let line = getline('.')
-	let position = col('.') - 2
-	let current_char = line[position]
-	let next_char = line[position + 1]
+    let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
+    let line = getline('.')
+    let position = col('.') - 2
+    let current_char = line[position]
+    let next_char = line[position + 1]
 
-	try
-		let match_pair = g:delete_pairs[current_char]
-	catch
-		let match_pair = '  '
-	endtry
+    try
+        let match_pair = g:delete_pairs[current_char]
+    catch
+        let match_pair = '  '
+    endtry
 
-	if match_pair == next_char
-		" return "\<BS>\<DEL>"
-		return a:cmd+"\<DEL>"
-	else
-		" return "\<BS>"
-		return a:cmd
-	endif
+    if match_pair == next_char
+        " return "\<BS>\<DEL>"
+        return a:cmd+"\<DEL>"
+    else
+        " return "\<BS>"
+        return a:cmd
+    endif
 endfunction
 
 "}}}
@@ -448,7 +419,7 @@ source $NVIM_CONFDIR/env.vim
 source $NVIM_CONFDIR/plugins.vim
 source $NVIM_CONFDIR/filetypes.vim
 try
-	source .local.vim
+    source .local.vim
 catch
 endtry
 "}}}

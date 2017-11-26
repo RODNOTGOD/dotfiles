@@ -115,6 +115,10 @@ highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 highlight link multiple_cursors_visual Visual
 "}}}
 
+"{{{ -> vim-markdown
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+"}}}
 "{{{ -> Better White Space
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:better_whitespace_filetypes_blacklist=['markdown', 'diff', 'gitcommit', 'unite', 'qf', 'help']
