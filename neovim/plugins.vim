@@ -115,6 +115,10 @@ highlight multiple_cursors_cursor term=reverse cterm=reverse gui=reverse
 highlight link multiple_cursors_visual Visual
 "}}}
 
+"{{{ -> vim-markdown
+let g:vim_markdown_math = 1
+let g:vim_markdown_frontmatter = 1
+"}}}
 "{{{ -> Better White Space
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:better_whitespace_filetypes_blacklist=['markdown', 'diff', 'gitcommit', 'unite', 'qf', 'help']
@@ -332,14 +336,14 @@ set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
 "}}}
 
 "{{{ -> ALE
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" let g:ale_set_loclist = 0
+" let g:ale_set_quickfix = 1
 
 " CPP CHECKER
 let g:ale_cpp_clang_options='-std=c++14 -Wall -Wextra'
+
+" FLAKE8 CHECKER
+let g:ale_python_flake8_options='--max-line-length=110 --ignore=E402'
 "}}}
 
 "{{{ -> Git gutter (Git diff)

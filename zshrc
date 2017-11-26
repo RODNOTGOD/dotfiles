@@ -105,3 +105,5 @@ alias glass="git --no-pager log --oneline --all --decorate --graph -10"
 alias glb="git log --oneline --decorate --graph"
 alias glbs="git --no-pager log --oneline --decorate --graph -40"
 alias glbss="git --no-pager log --oneline --decorate --graph -10"
+
+[ -f ~/.fzf.zsh ] && source ~/.fzf.zsh
