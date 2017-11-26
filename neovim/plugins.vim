@@ -335,11 +335,14 @@ set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
 let g:ale_set_loclist = 0
 let g:ale_set_quickfix = 1
 
-nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-nmap <silent> <C-j> <Plug>(ale_next_wrap)
+" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
+" nmap <silent> <C-j> <Plug>(ale_next_wrap)
 
 " CPP CHECKER
 let g:ale_cpp_clang_options='-std=c++14 -Wall -Wextra'
+
+" FLAKE8 CHECKER
+let g:ale_python_flake8_options='--max-line-length=110 --ignore=E402'
 "}}}
 
 "{{{ -> Git gutter (Git diff)
