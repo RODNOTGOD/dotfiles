@@ -63,7 +63,7 @@ alias :q="echo \"You're not in vim, dummy\""
 
 # UPDATING
 alias update="sudo dnf update"
-# alias upgrade="sudo dnf update; sudo apt upgrade"
+alias ds="dnf search"
 alias di="sudo dnf install"
 alias dr="sudo dnf remove"
 
