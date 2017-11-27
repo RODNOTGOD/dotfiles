@@ -58,10 +58,13 @@ au Filetype markdown call matchadd('ColorColumn', '\%81v', 100)
 au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
-au Filetype markdown nnoremap <localleader>e :call EditCodeBlock()<CR>
+au Filetype markdown nnoremap <localleader>es :call EditCodeBlock()<CR>
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
-au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
-au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
+au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <localleader>eP :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
+au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html < $(find " . fnameescape(expand('%:p:h')) . " -maxdepth 1 -iname \"*.md\")"<cr>
+au Filetype markdown nnoremap <localleader>eb :w!<CR>:exe "!pandoc -V fontsize=8pt " . fnameescape(expand('%:p')) . " -t beamer -o ".  fnameescape(expand('%:p:r')) . ".pdf"<CR>
 au Filetype markdown set shiftwidth=2
 au Filetype markdown set tabstop=2
 au Filetype markdown set expandtab

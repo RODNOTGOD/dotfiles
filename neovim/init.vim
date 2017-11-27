@@ -264,10 +264,15 @@ map <C-l> <C-W>l
 map <leader>v :vsplit<CR>
 map <leader>s :split<CR>
 
-nmap <M-k> <C-W>+
-nmap <M-j> <C-W>-
-nmap <M-h> <C-W><
-nmap <M-l> <C-W>>
+nmap <M-k> <C-W>k<C-W>\|<C-W>_
+nmap <M-j> <C-W>j<C-W>\|<C-W>_
+nmap <M-h> <C-W>h<C-W>\|<C-W>_
+nmap <M-l> <C-W>l<C-W>\|<C-W>_
+
+nmap <C-Up> <C-W>+
+nmap <C-Down> <C-W>-
+nmap <C-Left> <C-W><
+nmap <C-Right> <C-W>>
 
 " Character Skip trick
 inoremap <expr> <C-l> "\<Right>"
