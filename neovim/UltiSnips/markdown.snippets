@@ -1,24 +1,27 @@
-# Youtube video grab
-# snippet yt
-# 	[![${1:IMAGE ALT TEXT}](http://img.youtube.com/vi/${2:`@+`}/0.jpg)](http://www.youtube.com/watch?v=$2 "$1")
+snippet yt "Embed a youtube video"
+	[![${1:IMAGE ALT TEXT}](http://img.youtube.com/vi/${2:`!v @+`}/0.jpg)](http://www.youtube.com/watch?v=$2 "$1")
+endsnippet
 
-# # Note taking
+snippet title "Title for class"
+	# ${1:`!v expand('%:h:t')`} - ${2:`!p fn`}
+	> Date: `!v strftime("%b %d, %Y")`  
+	> Instructor: ${3:Name}
+endsnippet
 
-# snippet title
-# 	# ${1:`expand('%:h:t')`} - ${2:`vim_snippets#Filename()`}
-# 	> Date: `strftime("%b %d, %Y")`  
-# 	> Instructor: ${3:Name}
+snippet table "Table"
+	| ${1:Header One} | ${2:Header Two} |
+	|:-----------|:-----------|
+	| ${3:Item One}   | ${4:Item Two}   |
+endsnippet
 
-# snippet table
-# 	| ${1:Header One} | ${2:Header Two} |
-# 	|:-----------|:-----------|
-# 	| ${3:Item One}   | ${4:Item Two}   |
+snippet t "Todo task"
+	- [ ] 
+endsnippet
 
-# snippet t
-# 	- [ ] 
+snippet b "Bold"
+	**${1:bold}**
+endsnippet
 
-# snippet b
-# 	**${1:bold}**
-
-# snippet i
-# 	_${1:italics}_
+snippet i "Italic"
+	_${1:italics}_
+endsnippet
