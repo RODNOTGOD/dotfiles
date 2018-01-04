@@ -20,8 +20,9 @@ catch
 endtry
 set mouse=n
 set path+=**
+set formatoptions+=j
 
-autocmd InsertEnter * :set nu | set rnu
+autocmd InsertEnter * if g:goyo_intro == 0 | :set nu | set rnu | endif
 autocmd InsertLeave * :set nornu
 
 " -> Gui
@@ -86,7 +87,7 @@ set noshowmode
 set list
 " set listchars=eol:¬,tab:¦\ ,trail:·
 " set listchars=tab:\ \ ,trail:·
-set listchars=tab:→\ ,eol:¬,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:→\ ,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 
 highlight Comment cterm=italic

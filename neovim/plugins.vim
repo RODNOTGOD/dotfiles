@@ -41,6 +41,11 @@ nmap <C-F> :Files<CR>
 let g:user_zen_mode='a'
 "}}}
 
+"{{{ -> Supertab
+""""""""""""""""""""""""""""""
+let g:SuperTabDefaultCompletionType = '<c-n>'
+"}}}
+
 "{{{ -> ultisnips
 """"""""""""""""""""""""""""""
 " let g:UltiSnipsExpandTrigger="<tab>"
@@ -146,15 +151,13 @@ let g:user_emmet_settings = {
 "{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'onedark',
+      \ 'colorscheme': 'jellybeans',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
       \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ], ['linter_errors', 'linter_warnings', 'linter_ok' ]]
       \ },
       \ 'component_function': {
-      \   'filetype': 'MyFiletype',
-      \   'fileformat': 'MyFileformat',
       \   'modified': 'LightLineModified',
       \   'readonly': 'LightLineReadonly',
       \   'fugitive': 'LightLineFugitive',
@@ -262,6 +265,7 @@ endfunction
 let g:goyo_width=100
 let g:goyo_margin_top = 2
 let g:goyo_margin_bottom = 2
+let g:goyo_intro = 0
 nnoremap <silent> <leader>z :Goyo<cr>
 
 function! s:goyo_enter()
@@ -270,7 +274,9 @@ function! s:goyo_enter()
 	set nolist
 	set noshowcmd
 	set scrolloff=999
-	color onedark
+	let g:goyo_intro = 1
+	color paramount
+	ALEDisable
 	" ...
 endfunction
 
@@ -280,7 +286,11 @@ function! s:goyo_leave()
 	set list
 	set showcmd
 	set scrolloff=3
-	color onedark
+	let g:goyo_intro = 0
+	color paramount
+	highlight Normal ctermbg=none
+	highlight NonText ctermbg=none
+	ALEEnable
 	" ...
 endfunction
 
@@ -338,13 +348,9 @@ set statusline+=\ %#ErrorMsg#%{neomake#statusline#QflistStatus('qf:\ ')}
 "}}}
 
 "{{{ -> ALE
-let g:ale_set_loclist = 0
-let g:ale_set_quickfix = 1
-
-" nmap <silent> <C-k> <Plug>(ale_previous_wrap)
-" nmap <silent> <C-j> <Plug>(ale_next_wrap)
-
 " CPP CHECKER
+let g:ale_linters = {'cpp': ['clang', 'cppcheck']}
+let g:ale_cpp_clang_executable='clang++'
 let g:ale_cpp_clang_options='-std=c++14 -Wall -Wextra'
 
 " FLAKE8 CHECKER
@@ -376,8 +382,6 @@ set diffopt+=filler,vertical
 
 "{{{ -> Rainbow
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:rainbow_active = 1
-" \   'guifgs': ['royalblue3', 'darkorange3', 'seagreen3', 'firebrick'],
 let g:rainbow_conf = {
    \   'guifgs': ['royalblue1', 'darkgoldenrod3', 'seagreen3', 'indianred1'],
    \   'ctermfgs': ['37', '109', '132', '75'],
@@ -443,6 +447,7 @@ endf
 let g:deoplete#enable_at_startup = 1
 let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
 let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang/'
+set completeopt-=preview
 
 let g:deoplete#omni#functions = {}
 let g:deoplete#omni#functions.javascript = [

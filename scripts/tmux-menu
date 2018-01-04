@@ -24,7 +24,7 @@ menu () {
 	echo -e " -----------------\n"
 	select session in "${session_names[@]}"; do
 		case $session in
-			"New Session")
+			"New Session" | "\n")
 				new_session
 				break
 				;;

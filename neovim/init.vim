@@ -25,9 +25,7 @@ Plug 'itchyny/lightline.vim'
 Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'amix/open_file_under_cursor.vim'
-Plug 'joshdick/onedark.vim'
-Plug 'morhetz/gruvbox'
-Plug 'arcticicestudio/nord-vim'
+Plug 'owickstrom/vim-colors-paramount'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
@@ -41,12 +39,9 @@ Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
-Plug 'maxbrunsfeld/vim-yankstack'
 Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml']}
 Plug 'vim-scripts/vis'
 Plug 'ntpeters/vim-better-whitespace'
-Plug 'luochen1990/rainbow'
-Plug 'ryanoasis/vim-devicons'
 Plug 'w0rp/ale'
 Plug 'maximbaz/lightline-ale'
 Plug 'Shougo/unite.vim'
@@ -70,6 +65,7 @@ Plug 'dag/vim-fish', {'for': 'fish'}
 
 " Non maintained plugins
 Plug 'file:///home/Kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
+Plug 'file:///home/Kragendor/.local/share/nvim/local-plugs/dragvisuals'
 
 call plug#end()
 "}}}
@@ -95,6 +91,8 @@ inoremap <C-H> <C-W>
 
 nnoremap <leader>i :set cursorline!<CR>
 
+nnoremap c* *Ncgn
+
 vnoremap >> >gv
 vnoremap << <gv
 
@@ -104,6 +102,11 @@ imap <M-;> <ESC>oi<ESC>gcckJfis
 " Terminal mapping
 """""""""""""""""""
 noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
+noremap <leader>th :vsplit<CR><C-w>H:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
+noremap <leader>tl :vsplit<CR><C-w>L:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
+noremap <leader>tk :vsplit<CR><C-w>K:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
+noremap <leader>tj :vsplit<CR><C-w>J:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
+noremap <leader>tt :tabnew<CR>:terminal<CR>
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -239,6 +242,12 @@ function! Beautify()
     endif
 endfunction
 
+function! TaskFinder(options)
+    cexpr system("taskfinder " . a:options)
+endfunction
+
+command! -bar -nargs=* TaskFind call TaskFinder(<q-args>)
+
 function! ScratchEdit(cmd, options)
     exe a:cmd tempname()
     setl buftype=nofile bufhidden=wipe nobuflisted
@@ -264,10 +273,12 @@ map <C-l> <C-W>l
 map <leader>v :vsplit<CR>
 map <leader>s :split<CR>
 
+nmap <M-w> <C-W>\|<C-W>_
 nmap <M-k> <C-W>k<C-W>\|<C-W>_
 nmap <M-j> <C-W>j<C-W>\|<C-W>_
 nmap <M-h> <C-W>h<C-W>\|<C-W>_
 nmap <M-l> <C-W>l<C-W>\|<C-W>_
+nmap <M-r> <C-w>=
 
 nmap <C-Up> <C-W>+
 nmap <C-Down> <C-W>-
@@ -294,7 +305,6 @@ map <leader>t<leader> :tabnext
 " nnoremap <M-l> :call Beautify()<cr>
 
 let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
 au TabLeave * let g:lasttab = tabpagenr()
 
 map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
@@ -382,33 +392,33 @@ func! DeleteTillSlash()
 endfunc
 
 func! CurrentFileDir(cmd)
-    return a:cmd . " " . expand("%:p:h") . "/"
+    return a:cmd . ' ' . expand("%:p:h") . "/"
 endfunc
 
 function! NumberToggle()
     if(&relativenumber == 1)
-        set nornu
+        set norelativenumber
     else
         set relativenumber
-        set nu
+        set number
     endif
 endfunc
 
 " Delete Brackets if together
 function! CloseBrackets(cmd)
     let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
-    let line = getline('.')
-    let position = col('.') - 2
-    let current_char = line[position]
-    let next_char = line[position + 1]
+    let l:line = getline('.')
+    let l:position = col('.') - 2
+    let l:current_char = l:line[l:position]
+    let l:next_char = l:line[l:position + 1]
 
     try
-        let match_pair = g:delete_pairs[current_char]
+        let l:match_pair = g:delete_pairs[l:current_char]
     catch
-        let match_pair = '  '
+        let l:match_pair = '  '
     endtry
 
-    if match_pair == next_char
+    if l:match_pair == l:next_char
         " return "\<BS>\<DEL>"
         return a:cmd+"\<DEL>"
     else
@@ -430,5 +440,5 @@ endtry
 "}}}
 
 "{{{ Colors
-color onedark
+color paramount
 "}}}

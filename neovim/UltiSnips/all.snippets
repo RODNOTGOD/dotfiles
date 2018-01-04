@@ -9,3 +9,8 @@ endsnippet
 snippet "pad (\d+) \"(.*)\" (.)" "Pad a string with a symbol" r
 `!p snip.rv = '{:{symbol}^{n}}'.format(match.group(2), symbol=match.group(3), n=match.group(1))`
 endsnippet
+
+
+snippet Date "MONTH DD, YYYY" w
+`!v strftime("%B %d, %Y")`
+endsnippet

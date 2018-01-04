@@ -1,18 +1,9 @@
-# # Template
-# snippet tp
-# 	template <typename ${1:type}>
-
-# # Class
-# snippet class
-# 	class ${1:`vim_snippets#Filename('$1', 'name')`} {
-# 	private:
-# 		${0:/* data */}
-
-# 	public:
-# 		$1(${2});
-# 		~$1();
-# 	};
-
-# snippet cfun
-# 	${1:void} ${2:function}(${3})
-# 	{ ${4} }
+snippet class
+class ${1:`!v expand("%:t:r")`} {
+private:
+	$0
+public:
+	$1(${2});
+	virtual ~$1();
+};
+endsnippet

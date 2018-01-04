@@ -4,6 +4,16 @@ export ZSH=/home/Kragendor/.oh-my-zsh
 # Zsh theme settings
 ZSH_THEME="bullet-train"
 
+BULLETTRAIN_PROMPT_CHAR="»"
+BULLETTRAIN_DIR_BG=white
+BULLETTRAIN_DIR_FG=black
+BULLETTRAIN_GIT_BG=green
+BULLETTRAIN_GIT_CLEAN=" %F{black}✔%F{black}"
+if [[ $(who | grep $(tty | cut -d '/' -f 3,4)) && $? ]]; then
+	BULLETTRAIN_CUSTOM_MSG=$(who | perl host.pl)
+fi
+BULLETTRAIN_CUSTOM_BG=yellow
+
 # Bullet train format
 BULLETTRAIN_PROMPT_ORDER=(
   status
@@ -14,11 +24,6 @@ BULLETTRAIN_PROMPT_ORDER=(
   virtualenv
   git
 )
-BULLETTRAIN_PROMPT_CHAR="»"
-BULLETTRAIN_DIR_BG=yellow
-BULLETTRAIN_DIR_FG=black
-BULLETTRAIN_GIT_BG=green
-BULLETTRAIN_GIT_CLEAN=" %F{black}✔%F{black}"
 
 # Oh my zsh options
 ENABLE_CORRECTION="true"
@@ -43,6 +48,10 @@ fancy-ctrl-z() {
 fork() { (setsid "$@" &); }
 
 utsa() { ssh "euw112@fox0$@.cs.utsa.edu" }
+
+tvim() { nvim -q <(taskfinder $@) }
+
+mkd() { mkdir -p "$@"; cd "$@" || exit }
 
 # Key bindings
 zle -N fancy-ctrl-z

@@ -1,0 +1,35 @@
+snippet doc "\documentclass[]{article}"
+\documentclass[$1]\{${2:article}\}
+$0
+endsnippet
+
+snippet code "Code Template"
+\begin{algorithm}
+	\caption\{${1:func def}\}
+	\begin{algorithmic}
+		$0
+	\end{algorithmic}
+\end{algorithm}
+endsnippet
+
+snippet if "If statement"
+\If\{$1\}
+	$0
+\EndIf
+endsnippet
+
+snippet while "While State"
+\While\{$1\}
+	$0
+\EndWhile
+endsnippet
+
+snippet state "State"
+\State\$$1\$
+$0
+endsnippet
+
+snippet graphic "Include a graphic"
+\includegraphics[totalheight=${1:5}cm]\{$2\}
+$0
+endsnippet

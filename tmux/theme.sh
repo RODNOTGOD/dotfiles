@@ -50,7 +50,7 @@ set-window-option -g clock-mode-colour $tm_color_active
 tm_tunes="#[fg=$tm_color_music,bold]#(source ~/.tmux/tunes.sh)"
 # tm_battery="#(~/.dotfiles/bin/battery_indicator.sh)"
 
-tm_date="#[fg=$tm_color_inactive] %R %d %b"
+tm_date="#[fg=$tm_color_inactive] %H:%m %d %b"
 tm_host="#[fg=$tm_color_feature,bold]#h"
 tm_session_name="#[fg=$tm_color_feature,bold] #S"
 
