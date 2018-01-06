@@ -1,5 +1,5 @@
 # Path to your oh-my-zsh installation.
-export ZSH=/home/Kragendor/.oh-my-zsh
+export ZSH=/home/Kragendora/.oh-my-zsh
 
 # Zsh theme settings
 ZSH_THEME="bullet-train"
@@ -61,7 +61,8 @@ bindkey '^N' down-line-or-search
 
 export EDITOR=nvim
 export TERM=xterm-256color
-export NOTES_DIRECTORY="/home/Kragendor/.notes"
+export NOTES_DIRECTORY="/home/Kragendora/.notes"
+export MYVIMRC="~/.vimrc"
 
 # Disable tty scroll lock
 stty -ixon
@@ -71,6 +72,8 @@ alias notes\ open="cd $NOTES_DIRECTORY"
 
 # VIM KEKS
 alias :q="echo \"You're not in vim, dummy\""
+alias :e=vim
+alias wtfis=whatis
 
 # UPDATING
 alias update="sudo dnf update"

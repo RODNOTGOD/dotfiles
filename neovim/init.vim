@@ -33,6 +33,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
@@ -41,11 +42,9 @@ Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml']}
 Plug 'vim-scripts/vis'
-Plug 'ntpeters/vim-better-whitespace'
+" Plug 'ntpeters/vim-better-whitespace'
 Plug 'w0rp/ale'
 Plug 'maximbaz/lightline-ale'
-Plug 'Shougo/unite.vim'
-Plug 'Shougo/vimfiler.vim'
 Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
@@ -64,8 +63,8 @@ Plug 'wincent/loupe'
 Plug 'dag/vim-fish', {'for': 'fish'}
 
 " Non maintained plugins
-Plug 'file:///home/Kragendor/.local/share/nvim/local-plugs/betterdigraphs_utf8'
-Plug 'file:///home/Kragendor/.local/share/nvim/local-plugs/dragvisuals'
+Plug 'file:///home/Kragendora/.local/share/nvim/local-plugs/betterdigraphs_utf8'
+Plug 'file:///home/Kragendora/.local/share/nvim/local-plugs/dragvisuals'
 
 call plug#end()
 "}}}
@@ -195,6 +194,18 @@ function! CmdLine(str)
     exe "menu Foo.Bar :" . a:str
     emenu Foo.Bar
     unmenu Foo
+endfunction
+
+command! StripWhitespace call StripTrailingWhitespace()
+
+function! StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal `z
+  endif
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
@@ -440,5 +451,11 @@ endtry
 "}}}
 
 "{{{ Colors
+set background=dark
 color paramount
+
+highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
+2match ExtraWhiteSpace /\s\+\%#\@<!$/
+autocmd InsertLeave * redraw!
+
 "}}}

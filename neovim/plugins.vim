@@ -100,17 +100,35 @@ let g:NERDTreeWinPos = "left"
 let NERDTreeShowHidden=0
 let NERDTreeIgnore = ['\.pyc$', '__pycache__']
 let g:NERDTreeWinSize=35
-map <leader>nn :NERDTreeToggle<cr>
-map <leader>nb :NERDTreeFromBookmark
-map <leader>nf :NERDTreeFind<cr>
+" map <leader>nn :NERDTreeToggle<cr>
+" map <leader>nb :NERDTreeFromBookmark
+" map <leader>nf :NERDTreeFind<cr>
 "}}}
 
 "{{{ -> VimFiler
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:vimfiler_as_default_explorer = 1
-map <leader>nn :VimFiler<CR>
-map <leader>nf :VimFilerBufferDir<CR>
-map <leader>nt :VimFilerExplorer<CR>
+" map <leader>nn :VimFiler<CR>
+" map <leader>nf :VimFilerBufferDir<CR>
+" map <leader>nt :VimFilerExplorer<CR>
+"}}}
+
+"{{{ -> Netrw
+"""""""""""""""""""""""""""""
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_liststyle = 1
+
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+function! NetrwMapping()
+    nmap <buffer> h -
+    nmap <buffer> l <cr>
+endfunction
+
+nnoremap <leader>nn :Explore
 "}}}
 
 "{{{ -> vim-multiple-cursors
@@ -462,8 +480,8 @@ let g:tern#arguments = ["--persistent"]
 "}}}
 
 "{{{ -> Vim-Easy-Align
-xmap ga <Plug>(EasyAlign)
-nmap ga <Plug>(EasyAlign)
+xmap ea <Plug>(EasyAlign)
+nmap ea <Plug>(EasyAlign)
 "}}}
 
 "{{{ -> Loupe

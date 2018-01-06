@@ -54,8 +54,6 @@ au Filetype gitcommit set spell
 
 "{{{ -> Markdown section
 """"""""""""""""""""""""""""""
-au Filetype markdown highlight ColorColumn ctermbg=red
-au Filetype markdown call matchadd('ColorColumn', '\%81v', 100)
 au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
@@ -70,9 +68,6 @@ au Filetype markdown set shiftwidth=2
 au Filetype markdown set tabstop=2
 au Filetype markdown set expandtab
 au Filetype markdown set spell
-
-highlight ColorColumn ctermbg=red
-call matchadd('ColorColumn', '\%101v', 110)
 "}}}
 
 "{{{ -> JavaScript section
@@ -118,4 +113,9 @@ au Filetype tex set tabstop=2
 au Filetype tex set shiftwidth=2
 au Filetype tex set spell
 au FileType tex let b:delimitMate_quotes = "\" ' $"
+"}}}
+
+"{{{ -> C section
+au Filetype c highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+au Filetype c match OverLength /\%81v.\+/
 "}}}

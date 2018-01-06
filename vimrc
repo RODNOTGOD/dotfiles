@@ -1,104 +1,90 @@
-set nocompatible
-filetype off
+if empty(glob('~/.vim/autoload/plug.vim'))
+  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
+    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
+  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+endif
 
-set rtp+=~/.vim/bundle/Vundle.vim
-call vundle#begin()
+call plug#begin('~/.vim/plugged')
 
-" Vundle manages vundle
-Plugin 'VundleVim/Vundle.vim'
+Plug 'tpope/vim-abolish'
+Plug 'tpope/vim-commentary'
+Plug 'tpope/vim-eunuch'
+Plug 'tpope/vim-fugitive'
+Plug 'tpope/vim-repeat'
+Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-sensible'
+Plug 'tpope/vim-surround'
+Plug 'tpope/vim-unimpaired'
+Plug 'tpope/vim-vinegar'
 
-" Github Plugins
-Plugin 'mileszs/ack.vim'
-Plugin 'jlanzarotta/bufexplorer'
-Plugin 'ctrlpvim/ctrlp.vim'
-Plugin 'junegunn/goyo.vim'
-Plugin 'junegunn/limelight.vim'
-Plugin 'sjl/gundo.vim'
-Plugin 'itchyny/lightline.vim'
-Plugin 'scrooloose/nerdtree'
-Plugin 'scrooloose/snipmate-snippets'
-Plugin 'amix/open_file_under_cursor.vim'
-Plugin 'amix/vim-zenroom2'
-Plugin 'vim-syntastic/syntastic'
-Plugin 'godlygeek/tabular'
-Plugin 'jacoborus/tender.vim'
-Plugin 'morhetz/gruvbox'
-Plugin 'terryma/vim-expand-region'
-Plugin 'terryma/vim-multiple-cursors'
-Plugin 'tpope/vim-surround'
-Plugin 'tpope/vim-commentary'
-Plugin 'tpope/vim-fugitive'
-Plugin 'tpope/vim-repeat'
-Plugin 'nvie/vim-flake8'
-Plugin 'airblade/vim-gitgutter'
-Plugin 'plasticboy/vim-markdown'
-Plugin 'MarcWeber/vim-addon-mw-utils'
-Plugin 'tomtom/tlib_vim'
-Plugin 'garbas/vim-snipmate'
-Plugin 'honza/vim-snippets'
-Plugin 'maxbrunsfeld/vim-yankstack'
-Plugin 'mattn/emmet-vim'
-Plugin 'vim-scripts/vis'
-Plugin 'ntpeters/vim-better-whitespace'
+Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
+Plug 'junegunn/fzf.vim'
 
-" Non git plugins
+Plug 'romainl/vim-qf'
+Plug 'romainl/vim-qlist'
 
-call vundle#end()
+Plug 'wellle/targets.vim'
+Plug 'mbbill/undotree'
+Plug 'ajh17/VimCompletesMe'
+Plug 'owickstrom/vim-colors-paramount'
+Plug 'wincent/loupe'
 
-" Leader mapping
-""""""""""""""""""
-let mapleader = "\<Space>"
+call plug#end()
+
+set background=dark
+colorscheme paramount
+
+set path+=**
+
+set undodir=~/.vim/undodir
+set undofile
+
+set statusline=[%t]%m%r%h%w\ \|%{fugitive#head()}\|\ [%L]\ \|\ [%{&ff}]\ \|\ %y\ \|\ [%p%%]\ \|\ [%l:%v]
+set hlsearch
+
+set expandtab
+set shiftwidth=4
+set tabstop=4
+
+set number
+
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_liststyle = 1
+
 let g:mapleader = "\<Space>"
-let maplocalleader = ";"
+let g:maplocalleader = ","
 
-" Read and Writing files
-"""""""""""""""""""""""""
-nmap <leader>x ZZ
-nmap <leader>w :w!<cr>
-command! W w !sudo tee % > /dev/null
+map <leader>ev :e ~/.vimrc<cr>
 
-" *rc editing
+map <leader>w :w!<cr>
+map <leader>x ZZ
 
-nmap <silent> <leader>ev :e ~/.vimrc<CR>
-nmap <silent> <leader>sv :source ~/.vimrc<CR>
-nmap <silent> <leader>ez :e ~/.zshrc<CR>
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+nnoremap <silent> ^ g^
+nnoremap <silent> $ g$
 
-autocmd! bufwritepost ~/.vimrc source ~/.vimrc
+nnoremap c* *Ncgn
 
-" copy and paste
-vmap <leader>y "+y
-vmap <leader>d "+d
-nmap <leader>p "+p
-nmap <leader>P "+P
-vmap <leader>p "+p
-vmap <leader>P "+P
+vnoremap >> >gv
+vnoremap << <gv
 
-" spell checking
-map <leader>ss :setlocal spell!<cr>
+inoremap <expr> <C-l> "\<Right>"
+inoremap <expr> <C-h> "\<Left>"
 
-" quickfix menu
-nnoremap <localleader>co :copen<CR>
-nnoremap <localleader>cc :cclose<CR>
-nnoremap <localleader>cn :cn<CR>
-nnoremap <localleader>cp :cp<CR>
+nnoremap <C-e> 3<C-e>
+noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 
-" hidden characters
-set nu
-set rnu
+noremap v <C-v>
+noremap <C-v> v
 
-set noshowmode
-set list
-set listchars=eol:¬,tab:»\ ,trail:·
+vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
+vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
 
-nnoremap <C-n> :call NumberToggle()<cr>
+inoremap <C-E> <C-X><C-E>
+inoremap <C-Y> <C-X><C-Y>
 
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set rnu!
-    else
-        set relativenumber
-    endif
-endfunc
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -117,60 +103,73 @@ inoremap $4 {<esc>o}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 
-" Command mode related
-"""""""""""""""""""""""
-cno $h e ~/
-cno $d e ~/Desktop/
-cno $j e ./
-cno $c e <C-\>eCurrentFileDir("e")<cr>
-cno $q <C-\>eDeleteTillSlash()<cr>
-cnoremap <C-A>		<Home>
-cnoremap <C-E>		<End>
-cnoremap <C-K>		<C-U>
+" --> Window Panes
+"""""""""""""""""""""
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-l> <C-w>l
+map <C-k> <C-w>k
 
-cnoremap <C-P> <Up>
-cnoremap <C-N> <Down>
+nnoremap <leader>s :split<cr>
+nnoremap <leader>v :vsplit<cr>
 
-func! DeleteTillSlash()
-    let g:cmd = getcmdline()
+nmap <C-Up> <C-W>+
+nmap <C-Down> <C-W>-
+nmap <C-Left> <C-W><
+nmap <C-Right> <C-W>>
 
-    if has("win16") || has("win32")
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\]\\).*", "\\1", "")
-    else
-        let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*", "\\1", "")
-    endif
+" buffer commands
+nnoremap <TAB> :b#<cr>
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>ba :bufdo bd<cr>
+map <leader>bn :Bnew<cr><C-w>L
 
-    if g:cmd == g:cmd_edited
-        if has("win16") || has("win32")
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
-        else
-            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
-        endif
-    endif
+" Tab commands
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext
 
-    return g:cmd_edited
-endfunc
+nnoremap <silent> <localleader>co :silent! copen <bar> silent! lopen<cr>
+nnoremap <silent> <localleader>cc :silent! cclose <bar> silent! lclose<cr>
 
-func! CurrentFileDir(cmd)
-    return a:cmd . " " . expand("%:p:h") . "/"
-endfunc
+map <F9> :w!<cr>:silent make<cr>:cw<cr>
 
-command! MakeTags !ctags -f .tags -R .
+nnoremap <tab> :b#<cr>
 
-" Visual modes
-"""""""""""""""
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+map <leader>nn :Explore<cr>
+map <F5> :UndotreeToggle<cr>
+nmap <leader><cr> <Plug>(LoupeClearHighlight)
 
-nnoremap v <C-v>
-nnoremap <C-v> v
-vnoremap v <C-v>
-vnoremap <C-v> v
+autocmd FileType c set makeprg=make\ %:t:r
 
-function! CmdLine(str)
-    exe "menu Foo.Bar :" . a:str
-    emenu Foo.Bar
-    unmenu Foo
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+autocmd FileType c match OverLength /\%81v.\+/
+
+highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
+2match ExtraWhiteSpace /\s\+\%#\@<!$/
+autocmd InsertLeave * redraw!
+
+" --> Functions
+""""""""""""""""""
+
+command! Bclose call <SID>BufcloseCloseIt()
+command! Bnew call <SID>CreateNewBuf()
+command! StripWhitespace call StripTrailingWhitespace()
+
+function! GitBranch()
+  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
+endfunction
+
+function! StatuslineGit()
+    let l:branchname = GitBranch()
+    return strlen(l:branchname) > 0 ? ' [' . l:branchname . '] ' : ''
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
@@ -190,56 +189,6 @@ function! VisualSelection(direction, extra_filter) range
     let @" = l:saved_reg
 endfunction
 
-" Windows and pane movement
-""""""""""""""""""""""""""""
-
-nnoremap 0 ^
-
-" Clear highlighting
-map <silent> <leader><cr> :noh<cr>
-
-" Swtich through panes
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Splitting Commands
-map <leader>v :vsplit<CR>
-map <leader>s :split<CR>
-
-map <leader>vl :vertical-resize +5<CR>
-map <leader>vh :vertical-resize -5<CR>
-
-map <leader>sj :resize +5<CR>
-map <leader>sk :resize -5<CR>
-
-" Tab commands
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
-
-map <leader>ba :bufdo bd<cr>
-
-map <leader>l :bnext<cr>
-map <leader>h :bprevious<cr>
-
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove
-map <leader>t<leader> :tabnext
-
-let g:lasttab = 1
-nmap <Leader>tl :exe "tabn ".g:lasttab<CR>
-au TabLeave * let g:lasttab = tabpagenr()
-
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-inoremap <C-E> <C-X><C-E>
-inoremap <C-Y> <C-X><C-Y>
-
-command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
@@ -259,9 +208,24 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
-" Source local environment
-source ~/.vim/env.vim
-source ~/.vim/plugins.vim
-source ~/.vim/filetypes.vim
+function! <SID>CreateNewBuf()
+    new
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
+endfunction
 
-color tender
+function StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal `z
+  endif
+endfunction
+
+function! NetrwMapping()
+    nmap <buffer> h -
+    nmap <buffer> l <cr>
+endfunction
