@@ -11,7 +11,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rsi'
+" Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -39,7 +39,7 @@ set path+=**
 set undodir=~/.vim/undodir
 set undofile
 
-set statusline=[%t]%m%r%h%w\ \|%{fugitive#head()}\|\ [%L]\ \|\ [%{&ff}]\ \|\ %y\ \|\ [%p%%]\ \|\ [%l:%v]
+set statusline=\ %{GetMode()}\ %<%{GetFileName()}%{&modified?'\ \ +\ ':''}%{&readonly?'\ \ \ ':''}%h%w%{StatuslineGit()}%=%{GetEncoding()}\%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\ %{&ff}\ \ %{''!=#&filetype?&filetype:'none'}\ \ %p%%\ \ %l:%v\ 
 set hlsearch
 
 set expandtab
@@ -47,6 +47,15 @@ set shiftwidth=4
 set tabstop=4
 
 set number
+set magic
+set lazyredraw
+set hidden
+
+set list
+set listchars=tab:▸\ ,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+set noshowmode
+
 
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 let g:netrw_liststyle = 1
@@ -149,12 +158,21 @@ augroup netrw_mapping
     autocmd filetype netrw call NetrwMapping()
 augroup END
 
+highlight SpecialKey ctermfg=DarkGrey guifg=DimGrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 autocmd FileType c match OverLength /\%81v.\+/
 
 highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
 2match ExtraWhiteSpace /\s\+\%#\@<!$/
+
 autocmd InsertLeave * redraw!
+autocmd InsertEnter * :set nu | set rnu
+autocmd InsertLeave * :set nornu
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+autocmd BufReadPost * call TabsOrSpaces()
+
 
 " --> Functions
 """"""""""""""""""
@@ -163,13 +181,58 @@ command! Bclose call <SID>BufcloseCloseIt()
 command! Bnew call <SID>CreateNewBuf()
 command! StripWhitespace call StripTrailingWhitespace()
 
+function! GetEncoding()
+    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
+endfunction
+
+function! GetFileName()
+    let l:filename = expand('%:t')
+    return strlen(l:filename) > 0 ? ' ' . l:filename . ' ' : ''
+endfunction
+
+function TabsOrSpaces()
+    " Determines whether to use spaces or tabs on the current buffer.
+    if getfsize(bufname("%")) > 256000
+        " File is very large, just use the default.
+        return
+    endif
+
+    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+    if numTabs > numSpaces
+        setlocal noexpandtab
+    endif
+endfunction
+
 function! GitBranch()
   return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
 endfunction
 
 function! StatuslineGit()
-    let l:branchname = GitBranch()
-    return strlen(l:branchname) > 0 ? ' [' . l:branchname . '] ' : ''
+    let l:branchname = fugitive#head()
+    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' ' : ''
+endfunction
+
+function! GetMode()
+    let l:currmode = mode()
+    if l:currmode ==# 'n'
+        return 'NORMAL'
+    elseif l:currmode ==# 'i'
+        return 'INSERT'
+    elseif l:currmode ==# 'v'
+        return 'VISUAL'
+    elseif l:currmode ==# 'V'
+        return 'V-LINE'
+    elseif l:currmode ==# ''
+        return 'V-BLOCK'
+    elseif l:currmode ==# 's'
+        return 'SELECT'
+    elseif l:currmode ==# 'S'
+        return 'S-LINE'
+    elseif l:currmode ==# ''
+        return 'S-BLOCK'
+    endif
 endfunction
 
 function! VisualSelection(direction, extra_filter) range

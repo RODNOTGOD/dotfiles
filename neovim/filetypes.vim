@@ -117,5 +117,5 @@ au FileType tex let b:delimitMate_quotes = "\" ' $"
 
 "{{{ -> C section
 au Filetype c highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-au Filetype c match OverLength /\%81v.\+/
+au Filetype c match OverLength /\%121v.\+/
 "}}}

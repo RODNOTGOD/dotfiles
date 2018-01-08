@@ -107,7 +107,7 @@ let g:NERDTreeWinSize=35
 
 "{{{ -> VimFiler
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
-let g:vimfiler_as_default_explorer = 1
+" let g:vimfiler_as_default_explorer = 1
 " map <leader>nn :VimFiler<CR>
 " map <leader>nf :VimFilerBufferDir<CR>
 " map <leader>nt :VimFilerExplorer<CR>
@@ -116,7 +116,7 @@ let g:vimfiler_as_default_explorer = 1
 "{{{ -> Netrw
 """""""""""""""""""""""""""""
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_liststyle = 1
+" let g:netrw_liststyle = 1
 
 augroup netrw_mapping
     autocmd!
@@ -126,9 +126,10 @@ augroup END
 function! NetrwMapping()
     nmap <buffer> h -
     nmap <buffer> l <cr>
+    nmap <buffer> e %
 endfunction
 
-nnoremap <leader>nn :Explore
+nnoremap <leader>nn :Explore<CR>
 "}}}
 
 "{{{ -> vim-multiple-cursors

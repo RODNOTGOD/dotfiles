@@ -61,6 +61,7 @@ Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
 Plug 'lervag/vimtex', {'for' : ['tex', 'plaintex']}
 Plug 'wincent/loupe'
 Plug 'dag/vim-fish', {'for': 'fish'}
+Plug 'freitass/todo.txt-vim', {'for': 'todo'}
 
 " Non maintained plugins
 Plug 'file:///home/Kragendora/.local/share/nvim/local-plugs/betterdigraphs_utf8'

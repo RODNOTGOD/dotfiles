@@ -81,7 +81,7 @@ sub printTask {
 
 sub usage {
 	print "Usage: " . basename($0) . "\n";
-	print "Scans for syntax `(tag): ... <date, author>`\n";
+	print "Scans for syntax `(tag): your text here... <date, author>`\n";
 	print "    --help       -h         print this dialogue\n";
 	print "    --tag        -t         set what tags to search for. (default \"TODO|FIXME|XXX\")\n";
 	print "    --add        -a         add a set of tags to current default tags\n";
