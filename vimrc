@@ -1,3 +1,15 @@
+"  $$$$$$\  $$\                         $$\                 $$\    $$\ $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\
+" $$  __$$\ \__|                        $$ |                $$ |   $$ |\_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\
+" $$ /  \__|$$\ $$$$$$\$$$$\   $$$$$$\  $$ | $$$$$$\        $$ |   $$ |  $$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  \__|
+" \$$$$$$\  $$ |$$  _$$  _$$\ $$  __$$\ $$ |$$  __$$\       \$$\  $$  |  $$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |
+"  \____$$\ $$ |$$ / $$ / $$ |$$ /  $$ |$$ |$$$$$$$$ |       \$$\$$  /   $$ |  $$ \$$$  $$ |$$  __$$< $$ |
+" $$\   $$ |$$ |$$ | $$ | $$ |$$ |  $$ |$$ |$$   ____|        \$$$  /    $$ |  $$ |\$  /$$ |$$ |  $$ |$$ |  $$\
+" \$$$$$$  |$$ |$$ | $$ | $$ |$$$$$$$  |$$ |\$$$$$$$\          \$  /   $$$$$$\ $$ | \_/ $$ |$$ |  $$ |\$$$$$$  |
+"  \______/ \__|\__| \__| \__|$$  ____/ \__| \_______|          \_/    \______|\__|     \__|\__|  \__| \______/
+"                             $$ |
+"                             $$ |
+"                             \__|
+"{{{ --> Plugins
 if empty(glob('~/.vim/autoload/plug.vim'))
   silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
     \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
@@ -11,7 +23,7 @@ Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-eunuch'
 Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
-" Plug 'tpope/vim-rsi'
+Plug 'tpope/vim-rsi'
 Plug 'tpope/vim-sensible'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-unimpaired'
@@ -28,9 +40,13 @@ Plug 'mbbill/undotree'
 Plug 'ajh17/VimCompletesMe'
 Plug 'owickstrom/vim-colors-paramount'
 Plug 'wincent/loupe'
+Plug 'AndrewRadev/splitjoin.vim'
 
 call plug#end()
 
+"}}}
+
+"{{{ --> Env Settings
 set background=dark
 colorscheme paramount
 
@@ -39,7 +55,7 @@ set path+=**
 set undodir=~/.vim/undodir
 set undofile
 
-set statusline=\ %{GetMode()}\ %<%{GetFileName()}%{&modified?'\ \ +\ ':''}%{&readonly?'\ \ \ ':''}%h%w%{StatuslineGit()}%=%{GetEncoding()}\%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\ %{&ff}\ \ %{''!=#&filetype?&filetype:'none'}\ \ %p%%\ \ %l:%v\ 
+set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\ \|\ +\ ':''}%{&readonly?'\ \|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|%{GetEncoding()}\|%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\|\ %{&ff}\ \|\ %{''!=#&filetype?&filetype:'none'}\ \|\ %p%%\ \|\ %l:%v\ 
 set hlsearch
 
 set expandtab
@@ -56,13 +72,22 @@ set listchars=tab:▸\ ,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 set noshowmode
 
+set foldcolumn=1
 
+set foldmethod=marker
+set foldmarker={{{,}}}
+
+set mouse=n
+"}}}
+
+"{{{ --> Plugin Configure
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_liststyle = 1
 
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
+"}}}
 
+"{{{ --> Mappings
 map <leader>ev :e ~/.vimrc<cr>
 
 map <leader>w :w!<cr>
@@ -151,6 +176,9 @@ map <leader>nn :Explore<cr>
 map <F5> :UndotreeToggle<cr>
 nmap <leader><cr> <Plug>(LoupeClearHighlight)
 
+"}}}
+
+"{{{ --> Autocmds
 autocmd FileType c set makeprg=make\ %:t:r
 
 augroup netrw_mapping
@@ -173,8 +201,9 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 autocmd BufReadPost * call TabsOrSpaces()
 
+"}}}
 
-" --> Functions
+"{{{ --> Functions
 """"""""""""""""""
 
 command! Bclose call <SID>BufcloseCloseIt()
@@ -205,13 +234,9 @@ function TabsOrSpaces()
     endif
 endfunction
 
-function! GitBranch()
-  return system("git rev-parse --abbrev-ref HEAD 2>/dev/null | tr -d '\n'")
-endfunction
-
 function! StatuslineGit()
     let l:branchname = fugitive#head()
-    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' ' : ''
+    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' |' : ''
 endfunction
 
 function! GetMode()
@@ -292,3 +317,4 @@ function! NetrwMapping()
     nmap <buffer> h -
     nmap <buffer> l <cr>
 endfunction
+"}}}

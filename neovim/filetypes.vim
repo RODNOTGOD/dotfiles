@@ -59,7 +59,7 @@ au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/*
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>es :call EditCodeBlock()<CR>
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
-au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o ~/Documents/" . expand('%:p:t:r') . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
 au Filetype markdown nnoremap <localleader>eP :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf " . fnameescape(expand('%:p:h')) . "/*.md" <cr>
 au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
 au Filetype markdown nnoremap <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html " . fnameescape(expand('%:p:h')) . "/*.md"<cr>
