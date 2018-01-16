@@ -1,6 +1,13 @@
+"{{{ -> Terminal Buffer
+""""""""""""""""""""""""""""""
+augroup term_enter
+	au TermOpen * set nonu | set nornu
+augroup end
+"}}}
+
 "{{{ -> Python section
 """"""""""""""""""""""""""""""
-let python_highlight_all = 1
+let g:python_highlight_all = 1
 au FileType python syn keyword pythonDecorator True None False self
 
 au BufNewFile,BufRead *.jinja set syntax=htmljinja
@@ -28,16 +35,17 @@ au FileType json set expandtab
 
 "{{{ -> Html section
 """"""""""""""""""""""""""""""
-au Filetype html,htmldjango set tabstop=2
-au Filetype html,htmldjango set shiftwidth=2
-au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
-au Filetype html,htmldjango nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
-au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
-au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
-au Filetype html,htmldjango RainbowToggleOff
-au Filetype css set tabstop=4
-au Filetype css set shiftwidth=4
-autocmd FileType css setlocal omnifunc=csscomplete#CompleteCSS
+augroup html_editor
+	au Filetype html,htmldjango set tabstop=2
+	au Filetype html,htmldjango set shiftwidth=2
+	au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
+	au Filetype html,htmldjango nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
+	au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
+	au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
+	au Filetype css set tabstop=4
+	au Filetype css set shiftwidth=4
+	au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+augroup end
 "}}}
 
 "{{{ -> Lisp section
@@ -59,7 +67,7 @@ au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/*
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>es :call EditCodeBlock()<CR>
 au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
-au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o ~/Documents/" . expand('%:p:t:r') . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o ~/Documents/" . fnameescape(expand('%:p:t:r')) . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
 au Filetype markdown nnoremap <localleader>eP :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf " . fnameescape(expand('%:p:h')) . "/*.md" <cr>
 au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
 au Filetype markdown nnoremap <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html " . fnameescape(expand('%:p:h')) . "/*.md"<cr>

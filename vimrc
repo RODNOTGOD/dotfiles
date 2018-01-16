@@ -55,7 +55,8 @@ set path+=**
 set undodir=~/.vim/undodir
 set undofile
 
-set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\ \|\ +\ ':''}%{&readonly?'\ \|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|%{GetEncoding()}\|%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\|\ %{&ff}\ \|\ %{''!=#&filetype?&filetype:'none'}\ \|\ %p%%\ \|\ %l:%v\ 
+set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\|\ +\ ':''}%{&readonly?'\|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|\ %{''!=#&filetype?&filetype:'none'}\ \|\ L:%l/%L\ C:%v\ 
+" set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\|\ +\ ':''}%{&readonly?'\|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|%{GetEncoding()}\|%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\|\ %{&ff}\ \|\ %{''!=#&filetype?&filetype:'none'}\ \|\ %p%%\ \|\ %l:%v\ 
 set hlsearch
 
 set expandtab
@@ -82,6 +83,9 @@ set mouse=n
 
 "{{{ --> Plugin Configure
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 15
 
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
@@ -172,15 +176,25 @@ map <F9> :w!<cr>:silent make<cr>:cw<cr>
 
 nnoremap <tab> :b#<cr>
 
-map <leader>nn :Explore<cr>
+
+nnoremap <leader>nn :let g:netrw_liststyle = 0<CR>:let g:netrw_browse_split = 0<CR>:Explore<CR>
+nnoremap <leader>nt :let g:netrw_liststyle = 3<CR>:let g:netrw_browse_split = 4<CR>:Vexplore<CR>
+
 map <F5> :UndotreeToggle<cr>
+
 nmap <leader><cr> <Plug>(LoupeClearHighlight)
+
+nmap <C-_> :Lines<cr>
+nmap <C-F> :Files<cr>
+nmap <leader>f :History<cr>
+nmap <leader>o :Buffers<cr>
 
 "}}}
 
 "{{{ --> Autocmds
 autocmd FileType c set makeprg=make\ %:t:r
 
+autocmd FileType netrw setl bufhidden=delete
 augroup netrw_mapping
     autocmd!
     autocmd filetype netrw call NetrwMapping()
@@ -257,6 +271,8 @@ function! GetMode()
         return 'S-LINE'
     elseif l:currmode ==# ''
         return 'S-BLOCK'
+    elseif l:currmode ==# 'R'
+        return 'REPLACE'
     endif
 endfunction
 
@@ -316,5 +332,6 @@ endfunction
 function! NetrwMapping()
     nmap <buffer> h -
     nmap <buffer> l <cr>
+    nmap <buffer> <silent>qq :bd<cr>:silent! windo close<cr>l
 endfunction
 "}}}

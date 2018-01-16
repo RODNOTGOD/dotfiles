@@ -15,7 +15,7 @@ nmap <c-P> <Plug>yankstack_substitute_newer_paste
 
 "{{{ -> FZF
 """"""""""""""""""""""""""""""
-nmap <C-o> :Buffers<CR>
+nmap <leader>o :Buffers<CR>
 nmap <leader>f :History<CR>
 nmap <leader>/ :Ag<CR>
 nmap <C-_> :Lines<CR>
@@ -70,16 +70,16 @@ let g:gundo_help = 0
 
 "{{{ -> Drag Visual
 """"""""""""""""""""""""""""""
-vmap  <expr>  <S-LEFT>   DVB_Drag('left')
-vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
-vmap  <expr>  <S-DOWN>   DVB_Drag('down')
-vmap  <expr>  <S-UP>     DVB_Drag('up')
-let g:DVB_TrimWS = 1
+" vmap  <expr>  <S-LEFT>   DVB_Drag('left')
+" vmap  <expr>  <S-RIGHT>  DVB_Drag('right')
+" vmap  <expr>  <S-DOWN>   DVB_Drag('down')
+" vmap  <expr>  <S-UP>     DVB_Drag('up')
+" let g:DVB_TrimWS = 1
 "}}}
 
 "{{{ -> Better Digraphs
 """"""""""""""""""""""""""""""
-inoremap <expr> <C-K> BDG_GetDigraph()
+" inoremap <expr> <C-K> BDG_GetDigraph()
 "}}}
 
 "{{{ -> List Trans
@@ -116,7 +116,9 @@ let g:NERDTreeWinSize=35
 "{{{ -> Netrw
 """""""""""""""""""""""""""""
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-" let g:netrw_liststyle = 1
+
+let g:netrw_altv = 1
+let g:netrw_winsize = 15
 
 augroup netrw_mapping
     autocmd!
@@ -127,9 +129,12 @@ function! NetrwMapping()
     nmap <buffer> h -
     nmap <buffer> l <cr>
     nmap <buffer> e %
+    nmap <buffer> <silent>qq :bd<CR>:silent! windo close<CR>
 endfunction
 
-nnoremap <leader>nn :Explore<CR>
+nnoremap <leader>nn :let g:netrw_liststyle = 0<CR>:let g:netrw_browse_split = 0<CR>:Explore<CR>
+nnoremap <leader>nt :let g:netrw_liststyle = 3<CR>:let g:netrw_browse_split = 4<CR>:Vexplore<CR>
+
 "}}}
 
 "{{{ -> vim-multiple-cursors
@@ -481,8 +486,8 @@ let g:tern#arguments = ["--persistent"]
 "}}}
 
 "{{{ -> Vim-Easy-Align
-xmap ea <Plug>(EasyAlign)
-nmap ea <Plug>(EasyAlign)
+xmap gea <Plug>(EasyAlign)
+nmap gea <Plug>(EasyAlign)
 "}}}
 
 "{{{ -> Loupe

@@ -87,7 +87,7 @@ set noshowmode
 set list
 " set listchars=eol:¬,tab:¦\ ,trail:·
 " set listchars=tab:\ \ ,trail:·
-set listchars=tab:→\ ,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:▸\ ,trail:⋅,extends:❯,precedes:❮
 set showbreak=↪
 
 highlight Comment cterm=italic

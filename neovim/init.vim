@@ -49,7 +49,6 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
-Plug 'Shougo/vimproc.vim', {'do' : 'make'}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
 Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp'] }
 Plug 'zchee/deoplete-jedi', {'for' : 'python'}
@@ -62,10 +61,6 @@ Plug 'lervag/vimtex', {'for' : ['tex', 'plaintex']}
 Plug 'wincent/loupe'
 Plug 'dag/vim-fish', {'for': 'fish'}
 Plug 'freitass/todo.txt-vim', {'for': 'todo'}
-
-" Non maintained plugins
-Plug 'file:///home/Kragendora/.local/share/nvim/local-plugs/betterdigraphs_utf8'
-Plug 'file:///home/Kragendora/.local/share/nvim/local-plugs/dragvisuals'
 
 call plug#end()
 "}}}
@@ -101,12 +96,12 @@ imap <M-;> <ESC>oi<ESC>gcckJfis
 
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
-noremap <leader>th :vsplit<CR><C-w>H:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
-noremap <leader>tl :vsplit<CR><C-w>L:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
-noremap <leader>tk :vsplit<CR><C-w>K:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
-noremap <leader>tj :vsplit<CR><C-w>J:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>
-noremap <leader>tt :tabnew<CR>:terminal<CR>
+noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <leader>th :vsplit<CR><C-w>H:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <leader>tl :vsplit<CR><C-w>L:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <leader>tk :vsplit<CR><C-w>K:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <leader>tj :vsplit<CR><C-w>J:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <leader>tt :tabnew<CR>:terminal<CR>i
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -137,8 +132,8 @@ vmap <leader>P "+P
 " map <leader>ss :setlocal spell!<cr>
 
 " quickfix menu
-nnoremap <localleader>co :silent! copen <BAR> lopen<CR>
-nnoremap <localleader>cc :silent! cclose <BAR> lclose<CR>
+nnoremap <silent> <localleader>co :silent! copen <BAR> silent! lopen<CR>
+nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
 
 
 nnoremap <C-n> :call NumberToggle()<cr>
@@ -370,7 +365,7 @@ function! EditCodeBlock()
     if g:lower_bound < g:upper_bound
         try
             let g:ft = split(getline(g:lower_bound), '\s')[1]
-            exe "silent " . (g:lower_bound + 1) . ',' . (g:upper_bound - 1) . 'y  u'
+            silent exe "silent " . (g:lower_bound + 1) . ',' . (g:upper_bound - 1) . 'y  u'
             call ScratchEdit('vsplit', 0)
             exe 'pu! u'
             exe 'set ft=' . g:ft
