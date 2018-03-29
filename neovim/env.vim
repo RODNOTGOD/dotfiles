@@ -21,6 +21,7 @@ endtry
 set mouse=n
 set path+=**
 set formatoptions+=j
+set complete+=kspell
 
 autocmd InsertEnter * if g:goyo_intro == 0 | :set nu | set rnu | endif
 autocmd InsertLeave * :set nornu
@@ -33,6 +34,8 @@ syntax on
 
 set so=7
 set scrolloff=3
+
+set inccommand=split
 
 set wildmenu
 set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
@@ -85,10 +88,11 @@ set nu
 
 set noshowmode
 set list
-" set listchars=eol:¬,tab:¦\ ,trail:·
-" set listchars=tab:\ \ ,trail:·
-set listchars=tab:▸\ ,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:\ \ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪
+
+let g:lasttab = 1
+au TabLeave * let g:lasttab = tabpagenr()
 
 highlight Comment cterm=italic
 highlight htmlArg cterm=italic

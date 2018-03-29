@@ -13,7 +13,7 @@ def create_comment(matches):
 endglobal
 
 
-snippet clark_comment "Commenting for clark's course" "re.match('\w+ (\w+)\((.*)\)', snip.buffer[snip.line + 1]) if len(snip.buffer) > snip.line + 1 else None" ie
+snippet clark_comment "Commenting for clark's course" "re.match('\w+\s*\**\s*(\w+)\((.*)\)', snip.buffer[snip.line + 1]) if len(snip.buffer) > snip.line + 1 else None" ie
 `!p snip.rv = create_comment(snip.context.group)`
 endsnippet
 

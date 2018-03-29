@@ -15,6 +15,7 @@ nmap <c-P> <Plug>yankstack_substitute_newer_paste
 
 "{{{ -> FZF
 """"""""""""""""""""""""""""""
+nmap <leader><leader> :Commands<CR>
 nmap <leader>o :Buffers<CR>
 nmap <leader>f :History<CR>
 nmap <leader>/ :Ag<CR>
@@ -56,7 +57,7 @@ let g:ultisnips_python_style="jedi"
 
 "{{{ -> Vim grep
 """"""""""""""""""""""""""""""
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn generated'
+let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git generated'
 set grepprg=/bin/grep\ -nH
 "}}}
 
@@ -119,6 +120,7 @@ let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
 
 let g:netrw_altv = 1
 let g:netrw_winsize = 15
+let g:netrw_preview   = 1
 
 augroup netrw_mapping
     autocmd!
@@ -175,7 +177,7 @@ let g:user_emmet_settings = {
 "{{{ -> lightline
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:lightline = {
-      \ 'colorscheme': 'jellybeans',
+      \ 'colorscheme': 'seoul256',
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
@@ -197,9 +199,9 @@ let g:lightline = {
 	  \   'linter_warnings': 'warning',
 	  \   'linter_errors': 'error',
       \ },
-      \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
-      \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
       \ }
+      " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
+      " \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 
 function! LightlineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
@@ -394,7 +396,7 @@ nnoremap <Leader>gs :Gstatus<CR>
 nnoremap <Leader>gd :Gdiff<CR>
 nnoremap <Leader>ge :Gedit<CR>
 nnoremap <Leader>gl :silent! Glog<CR>
-nnoremap <Leader>gL :silent! Glog<CR>:set nofoldenable<cr>
+nnoremap <Leader>gL :silent! Glog --<CR>
 nnoremap <Leader>gr :Gread<CR>
 nnoremap <Leader>gw :Gwrite<CR>
 nnoremap <Leader>gp :Git push<CR>
@@ -469,8 +471,8 @@ endf
 "{{{ -> Deoplete
 """""""""""""""""""""""""""""""""""""""""""""""""""""""""""""""
 let g:deoplete#enable_at_startup = 1
-let g:deoplete#sources#clang#libclang_path = '/usr/lib64/libclang.so'
-let g:deoplete#sources#clang#clang_header = '/usr/lib64/clang/'
+let g:deoplete#sources#clang#libclang_path = '/usr/lib/x86_64-linux-gnu/libclang-3.8.so.1'
+let g:deoplete#sources#clang#clang_header = '/usr/lib/clang/'
 set completeopt-=preview
 
 let g:deoplete#omni#functions = {}
@@ -478,6 +480,12 @@ let g:deoplete#omni#functions.javascript = [
   \ 'tern#Complete',
   \ 'jspc#omni'
 \]
+
+
+if !exists('g:deoplete#omni#input_patterns')
+	let g:deoplete#omni#input_patterns = {}
+endif
+" let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 
 let g:tern_request_timeout = 1
 let g:tern_request_timeout = 6000

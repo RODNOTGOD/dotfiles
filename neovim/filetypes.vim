@@ -72,10 +72,12 @@ au Filetype markdown nnoremap <localleader>eP :w!<CR>:exe "!pandoc -o " . fnamee
 au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
 au Filetype markdown nnoremap <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html " . fnameescape(expand('%:p:h')) . "/*.md"<cr>
 au Filetype markdown nnoremap <localleader>eb :w!<CR>:exe "!pandoc -V fontsize=8pt " . fnameescape(expand('%:p')) . " -t beamer -o ".  fnameescape(expand('%:p:r')) . ".pdf"<CR>
-au Filetype markdown set shiftwidth=2
-au Filetype markdown set tabstop=2
-au Filetype markdown set expandtab
-au Filetype markdown set spell
+au Filetype markdown setlocal shiftwidth=2
+au Filetype markdown setlocal tabstop=2
+au Filetype markdown setlocal expandtab
+au Filetype markdown setlocal spell
+au Filetype markdown setlocal wrap
+au Filetype markdown setlocal textwidth=80
 "}}}
 
 "{{{ -> JavaScript section
@@ -117,10 +119,11 @@ au FileType asm setlocal commentstring=;\ %s
 "{{{ -> Latex section
 au FileType plaintex set ft=tex
 au FileType tex set expandtab
-au Filetype tex set tabstop=2
-au Filetype tex set shiftwidth=2
-au Filetype tex set spell
+au FileType tex set tabstop=2
+au FileType tex set shiftwidth=2
+au FileType tex set spell
 au FileType tex let b:delimitMate_quotes = "\" ' $"
+au FileType tex let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 "}}}
 
 "{{{ -> C section

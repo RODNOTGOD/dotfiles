@@ -24,8 +24,8 @@ Plug 'sjl/gundo.vim'
 Plug 'itchyny/lightline.vim'
 Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
-Plug 'amix/open_file_under_cursor.vim'
 Plug 'owickstrom/vim-colors-paramount'
+Plug 'chriskempson/base16-vim'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'tpope/vim-surround'
@@ -34,15 +34,15 @@ Plug 'tpope/vim-fugitive'
 Plug 'tpope/vim-repeat'
 Plug 'tpope/vim-unimpaired'
 Plug 'tpope/vim-vinegar'
+Plug 'tpope/vim-rsi'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
 Plug 'MarcWeber/vim-addon-mw-utils'
 Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
-Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml']}
+Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml', 'php']}
 Plug 'vim-scripts/vis'
-" Plug 'ntpeters/vim-better-whitespace'
 Plug 'w0rp/ale'
 Plug 'maximbaz/lightline-ale'
 Plug 'junegunn/goyo.vim'
@@ -102,6 +102,7 @@ noremap <leader>tl :vsplit<CR><C-w>L:set nornu<CR>:set nonu<CR>:set nospell<CR>:
 noremap <leader>tk :vsplit<CR><C-w>K:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
 noremap <leader>tj :vsplit<CR><C-w>J:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
 noremap <leader>tt :tabnew<CR>:terminal<CR>i
+noremap <expr> <leader>' ":botright " . winheight(0) / 3 . "split\<CR>:terminal\<CR>i"
 tnoremap <C-[> <C-\><C-n>
 
 " Read and Writing files
@@ -110,10 +111,16 @@ nmap <leader>x ZZ
 nmap <leader>w :w!<cr>
 command! W w !sudo tee % > /dev/null
 
+" Override vim commands 'gf', '^Wf', '^W^F'
+nnoremap gf :call GotoFile("")<CR>
+nnoremap <C-W>f :call GotoFile("new")<CR>
+nnoremap <C-W><C-F> :call GotoFile("new")<CR>
+
 " *rc editing
 nmap <silent> <leader>ev :e $NVIM_CONF<CR>
+nmap <silent> <leader>et :e ~/.bashrc<CR>
+nmap <silent> <leader>el :e .local.vim<CR>
 nmap <silent> <leader>sv :source $NVIM_CONF<CR>
-nmap <silent> <leader>ez :e ~/.zshrc<CR>
 
 augroup reload_vimrc
     autocmd!
@@ -182,6 +189,56 @@ nnoremap <C-v> v
 vnoremap v <C-v>
 vnoremap <C-v> v
 
+
+" Windows and pane movement
+""""""""""""""""""""""""""""
+nnoremap 0 ^
+
+" Switch through panes
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Splitting Commands
+map <leader>v :vsplit<CR>
+map <leader>s :split<CR>
+
+nmap <M-w> <C-W>\|<C-W>_
+nmap <M-k> <C-W>k<C-W>\|<C-W>_
+nmap <M-j> <C-W>j<C-W>\|<C-W>_
+nmap <M-h> <C-W>h<C-W>\|<C-W>_
+nmap <M-l> <C-W>l<C-W>\|<C-W>_
+nmap <M-r> <C-w>=
+
+nmap <C-Up> <C-W>+
+nmap <C-Down> <C-W>-
+nmap <C-Left> <C-W><
+nmap <C-Right> <C-W>>
+
+" Character Skip trick
+inoremap <expr> <C-l> "\<Right>"
+inoremap <expr> <C-h> "\<Left>"
+
+" buffer commands
+nnoremap <TAB> :b#<cr>
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>ba :bufdo bd<cr>
+map <leader>bn :Bnew<cr><C-w>L
+
+" Tab commands
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext
+
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+inoremap <C-E> <C-X><C-E>
+inoremap <C-Y> <C-X><C-Y>
 "}}}
 
 "{{{ Functions
@@ -249,6 +306,47 @@ function! Beautify()
     endif
 endfunction
 
+function! GotoFile(w)
+    let curword = expand("<cfile>")
+    if (strlen(curword) == 0)
+        return
+    endif
+    let matchstart = match(curword, ':\d\+$')
+    if matchstart > 0
+        let pos = '+' . strpart(curword, matchstart+1)
+        let fname = strpart(curword, 0, matchstart)
+    else
+        let pos = ""
+        let fname = curword
+    endif
+
+    " check exists file.
+    if filereadable(fname)
+        let fullname = fname
+    else
+        " try find file with prefix by working directory
+        let fullname = getcwd() . '/' . fname
+        if ! filereadable(fullname)
+            " the last try, using current directory based on file opened.
+            let fullname = expand('%:h') . '/' . fname
+        endif
+    endif
+
+   " Open new window if requested
+    if a:w == "new"
+		vert botright split
+    endif
+    " Use 'find' so path is searched like 'gf' would
+    try
+       execute 'find ' . pos . ' ' . fname
+    catch
+       let choice = confirm("Failed to find '" . fname . "'\nCreate file?", "&Yes\n&No", 2)
+       if choice == 1
+          exec "edit " . fname
+       endif
+    endtry
+endfunction
+
 function! TaskFinder(options)
     cexpr system("taskfinder " . a:options)
 endfunction
@@ -266,60 +364,6 @@ command! -bar -nargs=* Ssplit call ScratchEdit('split', <q-args>)
 command! -bar -nargs=* Svsplit call ScratchEdit('vsplit', <q-args>)
 command! -bar -nargs=* Stabedit call ScratchEdit('tabe', <q-args>)
 
-" Windows and pane movement
-""""""""""""""""""""""""""""
-nnoremap 0 ^
-
-" Switch through panes
-map <C-j> <C-W>j
-map <C-k> <C-W>k
-map <C-h> <C-W>h
-map <C-l> <C-W>l
-
-" Splitting Commands
-map <leader>v :vsplit<CR>
-map <leader>s :split<CR>
-
-nmap <M-w> <C-W>\|<C-W>_
-nmap <M-k> <C-W>k<C-W>\|<C-W>_
-nmap <M-j> <C-W>j<C-W>\|<C-W>_
-nmap <M-h> <C-W>h<C-W>\|<C-W>_
-nmap <M-l> <C-W>l<C-W>\|<C-W>_
-nmap <M-r> <C-w>=
-
-nmap <C-Up> <C-W>+
-nmap <C-Down> <C-W>-
-nmap <C-Left> <C-W><
-nmap <C-Right> <C-W>>
-
-" Character Skip trick
-inoremap <expr> <C-l> "\<Right>"
-inoremap <expr> <C-h> "\<Left>"
-
-" buffer commands
-nnoremap <TAB> :b#<cr>
-map <leader>bd :Bclose<cr>:tabclose<cr>gT
-map <leader>ba :bufdo bd<cr>
-map <leader>bn :Bnew<cr><C-w>L
-
-" Tab commands
-map <leader>tn :tabnew<cr>
-map <leader>to :tabonly<cr>
-map <leader>tc :tabclose<cr>
-map <leader>tm :tabmove 
-map <leader>t<leader> :tabnext
-
-" nnoremap <M-l> :call Beautify()<cr>
-
-let g:lasttab = 1
-au TabLeave * let g:lasttab = tabpagenr()
-
-map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
-
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
-
-inoremap <C-E> <C-X><C-E>
-inoremap <C-Y> <C-X><C-Y>
 
 command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
@@ -447,11 +491,20 @@ endtry
 "}}}
 
 "{{{ Colors
-set background=dark
-color paramount
 
+if filereadable(expand("~/.vimrc_background"))
+  let base16colorspace=256
+  source ~/.vimrc_background
+endif
+
+
+let base16colorspace=256
+set background=dark
+color base16-tomorrow-night
+hi Normal guibg=NONE ctermbg=NONE
+highlight Comment cterm=italic
 highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
 2match ExtraWhiteSpace /\s\+\%#\@<!$/
 autocmd InsertLeave * redraw!
-
+hi! TermCursorNC ctermbg=8
 "}}}
