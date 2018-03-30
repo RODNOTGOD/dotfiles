@@ -62,7 +62,8 @@ au Filetype gitcommit set spell
 
 "{{{ -> Markdown section
 """"""""""""""""""""""""""""""
-au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
+" au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
+au Filetype markdown command! Openmd call RenderMarkdown()
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <localleader>[ :Ngrep 
 au Filetype markdown nnoremap <localleader>es :call EditCodeBlock()<CR>

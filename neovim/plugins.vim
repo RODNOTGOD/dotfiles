@@ -181,7 +181,7 @@ let g:lightline = {
       \ 'active': {
       \   'left': [ [ 'mode', 'paste' ],
       \             [ 'fugitive', 'readonly', 'filename', 'modified' ], ['ctrlpmark'] ],
-      \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ], ['linter_errors', 'linter_warnings', 'linter_ok' ]]
+      \   'right': [ [ 'lineinfo' ], ['percent'], [ 'fileformat', 'fileencoding', 'filetype' ], ['linter_errors', 'linter_warnings', 'linter_ok' ], ]
       \ },
       \ 'component_function': {
       \   'modified': 'LightLineModified',
@@ -203,12 +203,12 @@ let g:lightline = {
       " \ 'separator': { 'left': "\ue0b0", 'right': "\ue0b2" },
       " \ 'subseparator': { 'left': "\ue0b1", 'right': "\ue0b3" }
 
-function! LightlineModified()
+function! LightLineModified()
   return &ft =~ 'help\|vimfiler\|gundo' ? '' : &modified ? '+' : &modifiable ? '' : '-'
 endfunction
 
-function! LightlineReadonly()
-  return &ft !~? 'help\|vimfiler\|gundo' && &readonly ? '' : ''
+function! LightLineReadonly()
+  return &readonly && &filetype !~# '\v(help|vimfiler|unite)' ? '' : ''
 endfunction
 
 function! LightLineFugitive()
@@ -244,46 +244,10 @@ function! LightlineFileencoding()
   return winwidth(0) > 70 ? (&fenc !=# '' ? &fenc : &enc) : ''
 endfunction
 
-function! CtrlPMark()
-  if expand('%:t') =~ 'ControlP' && has_key(g:lightline, 'ctrlp_item')
-    call lightline#link('iR'[g:lightline.ctrlp_regex])
-    return lightline#concatenate([g:lightline.ctrlp_prev, g:lightline.ctrlp_item
-          \ , g:lightline.ctrlp_next], 0)
-  else
-    return ''
-  endif
-endfunction
-
-let g:ctrlp_status_func = {
-  \ 'main': 'CtrlPStatusFunc_1',
-  \ 'prog': 'CtrlPStatusFunc_2',
-  \ }
-
-function! CtrlPStatusFunc_1(focus, byfname, regex, prev, item, next, marked)
-  let g:lightline.ctrlp_regex = a:regex
-  let g:lightline.ctrlp_prev = a:prev
-  let g:lightline.ctrlp_item = a:item
-  let g:lightline.ctrlp_next = a:next
-  return lightline#statusline(0)
-endfunction
-
-function! CtrlPStatusFunc_2(str)
-  return lightline#statusline(0)
-endfunction
-
-function! LightLineNeomakeErrors()
-  if !exists(":Neomake") || ((get(neomake#statusline#QflistCounts(), "✖", 0) + get(neomake#statusline#LoclistCounts(), "✖", 0)) == 0)
-    return ''
-  endif
-  return '✖:'.(get(neomake#statusline#LoclistCounts(), '✖', 0) + get(neomake#statusline#QflistCounts(), '✖', 0))
-endfunction
-
-function! LightLineNeomakeWarnings()
-  if !exists(":Neomake") || ((get(neomake#statusline#QflistCounts(), "⚠", 0) + get(neomake#statusline#LoclistCounts(), "⚠", 0)) == 0)
-    return ''
-  endif
-  return '⚠:'.(get(neomake#statusline#LoclistCounts(), '⚠', 0) + get(neomake#statusline#QflistCounts(), '⚠', 0))
-endfunction
+let g:lightline#ale#indicator_checking = "\uf110"
+let g:lightline#ale#indicator_warnings = "⚠ "
+let g:lightline#ale#indicator_errors = "✖ "
+let g:lightline#ale#indicator_ok = "\uf00c"
 "}}}
 
 "{{{ -> Goyo
@@ -381,6 +345,9 @@ let g:ale_cpp_clang_options='-std=c++14 -Wall -Wextra'
 
 " FLAKE8 CHECKER
 let g:ale_python_flake8_options='--max-line-length=110 --ignore=E402'
+
+let g:ale_sign_error = "✖"
+let g:ale_sign_warning = "⚠"
 "}}}
 
 "{{{ -> Git gutter (Git diff)

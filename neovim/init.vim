@@ -422,6 +422,29 @@ function! EditCodeBlock()
     endif
 endfunction
 
+function! RenderMarkdown()
+	if !buffer_exists("*GRIP*")
+		term grip % 8080
+		file *GRIP*
+		bprev
+		exec "sleep 20m"
+	endif
+	!firefox localhost:8080 2>/dev/null &
+endfunction
+
+command! GetMusic call TermMusic()
+function! TermMusic()
+	if !buffer_exists("*MUSIC*")
+		tabnew
+		term ncmpcpp
+		file *MUSIC*
+		exec "normal i"
+	else
+		let l:bufnum = bufnr("*MUSIC*")
+		sb l:bufnum
+	endif
+endfunction
+
 func! DeleteTillSlash()
     let g:cmd = getcmdline()
 
