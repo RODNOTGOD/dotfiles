@@ -25,7 +25,8 @@ set_bash_prompt() {
 		ERR_CODE=
 	fi
 
-	PS1="$LIGHT_GREEN\u@\h[\w`__git_ps1 \" (%s)\"`] $ERR_CODE \n$RESET$DARK_GARY\$$RESET "
+	PROMPT_DIRTRIM=2
+	PS1="$LIGHT_GREEN┌─[\u@\h] - [\w`__git_ps1 \" (%s)\"`] $ERR_CODE \n$RESET$LIGHT_GREEN└─[$DARK_GARY\$$LIGHT_GREEN]$RESET "
 }
 
 PROMPT_COMMAND=set_bash_prompt
