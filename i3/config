@@ -1,7 +1,7 @@
 set $mod Mod4
 
 # Font
-font pango:terminus 13
+font pango:FantasqueSansMono NerdFont 13
 
 set $bg-color "#2F364B"
 
@@ -9,14 +9,16 @@ set $bg-color "#2F364B"
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec st
 
 # kill focused window
 bindsym $mod+q kill
 
 # rofi menus / window finder
-bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 15 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
-bindsym $mod+Shift+D exec rofi -show window -lines 10 -eh 2 -width 25 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
+bindsym $mod+d exec rofi -show run -theme dmenu -font "FantasqueSansMono NerdFont 13"
+bindsym $mod+Shift+D exec rofi -show window -theme dmenu -font "FantasqueSansMono NerdFont 13"
+# bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 15 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
+# bindsym $mod+Shift+D exec rofi -show window -lines 10 -eh 2 -width 25 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
 
 # change focus
 bindsym $mod+h focus left
@@ -137,7 +139,7 @@ client.unfocused        #0058BB #007ACC #F2F2F2
 client.urgent           #7C6F64 #FABD2F #3C3836
 
 bar {
-		status_command SCRIPT_DIR=~/.i3blocks-contrib i3blocks -c /home/kragenarch/.config/i3/i3blocks.conf
+		status_command ~/.bumblebee-status/bumblebee-status -m mpd pasink weather datetime -p weather.unit='imperial' location='50.56.229.15' -t greyish-powerline
 		strip_workspace_numbers yes
 		position top
 
@@ -169,60 +171,62 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 
 # i3 gaps
-set $default_gaps_inner 15
-set $default_gaps_outer 25
+# set $default_gaps_inner 15
+# set $default_gaps_outer 25
 
-gaps inner $default_gaps_inner
-gaps outer $default_gaps_outer
+# gaps inner $default_gaps_inner
+# gaps outer $default_gaps_outer
 
-workspace $workspace3 gaps inner 0
-workspace $workspace3 gaps outer 0
+# workspace $workspace3 gaps inner 0
+# workspace $workspace3 gaps outer 0
 
-set $mode_gaps gaps
-set $mode_gaps_outer outer gaps
-set $mode_gaps_inner inner gaps
-bindsym $mod+Shift+g mode "$mode_gaps"
+# set $mode_gaps gaps
+# set $mode_gaps_outer outer gaps
+# set $mode_gaps_inner inner gaps
+# bindsym $mod+Shift+g mode "$mode_gaps"
 
-mode "$mode_gaps" {
-	bindsym o    mode "$mode_gaps_outer"
-	bindsym i    mode "$mode_gaps_inner"
+# mode "$mode_gaps" {
+# 	bindsym o    mode "$mode_gaps_outer"
+# 	bindsym i    mode "$mode_gaps_inner"
 
-	bindsym 0    mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
-	bindsym d    mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
+# 	bindsym 0    mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
+# 	bindsym d    mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
 
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
 
-mode "$mode_gaps_inner" {
-	bindsym plus  gaps inner current plus 5
-	bindsym minus gaps inner current minus 5
-	bindsym 0     mode "default", gaps inner current set 0
-	bindsym d     mode "default", gaps inner current set $default_gaps_inner
+# mode "$mode_gaps_inner" {
+# 	bindsym plus  gaps inner current plus 5
+# 	bindsym minus gaps inner current minus 5
+# 	bindsym 0     mode "default", gaps inner current set 0
+# 	bindsym d     mode "default", gaps inner current set $default_gaps_inner
 
-	bindsym Shift+plus  gaps inner all plus 5
-	bindsym Shift+minus gaps inner all minus 5
-	bindsym Shift+0     mode "default", gaps inner all set 0
-	bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
+# 	bindsym Shift+plus  gaps inner all plus 5
+# 	bindsym Shift+minus gaps inner all minus 5
+# 	bindsym Shift+0     mode "default", gaps inner all set 0
+# 	bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
 
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
 
-mode "$mode_gaps_outer" {
-	bindsym plus  gaps outer current plus 5
-	bindsym minus gaps outer current minus 5
-	bindsym 0     mode "default", gaps outer current set 0
-	bindsym d     mode "default", gaps outer current set $default_gaps_outer
+# mode "$mode_gaps_outer" {
+# 	bindsym plus  gaps outer current plus 5
+# 	bindsym minus gaps outer current minus 5
+# 	bindsym 0     mode "default", gaps outer current set 0
+# 	bindsym d     mode "default", gaps outer current set $default_gaps_outer
 
-	bindsym Shift+plus  gaps outer all plus 5
-	bindsym Shift+minus gaps outer all minus 5
-	bindsym Shift+0     mode "default", gaps outer all set 0
-	bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
+# 	bindsym Shift+plus  gaps outer all plus 5
+# 	bindsym Shift+minus gaps outer all minus 5
+# 	bindsym Shift+0     mode "default", gaps outer all set 0
+# 	bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
 
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
+
+for_window [class="Qalculate"] floating enable
 
 # pulse audio control
 bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '2%+'"
@@ -230,14 +234,16 @@ bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '2%-'"
 bindsym XF86AudioMute exec "amixer -D pulse set Master toggle"
 
 # player
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym Shift+XF86AudioPlay exec playerctl play-pause
+bindsym Shift+XF86AudioNext exec playerctl next
+bindsym Shift+XF86AudioPrev exec playerctl previous
 
 # mpc controller
-bindsym $mod+p exec mpc toggle
-bindsym $mod+o exec mpc next
-bindsym $mod+i exec mpc prev
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioPrev exec mpc prev
+
+bindsym XF86Calculator exec qalculate
 
 # i3 Lock
 set $Locker sleep 1 && ~/.config/i3/i3lock-extra.sh
@@ -253,7 +259,7 @@ bindsym $mod+Print --release exec scrot -s -e 'mv $f ~/Pictures/' $PrintTemp
 
 # exec_always programs
 exec_always compton -f
-exec_always feh --bg-scale '/home/kragenarch/Pictures/darkfirewatch.png'
+exec_always feh --bg-scale '/home/kragendor/Pictures/nord.jpg'
 
 exec_always env LD_PRELOAD='/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so' /usr/bin/steam --quiet %U
 exec_always --no-startup-id numlockx on

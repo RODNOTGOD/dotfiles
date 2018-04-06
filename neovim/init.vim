@@ -94,6 +94,10 @@ vnoremap << <gv
 nmap <M-;> oi<ESC>gcckJfis
 imap <M-;> <ESC>oi<ESC>gcckJfis
 
+" Abbreviations
+""""""""""""""""
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+
 " Terminal mapping
 """""""""""""""""""
 noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
@@ -424,8 +428,18 @@ endfunction
 
 function! RenderMarkdown()
 	if !buffer_exists("*GRIP*")
-		term grip % 8080
+		term grip % 8090
 		file *GRIP*
+		bprev
+		exec "sleep 20m"
+	endif
+	!firefox localhost:8090 2>/dev/null &
+endfunction
+
+function! RenderHtml()
+	if !buffer_exists("*WEB*")
+		term python2 -m SimpleHTTPServer 8080
+		file *WEB*
 		bprev
 		exec "sleep 20m"
 	endif

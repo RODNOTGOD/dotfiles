@@ -203,7 +203,7 @@ alias yt-music="youtube-dl -o \"~/Music/%(title)s.%(ext)s\" -x --audio-format op
 
 export EDITOR=nvim
 export BROWSER=firefox
-
+export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 export LESS="--RAW-CONTROL-CHARS"
 
 BASE16_SHELL=$HOME/.config/base16-shell/
