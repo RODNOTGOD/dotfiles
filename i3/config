@@ -1,7 +1,7 @@
 set $mod Mod4
 
 # Font
-font pango:terminus 13
+font pango:TerminessTTF NerdFont 11
 
 set $bg-color "#2F364B"
 
@@ -9,14 +9,14 @@ set $bg-color "#2F364B"
 floating_modifier $mod
 
 # start a terminal
-bindsym $mod+Return exec terminator
+bindsym $mod+Return exec st
 
 # kill focused window
 bindsym $mod+q kill
 
 # rofi menus / window finder
-bindsym $mod+d exec rofi -show run -lines 10 -eh 2 -width 15 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
-bindsym $mod+Shift+D exec rofi -show window -lines 10 -eh 2 -width 25 -padding 25 -bw 3 -hide-scrollbar -font "terminus 15"
+bindsym $mod+d exec bash ~/.scripts/rofi-scripts-collection/rofi-bangs.sh
+bindsym $mod+Shift+D exec rofi -show window -theme sidebar
 
 # change focus
 bindsym $mod+h focus left
@@ -64,7 +64,7 @@ bindsym $mod+space focus mode_toggle
 bindsym $mod+a focus parent
 
 # WorkSpace Names / Variables
-set $workspace1     "1:   Browser"
+set $workspace1     "1:   Browser"
 set $workspace2     "2:   Steam"
 set $workspace3     "3:   Editor"
 set $workspace4     "4:   Terminal"
@@ -84,7 +84,7 @@ bindsym $mod+9 workspace 9
 bindsym $mod+0 workspace $workspace10
 
 # Workspace assignment
-assign [class="chromium"]   $workspace1
+assign [class="Firefox"]   $workspace1
 assign [class="Steam"]      $workspace2
 assign [class="Eclipse"]    $workspace3
 assign [class="Atom"]       $workspace3
@@ -132,12 +132,12 @@ bindsym $mod+r mode "resize"
 
 # class                 Border  Backgr. Text
 client.focused          #007ACC #007ACC #F2F2F2
-client.focused_inactive #0058BB #007ACC #F2F2F2
-client.unfocused        #0058BB #007ACC #F2F2F2
+client.focused_inactive #0058BB #003051 #F2F2F2
+client.unfocused        #0058BB #003051 #F2F2F2
 client.urgent           #7C6F64 #FABD2F #3C3836
 
 bar {
-		status_command SCRIPT_DIR=~/.i3blocks-contrib i3blocks -c /home/kragenarch/.config/i3/i3blocks.conf
+		status_command ~/.bumblebee-status/bumblebee-status -m spotify weather pasink pasource brightness battery datetime -p weather.unit='imperial' -t greyish-powerline
 		strip_workspace_numbers yes
 		position top
 
@@ -146,7 +146,7 @@ bar {
 			statusline #d5c4a1
 			separator  #3c3836
 
-			focused_workspace   #282828 #1d2021 #928374
+			focused_workspace   #282828 #1d2021 #e2e2e2
 			active_workspace    #282828 #32302f #928374
 			inactive_workspace  #282828 #32302f #928374
 			urgent_workspace    #d79921 #cc241d #ffffff
@@ -169,62 +169,63 @@ mode "$mode_system" {
 bindsym $mod+Pause mode "$mode_system"
 
 # i3 gaps
-set $default_gaps_inner 15
-set $default_gaps_outer 25
-
-gaps inner $default_gaps_inner
-gaps outer $default_gaps_outer
-
-workspace $workspace3 gaps inner 0
-workspace $workspace3 gaps outer 0
-
-set $mode_gaps gaps
-set $mode_gaps_outer outer gaps
-set $mode_gaps_inner inner gaps
-bindsym $mod+Shift+g mode "$mode_gaps"
-
-mode "$mode_gaps" {
-	bindsym o    mode "$mode_gaps_outer"
-	bindsym i    mode "$mode_gaps_inner"
-
-	bindsym 0    mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
-	bindsym d    mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
-
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_inner" {
-	bindsym plus  gaps inner current plus 5
-	bindsym minus gaps inner current minus 5
-	bindsym 0     mode "default", gaps inner current set 0
-	bindsym d     mode "default", gaps inner current set $default_gaps_inner
-
-	bindsym Shift+plus  gaps inner all plus 5
-	bindsym Shift+minus gaps inner all minus 5
-	bindsym Shift+0     mode "default", gaps inner all set 0
-	bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
-
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
-
-mode "$mode_gaps_outer" {
-	bindsym plus  gaps outer current plus 5
-	bindsym minus gaps outer current minus 5
-	bindsym 0     mode "default", gaps outer current set 0
-	bindsym d     mode "default", gaps outer current set $default_gaps_outer
-
-	bindsym Shift+plus  gaps outer all plus 5
-	bindsym Shift+minus gaps outer all minus 5
-	bindsym Shift+0     mode "default", gaps outer all set 0
-	bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
-
-	bindsym Return mode "default"
-	bindsym Escape mode "default"
-}
+# set $default_gaps_inner 15
+# set $default_gaps_outer 25
+#
+# gaps inner $default_gaps_inner
+# gaps outer $default_gaps_outer
+#
+# workspace $workspace3 gaps inner 0
+# workspace $workspace3 gaps outer 0
+#
+# set $mode_gaps gaps
+# set $mode_gaps_outer outer gaps
+# set $mode_gaps_inner inner gaps
+# bindsym $mod+Shift+g mode "$mode_gaps"
+#
+# mode "$mode_gaps" {
+# 	bindsym o    mode "$mode_gaps_outer"
+# 	bindsym i    mode "$mode_gaps_inner"
+#
+# 	bindsym 0    mode "default", exec --no-startup-id i3-msg "gaps inner current set 0" && i3-msg "gaps outer current set 0"
+# 	bindsym d    mode "default", exec --no-startup-id i3-msg "gaps inner current set $default_gaps_inner" && i3-msg "gaps outer current set $default_gaps_outer"
+#
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
+#
+# mode "$mode_gaps_inner" {
+# 	bindsym plus  gaps inner current plus 5
+# 	bindsym minus gaps inner current minus 5
+# 	bindsym 0     mode "default", gaps inner current set 0
+# 	bindsym d     mode "default", gaps inner current set $default_gaps_inner
+#
+# 	bindsym Shift+plus  gaps inner all plus 5
+# 	bindsym Shift+minus gaps inner all minus 5
+# 	bindsym Shift+0     mode "default", gaps inner all set 0
+# 	bindsym Shift+d     mode "default", gaps inner all set $default_gaps_inner
+#
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
+#
+# mode "$mode_gaps_outer" {
+# 	bindsym plus  gaps outer current plus 5
+# 	bindsym minus gaps outer current minus 5
+# 	bindsym 0     mode "default", gaps outer current set 0
+# 	bindsym d     mode "default", gaps outer current set $default_gaps_outer
+#
+# 	bindsym Shift+plus  gaps outer all plus 5
+# 	bindsym Shift+minus gaps outer all minus 5
+# 	bindsym Shift+0     mode "default", gaps outer all set 0
+# 	bindsym Shift+d     mode "default", gaps outer all set $default_gaps_outer
+#
+# 	bindsym Return mode "default"
+# 	bindsym Escape mode "default"
+# }
 
 # pulse audio control
+bindsym XF86AudioMicMute exec "amixer -D pulse set Capture toggle"
 bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '2%+'"
 bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '2%-'"
 bindsym XF86AudioMute exec "amixer -D pulse set Master toggle"
@@ -253,8 +254,9 @@ bindsym $mod+Print --release exec scrot -s -e 'mv $f ~/Pictures/' $PrintTemp
 
 # exec_always programs
 exec_always compton -f
-exec_always feh --bg-scale '/home/kragenarch/Pictures/darkfirewatch.png'
+exec_always feh --bg-scale '/home/kragendora/Pictures/background.jpg'
 
 exec_always env LD_PRELOAD='/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so' /usr/bin/steam --quiet %U
 exec_always --no-startup-id numlockx on
 exec --no-startup-id redshift-gtk &
+exec --no-startup-id nm-applet &
