@@ -178,6 +178,15 @@ bindsym $mod+Pause mode "$mode_system"
 # workspace $workspace3 gaps inner 0
 # workspace $workspace3 gaps outer 0
 #
+=======
+
+# gaps inner $default_gaps_inner
+# gaps outer $default_gaps_outer
+
+# workspace $workspace3 gaps inner 0
+# workspace $workspace3 gaps outer 0
+
+>>>>>>> 9edb9b504d27a8588e4299fbde1925112e1d674f
 # set $mode_gaps gaps
 # set $mode_gaps_outer outer gaps
 # set $mode_gaps_inner inner gaps
@@ -224,6 +233,7 @@ bindsym $mod+Pause mode "$mode_system"
 # 	bindsym Escape mode "default"
 # }
 
+for_window [class="Qalculate"] floating enable
 # pulse audio control
 bindsym XF86AudioMicMute exec "amixer -D pulse set Capture toggle"
 bindsym XF86AudioRaiseVolume exec "amixer -D pulse sset Master '2%+'"
@@ -231,14 +241,16 @@ bindsym XF86AudioLowerVolume exec "amixer -D pulse sset Master '2%-'"
 bindsym XF86AudioMute exec "amixer -D pulse set Master toggle"
 
 # player
-bindsym XF86AudioPlay exec playerctl play-pause
-bindsym XF86AudioNext exec playerctl next
-bindsym XF86AudioPrev exec playerctl previous
+bindsym Shift+XF86AudioPlay exec playerctl play-pause
+bindsym Shift+XF86AudioNext exec playerctl next
+bindsym Shift+XF86AudioPrev exec playerctl previous
 
 # mpc controller
-bindsym $mod+p exec mpc toggle
-bindsym $mod+o exec mpc next
-bindsym $mod+i exec mpc prev
+bindsym XF86AudioPlay exec mpc toggle
+bindsym XF86AudioNext exec mpc next
+bindsym XF86AudioPrev exec mpc prev
+
+bindsym XF86Calculator exec qalculate
 
 # i3 Lock
 set $Locker sleep 1 && ~/.config/i3/i3lock-extra.sh
@@ -254,7 +266,7 @@ bindsym $mod+Print --release exec scrot -s -e 'mv $f ~/Pictures/' $PrintTemp
 
 # exec_always programs
 exec_always compton -f
-exec_always feh --bg-scale '/home/kragendora/Pictures/background.jpg'
+exec_always feh --bg-scale '~/Pictures/background.jpg'
 
 exec_always env LD_PRELOAD='/usr/$LIB/libstdc++.so.6 /usr/$LIB/libgcc_s.so.1 /usr/$LIB/libxcb.so.1 /usr/$LIB/libgpg-error.so' /usr/bin/steam --quiet %U
 exec_always --no-startup-id numlockx on

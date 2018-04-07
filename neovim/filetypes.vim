@@ -38,8 +38,8 @@ au FileType json set expandtab
 augroup html_editor
 	au Filetype html,htmldjango set tabstop=2
 	au Filetype html,htmldjango set shiftwidth=2
-	au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
-	au Filetype html,htmldjango nnoremap <localleader>o :w<CR>:Openhtml<CR><CR>
+	" au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
+	au Filetype html,htmldjango nnoremap <localleader>o :call RenderHtml()<CR><CR>
 	au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
 	au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
 	au Filetype css set tabstop=4
@@ -87,6 +87,8 @@ au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl nocindent
 
+au FileType javascript nnoremap <localleader>k :TernDoc<CR>
+
 au FileType javascript imap <c-t> $log();<esc>hi
 au FileType javascript imap <c-a> alert();<esc>hi
 
@@ -94,6 +96,7 @@ au FileType javascript inoremap <buffer> $r return
 au FileType javascript inoremap <buffer> $f //--- PH<esc>FP2xi
 au Filetype javascript set tabstop=4
 au Filetype javascript set shiftwidth=4
+au Filetype javascript set expandtab
 
 function! JavaScriptFold()
     setl foldmethod=syntax
@@ -130,4 +133,6 @@ au FileType tex let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 "{{{ -> C section
 au Filetype c highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 au Filetype c match OverLength /\%121v.\+/
+au FileType c setlocal commentstring=//\ %s
+au FileType cpp setlocal commentstring=//\ %s
 "}}}

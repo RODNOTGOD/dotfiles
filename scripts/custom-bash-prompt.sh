@@ -1,3 +1,5 @@
+BOLD_WHITE='\033[1;37m'
+BOLD_CYAN='\033[1;36m'
 LIGHT_GREEN='\[\e[1;32m\]'
 LIGHT_RED='\[\e[1;31m\]'
 DARK_GARY='\[\e[1;30m\]'
@@ -26,7 +28,7 @@ set_bash_prompt() {
 	fi
 
 	PROMPT_DIRTRIM=2
-	PS1="$LIGHT_GREEN┌─[\u@\h] - [\w`__git_ps1 \" (%s)\"`] $ERR_CODE \n$RESET$LIGHT_GREEN└─[$DARK_GARY\$$LIGHT_GREEN]$RESET "
+	PS1="$LIGHT_GREEN┌─[\u@\h] - [$BOLD_WHITE\w$BOLD_CYAN`__git_ps1 \" (%s)\"`$LIGHT_GREEN] $ERR_CODE \n$RESET$LIGHT_GREEN└─[$DARK_GARY\$$LIGHT_GREEN]$RESET "
 }
 
 PROMPT_COMMAND=set_bash_prompt

@@ -265,7 +265,7 @@ function! s:goyo_enter()
 	set noshowcmd
 	set scrolloff=999
 	let g:goyo_intro = 1
-	color paramount
+	color base16-tomorrow-night
 	ALEDisable
 	" ...
 endfunction
@@ -277,7 +277,7 @@ function! s:goyo_leave()
 	set showcmd
 	set scrolloff=3
 	let g:goyo_intro = 0
-	color paramount
+	color base16-tomorrow-night
 	highlight Normal ctermbg=none
 	highlight NonText ctermbg=none
 	ALEEnable

@@ -48,7 +48,7 @@ call plug#end()
 
 "{{{ --> Env Settings
 set background=dark
-colorscheme paramount
+colorscheme industry
 
 set path+=**
 

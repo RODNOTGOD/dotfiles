@@ -151,6 +151,8 @@ set ai
 set si
 set wrap
 
+let g:netrw_browsex_viewer= "xdg-open"
+
 " -> Buffer and panes
 """"""""""""""""""""""
 
@@ -158,7 +160,7 @@ set wrap
 try
   " set switchbuf=useopen,usetab,newtab
   set switchbuf=useopen,usetab
-  set stal=2
+  set stal=1
 catch
 endtry
 
