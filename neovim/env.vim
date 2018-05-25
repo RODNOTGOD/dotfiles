@@ -28,8 +28,8 @@ autocmd InsertLeave * :set nornu
 
 " -> Gui
 """""""""
-" let $NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-let $NVIM_TUI_ENABLE_TRUE_COLOR=1
+let NVIM_TUI_ENABLE_CURSOR_SHAPE=1
+let NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax on
 
 set so=7
@@ -39,7 +39,6 @@ set inccommand=split
 
 set wildmenu
 set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
-" set wildignore+=*/.git/*,*/.hg/*,*/.svn/*,*/.DS_Store
 
 set ruler
 
@@ -102,22 +101,9 @@ highlight Normal ctermbg=none
 
 " -> Color
 """""""""""
+" set termguicolors
 
-if $COLORTERM == 'gnome-terminal'
-	" set t_Co=256
-endif
 
-" if (empty($TMUX) && has("termguicolors"))
-" 	set termguicolors
-" endif
-
-try
-	colorscheme tender
-catch
-endtry
-
-set background=light
-set background=dark
 
 if has("gui_running")
     set guioptions-=T

@@ -35,16 +35,19 @@ au FileType json set expandtab
 
 "{{{ -> Html section
 """"""""""""""""""""""""""""""
+let g:html_indent_inctags = "style,html,body,head,tbody"
+let g:html_indent_autotags = "th,td,tr,tfoot,thead"
+let g:html_indent_script1 = "inc"
+let g:html_indent_style1 = "inc"
 augroup html_editor
 	au Filetype html,htmldjango set tabstop=2
 	au Filetype html,htmldjango set shiftwidth=2
-	" au Filetype html,htmldjango command! Openhtml !eval $BROWSER % >/dev/null 2>/dev/null &
-	au Filetype html,htmldjango nnoremap <localleader>o :call RenderHtml()<CR><CR>
-	au Filetype html,htmldjango inoremap <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
-	au Filetype html,htmldjango inoremap <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
+	au Filetype html,htmldjango nnoremap <buffer> <localleader>o :call RenderHtml()<CR><CR>
+	au Filetype html,htmldjango inoremap <buffer> <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
+	au Filetype html,htmldjango inoremap <buffer> <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
 	au Filetype css set tabstop=4
 	au Filetype css set shiftwidth=4
-	au FileType css setlocal omnifunc=csscomplete#CompleteCSS
+	au FileType html,htmldjango,css setlocal omnifunc=csscomplete#CompleteCSS
 augroup end
 "}}}
 
@@ -65,14 +68,14 @@ au Filetype gitcommit set spell
 " au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
 au Filetype markdown command! Openmd call RenderMarkdown()
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
-au Filetype markdown nnoremap <localleader>[ :Ngrep 
-au Filetype markdown nnoremap <localleader>es :call EditCodeBlock()<CR>
-au Filetype markdown nnoremap <localleader>o :w<CR>:Openmd<CR><CR>
-au Filetype markdown nnoremap <localleader>ep :w!<CR>:exe "!pandoc -o ~/Documents/" . fnameescape(expand('%:p:t:r')) . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
-au Filetype markdown nnoremap <localleader>eP :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf " . fnameescape(expand('%:p:h')) . "/*.md" <cr>
-au Filetype markdown nnoremap <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
-au Filetype markdown nnoremap <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html " . fnameescape(expand('%:p:h')) . "/*.md"<cr>
-au Filetype markdown nnoremap <localleader>eb :w!<CR>:exe "!pandoc -V fontsize=8pt " . fnameescape(expand('%:p')) . " -t beamer -o ".  fnameescape(expand('%:p:r')) . ".pdf"<CR>
+au Filetype markdown nnoremap <buffer> <localleader>[ :Ngrep 
+au Filetype markdown nnoremap <buffer> <localleader>es :call EditCodeBlock()<CR>
+au Filetype markdown nnoremap <buffer> <localleader>o :w<CR>:Openmd<CR><CR>
+au Filetype markdown nnoremap <buffer> <localleader>ep :w!<CR>:exe "!pandoc -o ~/Documents/" . fnameescape(expand('%:p:t:r')) . ".pdf < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <buffer> <localleader>eP :w!<CR>:exe "!pandoc -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".pdf " . fnameescape(expand('%:p:h')) . "/*.md" <cr>
+au Filetype markdown nnoremap <buffer> <localleader>eh :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:t:r')], "/")) . ".html < " . fnameescape(expand('%:p')) . " "<cr>
+au Filetype markdown nnoremap <buffer> <localleader>eH :w!<CR>:exe "!pandoc -s -r markdown -f markdown_mmd -w html -o " . fnameescape(join([expand('%:p:h'), expand('%:p:h:t')], "/")) . ".html " . fnameescape(expand('%:p:h')) . "/*.md"<cr>
+au Filetype markdown nnoremap <buffer> <localleader>eb :w!<CR>:exe "!pandoc -V fontsize=8pt " . fnameescape(expand('%:p')) . " -t beamer -o ".  fnameescape(expand('%:p:r')) . ".pdf"<CR>
 au Filetype markdown setlocal shiftwidth=2
 au Filetype markdown setlocal tabstop=2
 au Filetype markdown setlocal expandtab
@@ -108,11 +111,13 @@ function! JavaScriptFold()
     endfunction
     setl foldtext=FoldText()
 endfunction
-
-if exists('$TMUX')
-    " set term=screen-256color
-endif
 "}}}
+
+" -> Ruby section {{{
+let g:rubycomplete_buffer_loading = 1
+let g:rubycomplete_classes_in_global = 1
+let g:rubycomplete_rails = 1
+" }}} -> Ruby
 
 "{{{ -> Assembly section
 """""""""""""""""""""""""""""""

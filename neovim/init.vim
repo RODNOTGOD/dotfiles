@@ -22,12 +22,13 @@ let $NVIM_DIR='~/.local/share/nvim'
 Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
 Plug 'sjl/gundo.vim'
 Plug 'itchyny/lightline.vim'
-Plug 'ervandew/supertab'
 Plug 'SirVer/ultisnips'
 Plug 'owickstrom/vim-colors-paramount'
-Plug 'chriskempson/base16-vim'
+Plug 'dracula/vim', { 'as': 'dracula' }
+Plug 'luochen1990/rainbow'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
+Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
 Plug 'tpope/vim-fugitive'
@@ -49,11 +50,14 @@ Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
+Plug 'vim-ruby/vim-ruby', {'for': ['ruby', 'xruby']}
+Plug 'tpope/vim-rails', {'for': ['ruby', 'xruby']}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
-Plug 'zchee/deoplete-clang', {'for' : ['c', 'cpp'] }
-Plug 'zchee/deoplete-jedi', {'for' : 'python'}
+Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp'] }
+Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx']}
 Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'npm install && npm install -g tern' }
+Plug 'tweekmonster/django-plus.vim', {'for': ['python', 'htmldjango', 'django']}
 Plug 'Raimondi/delimitMate'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
@@ -83,16 +87,19 @@ nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 
 inoremap <C-H> <C-W>
+inoremap <C-J> <CR><ESC>O
 
 nnoremap <leader>i :set cursorline!<CR>
+nnoremap <silent> <C-M> :call cursor(0, len(getline('.')) / 2)<CR>
 
 nnoremap c* *Ncgn
 
 vnoremap >> >gv
 vnoremap << <gv
 
-nmap <M-;> oi<ESC>gcckJfis
-imap <M-;> <ESC>oi<ESC>gcckJfis
+nmap <M-;> oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
+imap <M-;> <ESC>oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
+
 
 " Abbreviations
 """"""""""""""""
@@ -100,11 +107,11 @@ iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 
 " Terminal mapping
 """""""""""""""""""
-noremap <F2> :vsplit<CR><C-w>l:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
-noremap <leader>th :vsplit<CR><C-w>H:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
-noremap <leader>tl :vsplit<CR><C-w>L:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
-noremap <leader>tk :vsplit<CR><C-w>K:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
-noremap <leader>tj :vsplit<CR><C-w>J:set nornu<CR>:set nonu<CR>:set nospell<CR>:terminal<CR>i
+noremap <F2> :vsplit<CR><C-w>l:terminal<CR>i
+noremap <leader>th :vsplit<CR><C-w>H:terminal<CR>i
+noremap <leader>tl :vsplit<CR><C-w>L:terminal<CR>i
+noremap <leader>tk :vsplit<CR><C-w>K:terminal<CR>i
+noremap <leader>tj :vsplit<CR><C-w>J:terminal<CR>i
 noremap <leader>tt :tabnew<CR>:terminal<CR>i
 noremap <expr> <leader>' ":botright " . winheight(0) / 3 . "split\<CR>:terminal\<CR>i"
 tnoremap <C-[> <C-\><C-n>
@@ -139,16 +146,12 @@ nmap <leader>P "+P
 vmap <leader>p "+p
 vmap <leader>P "+P
 
-" spell checking
-" map <leader>ss :setlocal spell!<cr>
-
 " quickfix menu
 nnoremap <silent> <localleader>co :silent! copen <BAR> silent! lopen<CR>
 nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
 
-
-nnoremap <C-n> :call NumberToggle()<cr>
-
+" Grep word under cursor
+nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -427,35 +430,26 @@ function! EditCodeBlock()
 endfunction
 
 function! RenderMarkdown()
-	if !buffer_exists("*GRIP*")
+	if !buffer_exists("!grip")
 		term grip % 8090
-		file *GRIP*
+		file !grip
 		bprev
-		exec "sleep 20m"
+		exec "sleep 30m"
 	endif
 	!firefox localhost:8090 2>/dev/null &
 endfunction
 
 function! RenderHtml()
-	if !buffer_exists("*WEB*")
-		term python2 -m SimpleHTTPServer 8080
-		file *WEB*
-		bprev
-		exec "sleep 20m"
-	endif
-	!firefox localhost:8080 2>/dev/null &
-endfunction
-
-command! GetMusic call TermMusic()
-function! TermMusic()
-	if !buffer_exists("*MUSIC*")
-		tabnew
-		term ncmpcpp
-		file *MUSIC*
-		exec "normal i"
+	if expand('%:t') ==# 'index.html'
+		if !buffer_exists("!SimpleHTTPServer")
+			term python2 -m SimpleHTTPServer 8080
+			file !SimpleHTTPServer
+			bprev
+			exec "sleep 30m"
+		endif
+		!firefox localhost:8080 2>/dev/null &
 	else
-		let l:bufnum = bufnr("*MUSIC*")
-		sb l:bufnum
+		!firefox % 2>/dev/null &
 	endif
 endfunction
 
@@ -529,15 +523,10 @@ endtry
 
 "{{{ Colors
 
-if filereadable(expand("~/.vimrc_background"))
-  let base16colorspace=256
-  source ~/.vimrc_background
-endif
-
-
-let base16colorspace=256
+" set termguicolors
 set background=dark
-color base16-tomorrow-night
+color dracula
+
 hi Normal guibg=NONE ctermbg=NONE
 highlight Comment cterm=italic
 highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929

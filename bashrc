@@ -136,7 +136,7 @@ compress () {
 	esac
 }
 
-mkd() {
+md() {
 	mkdir -p "$@"; cd "$@" || exit
 }
 
@@ -160,7 +160,7 @@ vgrep() {
 export EDITOR="nvim"
 export NOTES_DIRECTORY=".notes"
 
-alias md="mkdir -p"
+alias mkd="mkdir -p"
 
 alias tm="tmux-menu"
 alias tl="tmux list-sessions"
@@ -206,8 +206,9 @@ export BROWSER=firefox
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 export LESS="--RAW-CONTROL-CHARS"
 
-BASE16_SHELL=$HOME/.config/base16-shell/
-[ -n "$PS1" ] && [ -s $BASE16_SHELL/profile_helper.sh ] && eval "$($BASE16_SHELL/profile_helper.sh)"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.LESS_TERMCAP ] && source ~/.LESS_TERMCAP
+
+# Add RVM to PATH for scripting. Make sure this is the last PATH variable change.
+export PATH="$PATH:$HOME/.rvm/bin"
