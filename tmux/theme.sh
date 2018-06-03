@@ -48,11 +48,11 @@ set-option -g display-panes-colour $tm_color_inactive
 set-window-option -g clock-mode-colour $tm_color_active
 
 tm_tunes="#[fg=$tm_color_music,bold]#(source ~/.tmux/tunes.sh)"
-# tm_battery="#(~/.dotfiles/bin/battery_indicator.sh)"
+tm_volume="#[fg=$tm_color_music,bold]#(source ~/.tmux/volume.sh)"
 
 tm_date="#[fg=$tm_color_inactive] %H:%m %d %b"
 tm_host="#[fg=$tm_color_feature,bold]#h"
 tm_session_name="#[fg=$tm_color_feature,bold] #S"
 
 set -g status-left $tm_session_name' '
-set -g status-right $tm_tunes' '$tm_date' '$tm_host
+set -g status-right $tm_volume' '$tm_tunes' '$tm_date' '$tm_host

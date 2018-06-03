@@ -1,3 +1,5 @@
+#!/usr/bin/env bash
+
 # Rolling anything what you want.
 # arg1: text to roll.
 # arg2: max length to display.

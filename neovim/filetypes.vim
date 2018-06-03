@@ -5,6 +5,10 @@ augroup term_enter
 augroup end
 "}}}
 
+" -> Vim section {{{ "
+ autocmd FileType vim set keywordprg=":help"
+" }}} -> Vim section "
+
 "{{{ -> Python section
 """"""""""""""""""""""""""""""
 let g:python_highlight_all = 1
@@ -42,11 +46,13 @@ let g:html_indent_style1 = "inc"
 augroup html_editor
 	au Filetype html,htmldjango set tabstop=2
 	au Filetype html,htmldjango set shiftwidth=2
-	au Filetype html,htmldjango nnoremap <buffer> <localleader>o :call RenderHtml()<CR><CR>
-	au Filetype html,htmldjango inoremap <buffer> <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
-	au Filetype html,htmldjango inoremap <buffer> <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
+	au Filetype html,htmldjango nnoremap <silent> <buffer> <localleader>o :call RenderHtml()<CR><CR>
+	au Filetype html,htmldjango inoremap <silent> <buffer> <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
+	au Filetype html,htmldjango inoremap <silent> <buffer> <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
 	au Filetype css set tabstop=4
 	au Filetype css set shiftwidth=4
+	au Filetype css nnoremap <silent> <buffer> <localleader>i :call Internetify()<CR>
+	au Filetype css inoremap <silent> <buffer> <localleader>i :call Internetify()<CR>
 	au FileType html,htmldjango,css setlocal omnifunc=csscomplete#CompleteCSS
 augroup end
 "}}}
@@ -90,10 +96,10 @@ au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl nocindent
 
-au FileType javascript nnoremap <localleader>k :TernDoc<CR>
+au FileType javascript nnoremap <silent> <buffer> K <esc>:TernDoc<CR>
 
-au FileType javascript imap <c-t> $log();<esc>hi
-au FileType javascript imap <c-a> alert();<esc>hi
+au FileType javascript imap <buffer> <c-t> $log();<esc>hi
+au FileType javascript imap <buffer> <c-a> alert();<esc>hi
 
 au FileType javascript inoremap <buffer> $r return
 au FileType javascript inoremap <buffer> $f //--- PH<esc>FP2xi

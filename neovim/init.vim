@@ -25,7 +25,6 @@ Plug 'itchyny/lightline.vim'
 Plug 'SirVer/ultisnips'
 Plug 'owickstrom/vim-colors-paramount'
 Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'luochen1990/rainbow'
 Plug 'terryma/vim-expand-region'
 Plug 'terryma/vim-multiple-cursors'
 Plug 'scrooloose/nerdtree'
@@ -97,8 +96,8 @@ nnoremap c* *Ncgn
 vnoremap >> >gv
 vnoremap << <gv
 
-nmap <M-;> oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
-imap <M-;> <ESC>oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
+nmap <silent> <M-;> oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
+imap <silent> <M-;> <ESC>oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
 
 
 " Abbreviations
@@ -289,7 +288,7 @@ function! Internetify()
     let l:currLine = getline('.')
     let l:splice = join(split(l:currLine))
 
-    for l:name in ["-o-", "-moz-", "-webkit-"]
+    for l:name in ["-ms-", "-moz-", "-webkit-"]
         let l:compatLine = "\t" . l:name . l:splice . "\n"
         let o = @o
         let @o = l:compatLine
@@ -519,18 +518,4 @@ try
     source .local.vim
 catch
 endtry
-"}}}
-
-"{{{ Colors
-
-" set termguicolors
-set background=dark
-color dracula
-
-hi Normal guibg=NONE ctermbg=NONE
-highlight Comment cterm=italic
-highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
-2match ExtraWhiteSpace /\s\+\%#\@<!$/
-autocmd InsertLeave * redraw!
-hi! TermCursorNC ctermbg=8
 "}}}

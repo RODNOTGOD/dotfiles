@@ -102,7 +102,19 @@ highlight Normal ctermbg=none
 " -> Color
 """""""""""
 " set termguicolors
+set background=dark
 
+try
+	color paramount
+catch
+endtry
+
+hi Normal guibg=NONE ctermbg=NONE
+highlight Comment cterm=italic
+highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
+2match ExtraWhiteSpace /\s\+\%#\@<!$/
+autocmd InsertLeave * redraw!
+hi! TermCursorNC ctermbg=8
 
 
 if has("gui_running")
