@@ -4,6 +4,7 @@ BOLD_BLUE='\[\e[1;34m\]'
 LIGHT_GREEN='\[\e[1;32m\]'
 LIGHT_RED='\[\e[1;31m\]'
 DARK_GRAY='\[\e[1;30m\]'
+LIGHT_PURPLE='\[\e[1;35m\]'
 RESET='\[\e[m\]'
 
 get_prompt_colors() {
@@ -17,7 +18,7 @@ get_prompt_colors() {
 GIT_PS1_SHOWDIRTYSTATE="true"
 GIT_PS1_SHOWUNTRACKEDFILES="true"
 
-source $SCRIPT_DIR/git-prompt.sh
+source $PROMPT_DIR/git-prompt.sh
 
 set_bash_prompt() {
 	ERR_CODE=$?
@@ -26,12 +27,12 @@ set_bash_prompt() {
 		# ERR_CODE="$LIGHT_RED$ERR_CODE$RESET"
 		SYM_COLOR="$LIGHT_RED"
 	else
-		SYM_COLOR=$DARK_GRAY
+		SYM_COLOR=$LIGHT_PURPLE
 	fi
 
 	# PROMPT_DIRTRIM=2
 	# PS1="$LIGHT_GREEN┌─[\u@\h] - [$BOLD_WHITE\w$BOLD_CYAN`__git_ps1 \" (%s)\"`$LIGHT_GREEN] $ERR_CODE \n$RESET$LIGHT_GREEN└─[$DARK_GARY\$$LIGHT_GREEN]$RESET "
-	PS1="$SYM_COLOR\$ $BOLD_BLUE\W$LIGHT_GREEN`__git_ps1 \" (%s)\"`$RESET "
+	PS1="$BOLD_BLUE\W$LIGHT_GREEN`__git_ps1 \" (%s)\"`$SYM_COLOR>$RESET "
 }
 
 PROMPT_COMMAND=set_bash_prompt
