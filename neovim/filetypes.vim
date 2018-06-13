@@ -5,9 +5,9 @@ augroup term_enter
 augroup end
 "}}}
 
-" -> Vim section {{{ "
+" -> Vim section {{{
  autocmd FileType vim set keywordprg=":help"
-" }}} -> Vim section "
+" }}} -> Vim section
 
 "{{{ -> Python section
 """"""""""""""""""""""""""""""
@@ -28,6 +28,7 @@ au FileType python map <buffer> <leader>D ?def
 au FileType python set cindent
 au FileType python set cinkeys-=0#
 au FileType python set indentkeys-=0#
+au FileType python setlocal makeprg=python3\ -m\ flake8\ %
 "}}}
 
 "{{{ -> Json
@@ -137,7 +138,6 @@ au FileType tex set expandtab
 au FileType tex set tabstop=2
 au FileType tex set shiftwidth=2
 au FileType tex set spell
-au FileType tex let b:delimitMate_quotes = "\" ' $"
 au FileType tex let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 "}}}
 
@@ -147,3 +147,7 @@ au Filetype c match OverLength /\%121v.\+/
 au FileType c setlocal commentstring=//\ %s
 au FileType cpp setlocal commentstring=//\ %s
 "}}}
+
+" -> Quickfix {{{
+autocmd QuickFixCmdPost [^l]* cwindow
+" }}} -> Quickfix

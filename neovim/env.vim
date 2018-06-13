@@ -23,7 +23,7 @@ set path+=**
 set formatoptions+=j
 set complete+=kspell
 
-autocmd InsertEnter * if g:goyo_intro == 0 | :set nu | set rnu | endif
+autocmd InsertEnter * :set nu | set rnu
 autocmd InsertLeave * :set nornu
 
 " -> Gui
@@ -105,7 +105,7 @@ highlight Normal ctermbg=none
 set background=dark
 
 try
-	color paramount
+	color apprentice
 catch
 endtry
 
@@ -169,7 +169,8 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 """""""""""""""""
 
 set laststatus=2
-set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
+set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\ +\ \|':''}%{&readonly?'\ \ \|':''}%h%w%{StatuslineGit()}%=\|\ %{''!=#&filetype?&filetype:'none'}\ \|\ L:%l/%L\ C:%v\ 
 
 function! HasPaste()
     if &paste

@@ -19,14 +19,9 @@ let $NVIM_DIR='~/.local/share/nvim'
 "}}}
 
 "{{{ Github Plugins
-Plug 'vim-syntastic/syntastic', {'for': 'nasm'}
 Plug 'sjl/gundo.vim'
-Plug 'itchyny/lightline.vim'
 Plug 'SirVer/ultisnips'
-Plug 'owickstrom/vim-colors-paramount'
-Plug 'dracula/vim', { 'as': 'dracula' }
-Plug 'terryma/vim-expand-region'
-Plug 'terryma/vim-multiple-cursors'
+Plug 'romainl/Apprentice'
 Plug 'scrooloose/nerdtree'
 Plug 'tpope/vim-surround'
 Plug 'tpope/vim-commentary'
@@ -38,33 +33,25 @@ Plug 'tpope/vim-rsi'
 Plug 'nvie/vim-flake8', {'for': 'python'}
 Plug 'airblade/vim-gitgutter'
 Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'MarcWeber/vim-addon-mw-utils'
-Plug 'tomtom/tlib_vim'
 Plug 'honza/vim-snippets'
 Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml', 'php']}
-Plug 'vim-scripts/vis'
-Plug 'w0rp/ale'
-Plug 'maximbaz/lightline-ale'
-Plug 'junegunn/goyo.vim'
 Plug 'junegunn/vim-easy-align'
 Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
 Plug 'junegunn/fzf.vim'
 Plug 'vim-ruby/vim-ruby', {'for': ['ruby', 'xruby']}
 Plug 'tpope/vim-rails', {'for': ['ruby', 'xruby']}
+Plug 'tpope/vim-rake', {'for': ['ruby', 'xruby']}
 Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
 Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp'] }
 Plug 'zchee/deoplete-jedi', {'for': 'python'}
 Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx']}
 Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'npm install && npm install -g tern' }
 Plug 'tweekmonster/django-plus.vim', {'for': ['python', 'htmldjango', 'django']}
-Plug 'Raimondi/delimitMate'
 Plug 'AndrewRadev/splitjoin.vim'
 Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
 Plug 'lervag/vimtex', {'for' : ['tex', 'plaintex']}
 Plug 'wincent/loupe'
-Plug 'dag/vim-fish', {'for': 'fish'}
 Plug 'freitass/todo.txt-vim', {'for': 'todo'}
-
 call plug#end()
 "}}}
 
@@ -88,8 +75,7 @@ noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 inoremap <C-H> <C-W>
 inoremap <C-J> <CR><ESC>O
 
-nnoremap <leader>i :set cursorline!<CR>
-nnoremap <silent> <C-M> :call cursor(0, len(getline('.')) / 2)<CR>
+nnoremap <silent> gm :call cursor(0, len(getline('.')) / 2)<CR>
 
 nnoremap c* *Ncgn
 
@@ -107,10 +93,11 @@ iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 " Terminal mapping
 """""""""""""""""""
 noremap <F2> :vsplit<CR><C-w>l:terminal<CR>i
-noremap <leader>th :vsplit<CR><C-w>H:terminal<CR>i
-noremap <leader>tl :vsplit<CR><C-w>L:terminal<CR>i
-noremap <leader>tk :vsplit<CR><C-w>K:terminal<CR>i
-noremap <leader>tj :vsplit<CR><C-w>J:terminal<CR>i
+noremap <leader>t. :terminal<CR>i
+noremap <leader>th :vsplit<CR><C-w>h:terminal<CR>i
+noremap <leader>tl :vsplit<CR><C-w>l:terminal<CR>i
+noremap <leader>tk :split<CR><C-w>k:terminal<CR>i
+noremap <leader>tj :split<CR><C-w>j:terminal<CR>i
 noremap <leader>tt :tabnew<CR>:terminal<CR>i
 noremap <expr> <leader>' ":botright " . winheight(0) / 3 . "split\<CR>:terminal\<CR>i"
 tnoremap <C-[> <C-\><C-n>
@@ -150,7 +137,8 @@ nnoremap <silent> <localleader>co :silent! copen <BAR> silent! lopen<CR>
 nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
 
 " Grep word under cursor
-nnoremap gK :grep! "\b<C-R><C-W>\b"<CR>:cw<CR>
+nnoremap gK :silent! grep! "\b<C-R><C-W>\b"<CR>
+vnoremap gK ""y:silent! grep! "<C-R>""<CR>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -165,7 +153,7 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 inoremap $1 ()<esc>i
 inoremap $2 []<esc>i
 inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
+inoremap $4 {<cr>}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 
@@ -207,8 +195,10 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Splitting Commands
-map <leader>v :vsplit<CR>
-map <leader>s :split<CR>
+map <leader>sk :belowright split<CR>
+map <leader>sj :split<CR>
+map <leader>sh :botright vsplit<CR>
+map <leader>sl :vsplit<CR>
 
 nmap <M-w> <C-W>\|<C-W>_
 nmap <M-k> <C-W>k<C-W>\|<C-W>_
@@ -267,6 +257,60 @@ function! StripTrailingWhitespace()
   endif
 endfunction
 
+function! GetEncoding()
+    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
+endfunction
+
+function! GetFileName()
+    let l:filename = expand('%:t')
+    return strlen(l:filename) > 0 ? ' ' . l:filename . ' | ' : ''
+endfunction
+
+function TabsOrSpaces()
+    " Determines whether to use spaces or tabs on the current buffer.
+    if getfsize(bufname("%")) > 256000
+        " File is very large, just use the default.
+        return
+    endif
+
+    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+    if numTabs > numSpaces
+        setlocal noexpandtab
+    endif
+endfunction
+
+function! StatuslineGit()
+    let l:branchname = fugitive#head()
+    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' |' : ''
+endfunction
+
+function! GetMode()
+    let l:currmode = mode()
+    if l:currmode ==# 'n'
+        return 'NORMAL'
+    elseif l:currmode ==# 'i'
+        return 'INSERT'
+    elseif l:currmode ==# 'v'
+        return 'VISUAL'
+    elseif l:currmode ==# 'V'
+        return 'V-LINE'
+    elseif l:currmode ==# ''
+        return 'V-BLOCK'
+    elseif l:currmode ==# 's'
+        return 'SELECT'
+    elseif l:currmode ==# 'S'
+        return 'S-LINE'
+    elseif l:currmode ==# ''
+        return 'S-BLOCK'
+    elseif l:currmode ==# 'R'
+        return 'REPLACE'
+    elseif l:currmode ==# 't'
+        return 'TERMINAL'
+    endif
+endfunction
+
 function! VisualSelection(direction, extra_filter) range
     let l:saved_reg = @"
     execute "normal! vgvy"
@@ -288,7 +332,7 @@ function! Internetify()
     let l:currLine = getline('.')
     let l:splice = join(split(l:currLine))
 
-    for l:name in ["-ms-", "-moz-", "-webkit-"]
+    for l:name in ["-o-", "-ms-", "-moz-", "-webkit-"]
         let l:compatLine = "\t" . l:name . l:splice . "\n"
         let o = @o
         let @o = l:compatLine
@@ -430,7 +474,7 @@ endfunction
 
 function! RenderMarkdown()
 	if !buffer_exists("!grip")
-		term grip % 8090
+		term python -m grip % 8090
 		file !grip
 		bprev
 		exec "sleep 30m"
