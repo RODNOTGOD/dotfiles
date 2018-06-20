@@ -16,7 +16,7 @@ if empty(glob('~/.config/nvim/pack/minpac'))
 endif
 
 silent! packadd minpac
-if !exists('*minpac#init')
+if exists('*minpac#init')
 	call minpac#init()
 
 	call minpac#add('sjl/gundo.vim')
@@ -144,8 +144,8 @@ nnoremap <silent> <localleader>co :silent! copen <BAR> silent! lopen<CR>
 nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
 
 " Grep word under cursor
-nnoremap gK :silent! grep! "\b<C-R><C-W>\b"<CR>
-vnoremap gK ""y:silent! grep! "<C-R>""<CR>
+nnoremap <silent> gK :silent! grep! "\b<C-R><C-W>\b"<CR>
+xnoremap gK :<C-u>call <SID>VSetSearch('/')<CR>:<C-U>silent! grep! -Q "<C-R>=@/<CR>"<CR>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -182,8 +182,8 @@ command! MakeTags !ctags -f .tags -R .
 
 " Visual modes
 """""""""""""""
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/\V<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?\V<C-R>=@/<CR><CR>
 
 nnoremap v <C-v>
 nnoremap <C-v> v
@@ -269,22 +269,13 @@ function! StatuslineGit()
     return strlen(l:branchname) > 0 ? '('.l:branchname.'):' : ''
 endfunction
 
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ag '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
-    endif
-
-    let @/ = l:pattern
-    let @" = l:saved_reg
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
 endfunction
+
 
 function! Internetify()
     let l:currLine = getline('.')
