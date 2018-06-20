@@ -6,12 +6,6 @@ tm_color_feature=colour198
 tm_color_music=colour41
 tm_active_border_color=colour51
 
-# separators
-tm_separator_left_bold="◀"
-tm_separator_left_thin="❮"
-tm_separator_right_bold="▶"
-tm_separator_right_thin="❯"
-
 set -g status-left-length 32
 set -g status-right-length 150
 set -g status-interval 5

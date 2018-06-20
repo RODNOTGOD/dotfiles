@@ -17,6 +17,9 @@ au FileType python syn keyword pythonDecorator True None False self
 au BufNewFile,BufRead *.jinja set syntax=htmljinja
 au BufNewFile,BufRead *.mako set ft=mako
 
+au Filetype python packadd vim-flake8
+au Filetype python packadd deoplete-jedi
+
 au FileType python inoremap <buffer> $r return
 au FileType python inoremap <buffer> $i import
 au FileType python inoremap <buffer> $p print
@@ -45,6 +48,7 @@ let g:html_indent_autotags = "th,td,tr,tfoot,thead"
 let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 augroup html_editor
+	au Filetype html,htmldjango,css,javascript,xml,php,eruby packadd emmet-vim
 	au Filetype html,htmldjango set tabstop=2
 	au Filetype html,htmldjango set shiftwidth=2
 	au Filetype html,htmldjango nnoremap <silent> <buffer> <localleader>o :call RenderHtml()<CR><CR>
@@ -72,7 +76,8 @@ au Filetype gitcommit set spell
 
 "{{{ -> Markdown section
 """"""""""""""""""""""""""""""
-" au Filetype markdown command! Openmd !chromium-browser % >/dev/null 2>/dev/null &
+au Filetype markdown packadd vim-markdown
+
 au Filetype markdown command! Openmd call RenderMarkdown()
 au Filetype markdown command! -nargs=1 Ngrep vimgrep "<args>" $NOTES_DIRECTORY/**/*.md
 au Filetype markdown nnoremap <buffer> <localleader>[ :Ngrep 
@@ -93,6 +98,9 @@ au Filetype markdown setlocal textwidth=80
 
 "{{{ -> JavaScript section
 """""""""""""""""""""""""""""""
+au Filetype javascript,javascript.jsx packadd deoplete-ternjs
+au Filetype javascript,javascript.jsx packadd tern_for_vim
+
 au FileType javascript call JavaScriptFold()
 au FileType javascript setl fen
 au FileType javascript setl nocindent
@@ -124,6 +132,14 @@ endfunction
 let g:rubycomplete_buffer_loading = 1
 let g:rubycomplete_classes_in_global = 1
 let g:rubycomplete_rails = 1
+
+au Filetype ruby,xruby packadd vim-ruby
+au Filetype ruby,xruby packadd vim-rails
+au Filetype ruby,xruby packadd vim-rake
+
+au Filetype ruby,eruby set tabstop=2
+au Filetype ruby,eruby set shiftwidth=2
+au Filetype ruby,eruby nnoremap <silent> <buffer> <localleader>o :!firefox localhost:3000 2>/dev/null &<CR>
 " }}} -> Ruby
 
 "{{{ -> Assembly section
@@ -142,6 +158,8 @@ au FileType tex let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 "}}}
 
 "{{{ -> C section
+au Filetype c,cpp packadd deoplete-clang
+
 au Filetype c highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 au Filetype c match OverLength /\%121v.\+/
 au FileType c setlocal commentstring=//\ %s

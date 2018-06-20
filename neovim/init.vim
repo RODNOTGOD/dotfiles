@@ -1,58 +1,60 @@
 set nocompatible
 filetype off
 
-"{{{ Vim-Plug Check
-if empty(glob('~/.local/share/nvim/site/autoload/plug.vim'))
-    silent !curl -fLo ~/.local/share/nvim/site/autoload/plug.vim --create-dirs
-                \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-    autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
-endif
-"}}}
-
 "{{{ Env Variables
-set rtp+=~/.local/share/nvim/plugged
-call plug#begin('~/.local/share/nvim/plugged')
-
+set rtp+=~/.fzf
 let $NVIM_CONF='~/.config/nvim/init.vim'
 let $NVIM_CONFDIR='~/.config/nvim'
 let $NVIM_DIR='~/.local/share/nvim'
 "}}}
 
 "{{{ Github Plugins
-Plug 'sjl/gundo.vim'
-Plug 'SirVer/ultisnips'
-Plug 'romainl/Apprentice'
-Plug 'scrooloose/nerdtree'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
-Plug 'tpope/vim-rsi'
-Plug 'nvie/vim-flake8', {'for': 'python'}
-Plug 'airblade/vim-gitgutter'
-Plug 'plasticboy/vim-markdown', {'for': 'markdown'}
-Plug 'honza/vim-snippets'
-Plug 'mattn/emmet-vim', {'for': ['html', 'htmldjango', 'css', 'javascript', 'xml', 'php']}
-Plug 'junegunn/vim-easy-align'
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-Plug 'vim-ruby/vim-ruby', {'for': ['ruby', 'xruby']}
-Plug 'tpope/vim-rails', {'for': ['ruby', 'xruby']}
-Plug 'tpope/vim-rake', {'for': ['ruby', 'xruby']}
-Plug 'Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'}
-Plug 'zchee/deoplete-clang', {'for': ['c', 'cpp'] }
-Plug 'zchee/deoplete-jedi', {'for': 'python'}
-Plug 'carlitux/deoplete-ternjs', { 'for': ['javascript', 'javascript.jsx']}
-Plug 'ternjs/tern_for_vim', { 'for': ['javascript', 'javascript.jsx'], 'do' : 'npm install && npm install -g tern' }
-Plug 'tweekmonster/django-plus.vim', {'for': ['python', 'htmldjango', 'django']}
-Plug 'AndrewRadev/splitjoin.vim'
-Plug 'maksimr/vim-jsbeautify', {'for'  : ['javascript', 'javascript.jsx']}
-Plug 'lervag/vimtex', {'for' : ['tex', 'plaintex']}
-Plug 'wincent/loupe'
-Plug 'freitass/todo.txt-vim', {'for': 'todo'}
-call plug#end()
+
+if empty(glob('~/.config/nvim/pack/minpac'))
+	silent !git clone https://github.com/k-takata/minpac.git
+				\ ~/.config/nvim/pack/minpac/opt/minpac
+endif
+
+silent! packadd minpac
+if !exists('*minpac#init')
+	call minpac#init()
+
+	call minpac#add('sjl/gundo.vim')
+	call minpac#add('SirVer/ultisnips')
+	call minpac#add('romainl/Apprentice')
+	call minpac#add('lifepillar/vim-solarized8')
+	call minpac#add('scrooloose/nerdtree')
+	call minpac#add('tpope/vim-surround')
+	call minpac#add('tpope/vim-commentary')
+	call minpac#add('tpope/vim-fugitive')
+	call minpac#add('tpope/vim-repeat')
+	call minpac#add('tpope/vim-unimpaired')
+	call minpac#add('tpope/vim-vinegar')
+	call minpac#add('tpope/vim-rsi')
+	call minpac#add('tpope/vim-abolish')
+	call minpac#add('airblade/vim-gitgutter')
+	call minpac#add('nvie/vim-flake8', {'type': 'opt'})
+	call minpac#add('honza/vim-snippets')
+	call minpac#add('junegunn/vim-easy-align')
+	call minpac#add('junegunn/fzf.vim')
+
+	call minpac#add('plasticboy/vim-markdown', {'type': 'opt'})
+	call minpac#add('mattn/emmet-vim', {'type': 'opt'})
+	call minpac#add('vim-ruby/vim-ruby', {'type': 'opt'})
+	call minpac#add('tpope/vim-rails', {'type': 'opt'})
+	call minpac#add('tpope/vim-rake', {'type': 'opt'})
+	call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
+	call minpac#add('zchee/deoplete-clang', {'type': 'opt'})
+	call minpac#add('zchee/deoplete-jedi', {'type': 'opt'})
+	call minpac#add('carlitux/deoplete-ternjs', {'type': 'opt'})
+	call minpac#add('ternjs/tern_for_vim', {'type': 'opt'})
+	call minpac#add('AndrewRadev/splitjoin.vim')
+	call minpac#add('wincent/loupe')
+	call minpac#add('freitass/todo.txt-vim', {'type': 'opt'})
+
+	command! PackUpdate packadd minpac | source $NVIM_CONF | call minpac#update()
+	command! PackClean  packadd minpac | source $NVIM_CONF | call minpac#clean()
+endif
 "}}}
 
 "{{{ Mappings
@@ -68,6 +70,11 @@ nnoremap <silent> j gj
 nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
+
+vnoremap <silent> j gj
+vnoremap <silent> k gk
+vnoremap <silent> ^ g^
+vnoremap <silent> $ g$
 
 nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
@@ -257,58 +264,9 @@ function! StripTrailingWhitespace()
   endif
 endfunction
 
-function! GetEncoding()
-    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
-endfunction
-
-function! GetFileName()
-    let l:filename = expand('%:t')
-    return strlen(l:filename) > 0 ? ' ' . l:filename . ' | ' : ''
-endfunction
-
-function TabsOrSpaces()
-    " Determines whether to use spaces or tabs on the current buffer.
-    if getfsize(bufname("%")) > 256000
-        " File is very large, just use the default.
-        return
-    endif
-
-    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
-    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
-
-    if numTabs > numSpaces
-        setlocal noexpandtab
-    endif
-endfunction
-
 function! StatuslineGit()
     let l:branchname = fugitive#head()
-    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' |' : ''
-endfunction
-
-function! GetMode()
-    let l:currmode = mode()
-    if l:currmode ==# 'n'
-        return 'NORMAL'
-    elseif l:currmode ==# 'i'
-        return 'INSERT'
-    elseif l:currmode ==# 'v'
-        return 'VISUAL'
-    elseif l:currmode ==# 'V'
-        return 'V-LINE'
-    elseif l:currmode ==# ''
-        return 'V-BLOCK'
-    elseif l:currmode ==# 's'
-        return 'SELECT'
-    elseif l:currmode ==# 'S'
-        return 'S-LINE'
-    elseif l:currmode ==# ''
-        return 'S-BLOCK'
-    elseif l:currmode ==# 'R'
-        return 'REPLACE'
-    elseif l:currmode ==# 't'
-        return 'TERMINAL'
-    endif
+    return strlen(l:branchname) > 0 ? '('.l:branchname.'):' : ''
 endfunction
 
 function! VisualSelection(direction, extra_filter) range
@@ -474,7 +432,7 @@ endfunction
 
 function! RenderMarkdown()
 	if !buffer_exists("!grip")
-		term python -m grip % 8090
+		term  grip % 8090
 		file !grip
 		bprev
 		exec "sleep 30m"
@@ -519,39 +477,6 @@ endfunc
 func! CurrentFileDir(cmd)
     return a:cmd . ' ' . expand("%:p:h") . "/"
 endfunc
-
-function! NumberToggle()
-    if(&relativenumber == 1)
-        set norelativenumber
-    else
-        set relativenumber
-        set number
-    endif
-endfunc
-
-" Delete Brackets if together
-function! CloseBrackets(cmd)
-    let g:delete_pairs = {'(':')', '[':']', '{':'}',"'":"'",'"':'"','<':'>'}
-    let l:line = getline('.')
-    let l:position = col('.') - 2
-    let l:current_char = l:line[l:position]
-    let l:next_char = l:line[l:position + 1]
-
-    try
-        let l:match_pair = g:delete_pairs[l:current_char]
-    catch
-        let l:match_pair = '  '
-    endtry
-
-    if l:match_pair == l:next_char
-        " return "\<BS>\<DEL>"
-        return a:cmd+"\<DEL>"
-    else
-        " return "\<BS>"
-        return a:cmd
-    endif
-endfunction
-
 "}}}
 
 "{{{ Source local environment

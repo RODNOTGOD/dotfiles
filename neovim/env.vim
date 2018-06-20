@@ -85,7 +85,6 @@ set tags+=.tags
 " hidden characters
 set nu
 
-set noshowmode
 set list
 set listchars=tab:\ \ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪
@@ -169,12 +168,4 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 """""""""""""""""
 
 set laststatus=2
-" set statusline=\ %{HasPaste()}%F%m%r%h\ %w\ \ CWD:\ %r%{getcwd()}%h\ \ \ Line:\ %l\ \ Column:\ %c
-set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\ +\ \|':''}%{&readonly?'\ \ \|':''}%h%w%{StatuslineGit()}%=\|\ %{''!=#&filetype?&filetype:'none'}\ \|\ L:%l/%L\ C:%v\ 
-
-function! HasPaste()
-    if &paste
-        return 'PASTE MODE  '
-    endif
-    return ''
-endfunction
+set statusline=%{StatuslineGit()}%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P

@@ -10,40 +10,35 @@
 "                             $$ |
 "                             \__|
 "{{{ --> Plugins
-if empty(glob('~/.vim/autoload/plug.vim'))
-  silent !curl -fLo ~/.vim/autoload/plug.vim --create-dirs
-    \ https://raw.githubusercontent.com/junegunn/vim-plug/master/plug.vim
-  autocmd VimEnter * PlugInstall --sync | source $MYVIMRC
+if empty(glob('.vim/pack/minpac'))
+	git clone https://github.com/k-takata/minpac.git
+				\ ~/.vim/pack/minpac/opt/minpac
 endif
 
-call plug#begin('~/.vim/plugged')
+silent! packadd minpac
 
-Plug 'tpope/vim-abolish'
-Plug 'tpope/vim-commentary'
-Plug 'tpope/vim-eunuch'
-Plug 'tpope/vim-fugitive'
-Plug 'tpope/vim-repeat'
-Plug 'tpope/vim-rsi'
-Plug 'tpope/vim-sensible'
-Plug 'tpope/vim-surround'
-Plug 'tpope/vim-unimpaired'
-Plug 'tpope/vim-vinegar'
+if !exists('*minpac#init')
+	call minpac#add('tpope/vim-abolish')
+	call minpac#add('tpope/vim-commentary')
+	call minpac#add('tpope/vim-eunuch')
+	call minpac#add('tpope/vim-fugitive')
+	call minpac#add('tpope/vim-repeat')
+	call minpac#add('tpope/vim-rsi')
+	call minpac#add('tpope/vim-sensible')
+	call minpac#add('tpope/vim-surround')
+	call minpac#add('tpope/vim-unimpaired')
+	call minpac#add('tpope/vim-vinegar')
 
-Plug 'junegunn/fzf', { 'dir': '~/.fzf', 'do': './install --all' }
-Plug 'junegunn/fzf.vim'
-
-Plug 'romainl/vim-qf'
-Plug 'romainl/vim-qlist'
-
-Plug 'wellle/targets.vim'
-Plug 'mbbill/undotree'
-Plug 'ajh17/VimCompletesMe'
-Plug 'owickstrom/vim-colors-paramount'
-Plug 'wincent/loupe'
-Plug 'AndrewRadev/splitjoin.vim'
-
-call plug#end()
-
+	call minpac#add('junegunn/fzf.vim')
+	call minpac#add('romainl/vim-qf')
+	call minpac#add('romainl/vim-qlist')
+	call minpac#add('wellle/targets.vim')
+	call minpac#add('mbbill/undotree')
+	call minpac#add('ajh17/VimCompletesMe')
+	call minpac#add('owickstrom/vim-colors-paramount')
+	call minpac#add('wincent/loupe')
+	call minpac#add('AndrewRadev/splitjoin.vim')
+endif
 "}}}
 
 "{{{ --> Env Settings
@@ -55,8 +50,7 @@ set path+=**
 set undodir=~/.vim/undodir
 set undofile
 
-set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\|\ +\ ':''}%{&readonly?'\|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|\ %{''!=#&filetype?&filetype:'none'}\ \|\ L:%l/%L\ C:%v\ 
-" set statusline=\ %{GetMode()}\ \|%<%{GetFileName()}%{&modified?'\|\ +\ ':''}%{&readonly?'\|\ \ ':''}%h%w\|%{StatuslineGit()}%=\|%{GetEncoding()}\|%{&modifiable?&expandtab?'\ spaces\ ':'\ tabs\ ':''}\|\ %{&ff}\ \|\ %{''!=#&filetype?&filetype:'none'}\ \|\ %p%%\ \|\ %l:%v\ 
+set statusline=%{StatuslineGit()}%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P
 set hlsearch
 
 set expandtab
@@ -250,7 +244,7 @@ endfunction
 
 function! StatuslineGit()
     let l:branchname = fugitive#head()
-    return strlen(l:branchname) > 0 ? ' ' . l:branchname . ' |' : ''
+    return strlen(l:branchname) > 0 ? '('.l:branchname.'):' : ''
 endfunction
 
 function! GetMode()
