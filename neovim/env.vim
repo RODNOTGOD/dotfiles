@@ -5,7 +5,7 @@
 
 " -> General
 """""""""""""
-set history=500
+set history=1000
 
 filetype plugin on
 filetype indent on
@@ -13,7 +13,6 @@ filetype indent on
 set autoread
 
 try
-    " set undodir=~/.vim/temp_dirs/undodir
     set undodir=~/.local/share/nvim/temp_dirs/undodir
     set undofile
 catch
@@ -38,7 +37,7 @@ set scrolloff=3
 set inccommand=split
 
 set wildmenu
-set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store
+set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store,*/.git
 
 set ruler
 
@@ -67,7 +66,7 @@ set magic
 " set showmatch
 " set mat=2
 
-hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
+" hi MatchParen cterm=bold ctermbg=none ctermfg=magenta
 
 " disable audio
 set noerrorbells
@@ -100,7 +99,7 @@ highlight Normal ctermbg=none
 
 " -> Color
 """""""""""
-" set termguicolors
+set termguicolors
 set background=dark
 
 try
@@ -109,6 +108,14 @@ catch
 endtry
 
 hi Normal guibg=NONE ctermbg=NONE
+
+augroup vimrc_todo
+    au!
+    au Syntax * syn match MyTodo /\v<(BUG|DEBUG|HACK|UNDONE|FIXME|NOTE|TODO|OPTIMIZE|XXX):/
+          \ containedin=.*Comment,vimCommentTitle
+augroup END
+hi def link MyTodo Todo
+
 highlight Comment cterm=italic
 highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
 2match ExtraWhiteSpace /\s\+\%#\@<!$/
@@ -128,14 +135,7 @@ set ffs=unix,dos,mac
 
 " -> File handling
 """""""""""""""""""
-
-set nobackup
-set nowb
-set noswapfile
-
-" -> tabs
-
-set noexpandtab
+set expandtab
 set smarttab
 
 set shiftwidth=4
@@ -149,6 +149,8 @@ set si
 set wrap
 
 let g:netrw_browsex_viewer= "xdg-open"
+
+autocmd BufReadPost * call TabsOrSpaces()
 
 " -> Buffer and panes
 """"""""""""""""""""""
@@ -166,6 +168,5 @@ au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g
 
 " -> Status line
 """""""""""""""""
-
 set laststatus=2
-set statusline=%{StatuslineGit()}%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P
+set statusline=\ %<%.99f\ %m%r%y%{StatuslineGit()}%{StatusLineFileFormat()}%w%=%-14.(%l,%c%V%)\ %P\ 

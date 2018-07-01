@@ -22,17 +22,6 @@ let g:UltiSnipsJumpBackwardTrigger="s-<tab>"
 let g:ultisnips_python_style="jedi"
 "}}}
 
-"{{{ -> Vim grep
-""""""""""""""""""""""""""""""
-let Grep_Skip_Dirs = 'RCS CVS SCCS .svn .git generated'
-if executable('ag')
-	set grepprg=ag\ --vimgrep\ $*
-	set grepformat=%f:%l:%c:%m
-else
-	set grepprg=/bin/grep\ -nHP\ $*\ /dev/null
-endif
-"}}}
-
 "{{{ -> Gundo
 """"""""""""""""""""""""""""""
 nnoremap <F5> :GundoToggle<CR>
@@ -177,3 +166,9 @@ nmap gea <Plug>(EasyAlign)
 "{{{ -> Loupe
 map <silent> <leader><cr> <Plug>(LoupeClearHighlight)
 "}}}
+
+" -> Sneak {{{
+map f <Plug>Sneak_s
+map F <Plug>Sneak_S
+let g:sneak#label = 1
+" }}}

@@ -170,13 +170,19 @@ alias tk="tmux kill-session"
 alias tks="tmux kill-server"
 alias tkt="tmux kill-session -t"
 
-alias gst="git status"
+alias gst="git status -sb"
 alias gcl="git clone --recursive"
 alias gp="git push"
 alias gc="git commit -v"
-alias gl="git log --graph --decorate '--format=(%Cred%an%Creset) %Cgreen%s%Creset %ar'"
-alias gls="git --no-pager log  --format=short --pretty=oneline --graph -n 10"
-alias gll="git log --graph --decorate --pretty=medium"
+
+# GIT ALIAS
+alias gl="git log --oneline --all --decorate --graph"
+alias gls="git --no-pager log --oneline --all --decorate --graph -40"
+alias glss="git --no-pager log --oneline --all --decorate --graph -10"
+
+alias glb="git log --oneline --decorate --graph"
+alias glbs="git --no-pager log --oneline --decorate --graph -40"
+alias glbss="git --no-pager log --oneline --decorate --graph -10"
 
 alias d="dirs -v"
 alias 1="cd ~1"
@@ -198,6 +204,9 @@ alias l="ls"
 alias s="ls"
 
 alias yt-music="youtube-dl -o \"~/Music/%(title)s.%(ext)s\" -x --audio-format opus --audio-quality 0"
+
+stty werase undef
+bind '\C-w:unix-filename-rubout'
 
 # Uncomment the following line if you don't like systemctl's auto-paging feature:
 # export SYSTEMD_PAGER=

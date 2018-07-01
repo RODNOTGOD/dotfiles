@@ -22,8 +22,10 @@ if exists('*minpac#init')
 	call minpac#add('sjl/gundo.vim')
 	call minpac#add('SirVer/ultisnips')
 	call minpac#add('romainl/Apprentice')
-	call minpac#add('lifepillar/vim-solarized8')
 	call minpac#add('scrooloose/nerdtree')
+	call minpac#add('wellle/targets.vim')
+	call minpac#add('machakann/vim-highlightedyank')
+	call minpac#add('justinmk/vim-sneak')
 	call minpac#add('tpope/vim-surround')
 	call minpac#add('tpope/vim-commentary')
 	call minpac#add('tpope/vim-fugitive')
@@ -33,23 +35,23 @@ if exists('*minpac#init')
 	call minpac#add('tpope/vim-rsi')
 	call minpac#add('tpope/vim-abolish')
 	call minpac#add('airblade/vim-gitgutter')
-	call minpac#add('nvie/vim-flake8', {'type': 'opt'})
 	call minpac#add('honza/vim-snippets')
 	call minpac#add('junegunn/vim-easy-align')
 	call minpac#add('junegunn/fzf.vim')
+	call minpac#add('AndrewRadev/splitjoin.vim')
+	call minpac#add('wincent/loupe')
+	call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
 
+	call minpac#add('nvie/vim-flake8', {'type': 'opt'})
 	call minpac#add('plasticboy/vim-markdown', {'type': 'opt'})
 	call minpac#add('mattn/emmet-vim', {'type': 'opt'})
 	call minpac#add('vim-ruby/vim-ruby', {'type': 'opt'})
 	call minpac#add('tpope/vim-rails', {'type': 'opt'})
 	call minpac#add('tpope/vim-rake', {'type': 'opt'})
-	call minpac#add('Shougo/deoplete.nvim', { 'do': ':UpdateRemotePlugins'})
 	call minpac#add('zchee/deoplete-clang', {'type': 'opt'})
 	call minpac#add('zchee/deoplete-jedi', {'type': 'opt'})
 	call minpac#add('carlitux/deoplete-ternjs', {'type': 'opt'})
 	call minpac#add('ternjs/tern_for_vim', {'type': 'opt'})
-	call minpac#add('AndrewRadev/splitjoin.vim')
-	call minpac#add('wincent/loupe')
 	call minpac#add('freitass/todo.txt-vim', {'type': 'opt'})
 
 	command! PackUpdate packadd minpac | source $NVIM_CONF | call minpac#update()
@@ -79,7 +81,6 @@ vnoremap <silent> $ g$
 nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
 
-inoremap <C-H> <C-W>
 inoremap <C-J> <CR><ESC>O
 
 nnoremap <silent> gm :call cursor(0, len(getline('.')) / 2)<CR>
@@ -100,12 +101,12 @@ iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
 " Terminal mapping
 """""""""""""""""""
 noremap <F2> :vsplit<CR><C-w>l:terminal<CR>i
-noremap <leader>t. :terminal<CR>i
-noremap <leader>th :vsplit<CR><C-w>h:terminal<CR>i
-noremap <leader>tl :vsplit<CR><C-w>l:terminal<CR>i
-noremap <leader>tk :split<CR><C-w>k:terminal<CR>i
-noremap <leader>tj :split<CR><C-w>j:terminal<CR>i
-noremap <leader>tt :tabnew<CR>:terminal<CR>i
+noremap <silent> <leader>t. :terminal<CR>i
+noremap <silent> <leader>th :vsplit<CR><C-w>h:terminal<CR>i
+noremap <silent> <leader>tl :vsplit<CR><C-w>l:terminal<CR>i
+noremap <silent> <leader>tk :split<CR><C-w>k:terminal<CR>i
+noremap <silent> <leader>tj :split<CR><C-w>j:terminal<CR>i
+noremap <silent> <leader>tt :tabnew<CR>:terminal<CR>i
 noremap <expr> <leader>' ":botright " . winheight(0) / 3 . "split\<CR>:terminal\<CR>i"
 tnoremap <C-[> <C-\><C-n>
 
@@ -116,9 +117,9 @@ nmap <leader>w :w!<cr>
 command! W w !sudo tee % > /dev/null
 
 " Override vim commands 'gf', '^Wf', '^W^F'
-nnoremap gf :call GotoFile("")<CR>
-nnoremap <C-W>f :call GotoFile("new")<CR>
-nnoremap <C-W><C-F> :call GotoFile("new")<CR>
+nnoremap <silent> gf :call GotoFile("")<CR>
+nnoremap <silent> <C-W>f :call GotoFile("new")<CR>
+nnoremap <silent> <C-W><C-F> :call GotoFile("new")<CR>
 
 " *rc editing
 nmap <silent> <leader>ev :e $NVIM_CONF<CR>
@@ -145,7 +146,7 @@ nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
 
 " Grep word under cursor
 nnoremap <silent> gK :silent! grep! "\b<C-R><C-W>\b"<CR>
-xnoremap gK :<C-u>call <SID>VSetSearch('/')<CR>:<C-U>silent! grep! -Q "<C-R>=@/<CR>"<CR>
+xnoremap gK :<C-u>call <SID>VSetSearch('/')<CR>:<C-U>silent! grep! "<C-R>=@/<CR>"<CR>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -182,8 +183,8 @@ command! MakeTags !ctags -f .tags -R .
 
 " Visual modes
 """""""""""""""
-xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/\V<C-R>=@/<CR><CR>
-xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?\V<C-R>=@/<CR><CR>
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
 
 nnoremap v <C-v>
 nnoremap <C-v> v
@@ -202,10 +203,10 @@ map <C-h> <C-W>h
 map <C-l> <C-W>l
 
 " Splitting Commands
-map <leader>sk :belowright split<CR>
-map <leader>sj :split<CR>
-map <leader>sh :botright vsplit<CR>
-map <leader>sl :vsplit<CR>
+map <silent> <leader>sk :belowright split<CR>
+map <silent> <leader>sj :split<CR>
+map <silent> <leader>sh :botright vsplit<CR>
+map <silent> <leader>sl :vsplit<CR>
 
 nmap <M-w> <C-W>\|<C-W>_
 nmap <M-k> <C-W>k<C-W>\|<C-W>_
@@ -218,10 +219,6 @@ nmap <C-Up> <C-W>+
 nmap <C-Down> <C-W>-
 nmap <C-Left> <C-W><
 nmap <C-Right> <C-W>>
-
-" Character Skip trick
-inoremap <expr> <C-l> "\<Right>"
-inoremap <expr> <C-h> "\<Left>"
 
 " buffer commands
 nnoremap <TAB> :b#<cr>
@@ -265,17 +262,23 @@ function! StripTrailingWhitespace()
 endfunction
 
 function! StatuslineGit()
-    let l:branchname = fugitive#head()
-    return strlen(l:branchname) > 0 ? '('.l:branchname.'):' : ''
+	if exists('*fugitive#head')
+		return FugitiveStatusline()
+	else
+		return ''
+	endif
+endfunction
+
+function! StatusLineFileFormat()
+	return &ff ==# 'unix' || &ff ==# 'none' ? '' : '['.&ff.']'
 endfunction
 
 function! s:VSetSearch(cmdtype)
   let temp = @s
   norm! gv"sy
-  let @/ = substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
   let @s = temp
 endfunction
-
 
 function! Internetify()
     let l:currLine = getline('.')
@@ -290,19 +293,19 @@ function! Internetify()
     endfor
 endfunction
 
-function! Beautify()
-    let l:fileType = &ft
-    if l:fileType ==  'html'
-        call HtmlBeautify()
-    elseif l:fileType == 'css'
-        call CSSBeautify()
-    elseif l:fileType == 'javascript'
-        call JsBeautify()
-    elseif l:fileType == 'json'
-        call JsonBeautify()
-    elseif l:fileType == 'jsx'
-        call JsxBeautify()
-    endif
+function! TabsOrSpaces()
+	" Determines whether to use spaces or tabs on the current buffer.
+	if getfsize(bufname("%")) > 256000
+		" File is very large, just use the default.
+		return
+	endif
+
+	let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+	let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+	if numTabs > numSpaces
+		setlocal noexpandtab
+	endif
 endfunction
 
 function! GotoFile(w)

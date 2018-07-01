@@ -6,7 +6,7 @@ augroup end
 "}}}
 
 " -> Vim section {{{
- autocmd FileType vim set keywordprg=":help"
+ autocmd FileType vim setlocal keywordprg=":help"
 " }}} -> Vim section
 
 "{{{ -> Python section
@@ -28,17 +28,17 @@ au FileType python map <buffer> <leader>1 /class
 au FileType python map <buffer> <leader>2 /def
 au FileType python map <buffer> <leader>C ?class
 au FileType python map <buffer> <leader>D ?def
-au FileType python set cindent
-au FileType python set cinkeys-=0#
-au FileType python set indentkeys-=0#
+au FileType python setlocal cindent
+au FileType python setlocal cinkeys-=0#
+au FileType python setlocal indentkeys-=0#
 au FileType python setlocal makeprg=python3\ -m\ flake8\ %
 "}}}
 
 "{{{ -> Json
 """"""""""""""""""""
-au FileType json set tabstop=2
-au FileType json set shiftwidth=2
-au FileType json set expandtab
+au FileType json setlocal tabstop=2
+au FileType json setlocal shiftwidth=2
+au FileType json setlocal expandtab
 "}}}
 
 "{{{ -> Html section
@@ -49,13 +49,11 @@ let g:html_indent_script1 = "inc"
 let g:html_indent_style1 = "inc"
 augroup html_editor
 	au Filetype html,htmldjango,css,javascript,xml,php,eruby packadd emmet-vim
-	au Filetype html,htmldjango set tabstop=2
-	au Filetype html,htmldjango set shiftwidth=2
+	au Filetype html,htmldjango setlocal tabstop=2
+	au Filetype html,htmldjango setlocal shiftwidth=2
 	au Filetype html,htmldjango nnoremap <silent> <buffer> <localleader>o :call RenderHtml()<CR><CR>
 	au Filetype html,htmldjango inoremap <silent> <buffer> <C-l> <ESC>:call emmet#moveNextPrev(0)<CR>
 	au Filetype html,htmldjango inoremap <silent> <buffer> <C-h> <ESC>:call emmet#moveNextPrev(1)<CR>
-	au Filetype css set tabstop=4
-	au Filetype css set shiftwidth=4
 	au Filetype css nnoremap <silent> <buffer> <localleader>i :call Internetify()<CR>
 	au Filetype css inoremap <silent> <buffer> <localleader>i :call Internetify()<CR>
 	au FileType html,htmldjango,css setlocal omnifunc=csscomplete#CompleteCSS
@@ -64,14 +62,14 @@ augroup end
 
 "{{{ -> Lisp section
 """"""""""""""""""""""""""""""
-au Filetype lisp set tabstop=2
-au Filetype lisp set shiftwidth=2
-au Filetype lisp set expandtab
+au Filetype lisp setlocal tabstop=2
+au Filetype lisp setlocal shiftwidth=2
+au Filetype lisp setlocal expandtab
 "}}}
 
 "{{{ -> Git section
 """"""""""""""""""""""""""""""
-au Filetype gitcommit set spell
+au Filetype gitcommit setlocal spell
 "}}}
 
 "{{{ -> Markdown section
@@ -112,9 +110,9 @@ au FileType javascript imap <buffer> <c-a> alert();<esc>hi
 
 au FileType javascript inoremap <buffer> $r return
 au FileType javascript inoremap <buffer> $f //--- PH<esc>FP2xi
-au Filetype javascript set tabstop=4
-au Filetype javascript set shiftwidth=4
-au Filetype javascript set expandtab
+au Filetype javascript setlocal tabstop=4
+au Filetype javascript setlocal shiftwidth=4
+au Filetype javascript setlocal expandtab
 
 function! JavaScriptFold()
     setl foldmethod=syntax
@@ -139,21 +137,22 @@ au Filetype ruby,xruby packadd vim-rake
 
 au Filetype ruby,eruby set tabstop=2
 au Filetype ruby,eruby set shiftwidth=2
+au Filetype ruby,eruby set expandtab
 au Filetype ruby,eruby nnoremap <silent> <buffer> <localleader>o :!firefox localhost:3000 2>/dev/null &<CR>
 " }}} -> Ruby
 
 "{{{ -> Assembly section
 """""""""""""""""""""""""""""""
-au FileType asm set ft=nasm
+au FileType asm setlocal ft=nasm
 au FileType asm setlocal commentstring=;\ %s
 "}}}
 
 "{{{ -> Latex section
-au FileType plaintex set ft=tex
-au FileType tex set expandtab
-au FileType tex set tabstop=2
-au FileType tex set shiftwidth=2
-au FileType tex set spell
+au FileType plaintex setlocal ft=tex
+au FileType tex setlocal expandtab
+au FileType tex setlocal tabstop=2
+au FileType tex setlocal shiftwidth=2
+au FileType tex setlocal spell
 au FileType tex let g:deoplete#omni#input_patterns.tex = g:vimtex#re#deoplete
 "}}}
 
