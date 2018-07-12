@@ -13,7 +13,7 @@ filetype indent on
 set autoread
 
 try
-    set undodir=~/.local/share/nvim/temp_dirs/undodir
+    set undodir=~/.vim/undodir
     set undofile
 catch
 endtry
@@ -27,17 +27,13 @@ autocmd InsertLeave * :set nornu
 
 " -> Gui
 """""""""
-let NVIM_TUI_ENABLE_CURSOR_SHAPE=1
-let NVIM_TUI_ENABLE_TRUE_COLOR=1
 syntax on
 
 set so=7
 set scrolloff=3
 
-set inccommand=nosplit
-
 set wildmenu
-set wildignore+=*/.hg/*,*/.svn/*,*/.DS_Store,*/.git
+set wildignore+=*/.hg/*,*/.svn/*,*/.git/*,*/.DS_Store,*.swp
 
 set ruler
 
@@ -99,7 +95,7 @@ highlight Normal ctermbg=none
 
 " -> Color
 """""""""""
-set termguicolors
+" set termguicolors
 set background=dark
 
 try
@@ -111,7 +107,7 @@ hi Normal guibg=NONE ctermbg=NONE
 
 augroup vimrc_todo
     au!
-    au Syntax * syn match MyTodo /\v<(BUG|DEBUG|HACK|UNDONE|FIXME|NOTE|TODO|OPTIMIZE|XXX):/
+    au Syntax * syn match MyTodo /\v<(BUG|DEBUG|HACK|UNDONE|FIXME|NOTE|TODO|OPTIMIZE|XXX)(\(.*\))?:/
           \ containedin=.*Comment,vimCommentTitle
 augroup END
 hi def link MyTodo Todo
@@ -154,8 +150,6 @@ autocmd BufReadPost * call TabsOrSpaces()
 
 " -> Buffer and panes
 """"""""""""""""""""""
-set title titleold=TERMINAL
-
 " Specify the behavior when switching between buffers
 try
   " set switchbuf=useopen,usetab,newtab

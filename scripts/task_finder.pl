@@ -50,7 +50,7 @@ sub findTask {
 
 	my $depth = File::Spec->splitdir($filename);
 	defined $maxdepth && $depth - 1 > $maxdepth and $File::Find::prune = 1;
-	open(my $file, "<", $_) or print "$!";
+	open(my $file, "<", $_) or return;
 	while (<$file>) {
 		no warnings 'uninitialized';
 		chomp;

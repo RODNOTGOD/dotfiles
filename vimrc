@@ -1,122 +1,163 @@
-"  $$$$$$\  $$\                         $$\                 $$\    $$\ $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\
-" $$  __$$\ \__|                        $$ |                $$ |   $$ |\_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\
-" $$ /  \__|$$\ $$$$$$\$$$$\   $$$$$$\  $$ | $$$$$$\        $$ |   $$ |  $$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  \__|
-" \$$$$$$\  $$ |$$  _$$  _$$\ $$  __$$\ $$ |$$  __$$\       \$$\  $$  |  $$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |
-"  \____$$\ $$ |$$ / $$ / $$ |$$ /  $$ |$$ |$$$$$$$$ |       \$$\$$  /   $$ |  $$ \$$$  $$ |$$  __$$< $$ |
-" $$\   $$ |$$ |$$ | $$ | $$ |$$ |  $$ |$$ |$$   ____|        \$$$  /    $$ |  $$ |\$  /$$ |$$ |  $$ |$$ |  $$\
-" \$$$$$$  |$$ |$$ | $$ | $$ |$$$$$$$  |$$ |\$$$$$$$\          \$  /   $$$$$$\ $$ | \_/ $$ |$$ |  $$ |\$$$$$$  |
-"  \______/ \__|\__| \__| \__|$$  ____/ \__| \_______|          \_/    \______|\__|     \__|\__|  \__| \______/
-"                             $$ |
-"                             $$ |
-"                             \__|
-"{{{ --> Plugins
-if empty(glob('.vim/pack/minpac'))
-	git clone https://github.com/k-takata/minpac.git
+"{{{ Env Variables
+set rtp+=~/.fzf
+let $VIM_CONF='~/.vimrc'
+let $VIM_CONFDIR='~/.vim'
+"}}}
+
+"{{{ Github Plugins
+if empty(glob('~/.vim/pack/minpac'))
+	!git clone https://github.com/k-takata/minpac.git
 				\ ~/.vim/pack/minpac/opt/minpac
 endif
 
-silent! packadd minpac
 
-if !exists('*minpac#init')
-	call minpac#add('tpope/vim-abolish')
-	call minpac#add('tpope/vim-commentary')
-	call minpac#add('tpope/vim-eunuch')
-	call minpac#add('tpope/vim-fugitive')
-	call minpac#add('tpope/vim-repeat')
-	call minpac#add('tpope/vim-rsi')
+silent! packadd minpac
+if exists('*minpac#init')
+	call minpac#init()
+
+	call minpac#add('mbbill/undotree')
+	call minpac#add('SirVer/ultisnips')
+	call minpac#add('gioele/vim-autoswap')
+	call minpac#add('markonm/traces.vim')
+	call minpac#add('romainl/vim-qf')
+	call minpac#add('romainl/Apprentice')
+	call minpac#add('RODNOTGOD/vim-colors-off')
+	call minpac#add('scrooloose/nerdtree')
+	call minpac#add('wellle/targets.vim')
+	call minpac#add('machakann/vim-highlightedyank')
+	call minpac#add('justinmk/vim-sneak')
 	call minpac#add('tpope/vim-sensible')
 	call minpac#add('tpope/vim-surround')
+	call minpac#add('tpope/vim-commentary')
+	call minpac#add('tpope/vim-fugitive')
+	call minpac#add('tpope/vim-repeat')
 	call minpac#add('tpope/vim-unimpaired')
 	call minpac#add('tpope/vim-vinegar')
-
+	call minpac#add('tpope/vim-rsi')
+	call minpac#add('tpope/vim-abolish')
+	call minpac#add('airblade/vim-gitgutter')
+	call minpac#add('honza/vim-snippets')
+	call minpac#add('junegunn/vim-easy-align')
 	call minpac#add('junegunn/fzf.vim')
-	call minpac#add('romainl/vim-qf')
-	call minpac#add('romainl/vim-qlist')
-	call minpac#add('wellle/targets.vim')
-	call minpac#add('mbbill/undotree')
-	call minpac#add('ajh17/VimCompletesMe')
-	call minpac#add('owickstrom/vim-colors-paramount')
-	call minpac#add('wincent/loupe')
 	call minpac#add('AndrewRadev/splitjoin.vim')
+	call minpac#add('wincent/loupe')
+	call minpac#add('Shougo/deoplete.nvim')
+	call minpac#add('roxma/nvim-yarp')
+	call minpac#add('roxma/vim-hug-neovim-rpc')
+
+	call minpac#add('nvie/vim-flake8', {'type': 'opt'})
+	call minpac#add('plasticboy/vim-markdown', {'type': 'opt'})
+	call minpac#add('mattn/emmet-vim', {'type': 'opt'})
+	call minpac#add('vim-ruby/vim-ruby', {'type': 'opt'})
+	call minpac#add('tpope/vim-rails', {'type': 'opt'})
+	call minpac#add('tpope/vim-rake', {'type': 'opt'})
+	call minpac#add('zchee/deoplete-clang', {'type': 'opt'})
+	call minpac#add('zchee/deoplete-jedi', {'type': 'opt'})
+	call minpac#add('carlitux/deoplete-ternjs', {'type': 'opt'})
+	call minpac#add('ternjs/tern_for_vim', {'type': 'opt'})
+	call minpac#add('freitass/todo.txt-vim', {'type': 'opt'})
+
+	command! PackUpdate packadd minpac | source $VIM_CONF | call minpac#update()
+	command! PackClean  packadd minpac | source $VIM_CONF | call minpac#clean()
 endif
 "}}}
 
-"{{{ --> Env Settings
-set background=dark
-colorscheme industry
+"{{{ Mappings
 
-set path+=**
-
-set undodir=~/.vim/undodir
-set undofile
-
-set statusline=%{StatuslineGit()}%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P
-set hlsearch
-
-set expandtab
-set shiftwidth=4
-set tabstop=4
-
-set number
-set magic
-set lazyredraw
-set hidden
-
-set list
-set listchars=tab:▸\ ,trail:⋅,extends:❯,precedes:❮
-set showbreak=↪
-set noshowmode
-
-set foldcolumn=1
-
-set foldmethod=marker
-set foldmarker={{{,}}}
-
-set mouse=n
-"}}}
-
-"{{{ --> Plugin Configure
-let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 15
-
+" Leader mapping
+"""""""""""""""""
 let g:mapleader = "\<Space>"
-let g:maplocalleader = ","
-"}}}
+let g:maplocalleader = ','
 
-"{{{ --> Mappings
-map <leader>ev :e ~/.vimrc<cr>
-
-map <leader>w :w!<cr>
-map <leader>x ZZ
-
+" Movement
+"""""""""""
 nnoremap <silent> j gj
 nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
+
+xnoremap <silent> j gj
+xnoremap <silent> k gk
+xnoremap <silent> ^ g^
+xnoremap <silent> $ g$
+xnoremap <silent> 0 g^
+
+nnoremap <C-e> 3<C-e>
+noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
+
+inoremap <C-J> <CR><ESC>O
+
+nnoremap <silent> gm :call cursor(0, len(getline('.')) / 2)<CR>
 
 nnoremap c* *Ncgn
 
 vnoremap >> >gv
 vnoremap << <gv
 
-inoremap <expr> <C-l> "\<Right>"
-inoremap <expr> <C-h> "\<Left>"
+execute "set <M-;>=\e;"
+execute "set <M-h>=\eh"
+execute "set <M-j>=\ej"
+execute "set <M-k>=\ek"
+execute "set <M-l>=\el"
 
-nnoremap <C-e> 3<C-e>
-noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
+nmap <silent> <M-;> oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
+imap <silent> <M-;> <ESC>oi<ESC>:Commentary<CR>^d0i<BS><SPACE><ESC>==$:call search('i', 'bc')<CR>s
 
-noremap v <C-v>
-noremap <C-v> v
 
-vnoremap <silent> * :<C-u>call VisualSelection('', '')<CR>/<C-R>=@/<CR><CR>
-vnoremap <silent> # :<C-u>call VisualSelection('', '')<CR>?<C-R>=@/<CR><CR>
+" Abbreviations
+""""""""""""""""
+iab xdate <c-r>=strftime("%d/%m/%y %H:%M:%S")<cr>
+cab findtodo vim /\v\C<(TODO\|DEBUG\|HACK\|XXX\|NOTE\|FIXME\|BUG)>/
 
-inoremap <C-E> <C-X><C-E>
-inoremap <C-Y> <C-X><C-Y>
+" Terminal mapping
+"""""""""""""""""""
+noremap <F2> :vsplit<CR><C-w>l:terminal ++curwin<CR>
+noremap <silent> <leader>t. :terminal ++curwin<CR>
+noremap <silent> <leader>th :vsplit<CR><C-w>h:terminal ++curwin<CR>
+noremap <silent> <leader>tl :vsplit<CR><C-w>l:terminal ++curwin<CR>
+noremap <silent> <leader>tk :split<CR><C-w>k:terminal ++curwin<CR>
+noremap <silent> <leader>tj :split<CR><C-w>j:terminal ++curwin<CR>
+noremap <silent> <leader>tt :tabnew<CR>:terminal ++curwin<CR>
+noremap <expr> <leader>' ":botright " . winheight(0) / 3 . "split\<CR>:terminal ++curwin\<CR>"
+tnoremap <C-[> <C-\><C-n>
 
-map <leader>cd :cd %:p:h<cr>:pwd<cr>
+" Read and Writing files
+"""""""""""""""""""""""""
+nmap <leader>x ZZ
+nmap <leader>w :w!<cr>
+command! W w !sudo tee % > /dev/null
+
+" Override vim commands 'gf', '^Wf', '^W^F'
+nnoremap <silent> gf :call GotoFile("")<CR>
+nnoremap <silent> <C-W>f :call GotoFile("new")<CR>
+nnoremap <silent> <C-W><C-F> :call GotoFile("new")<CR>
+
+" *rc editing
+nmap <silent> <leader>ev :e $VIM_CONF<CR>
+nmap <silent> <leader>et :e ~/.bashrc<CR>
+nmap <silent> <leader>el :e .local.vim<CR>
+nmap <silent> <leader>sv :source $VIM_CONF<CR>
+
+augroup reload_vimrc
+    autocmd!
+    autocmd bufwritepost $VIM_CONF nested source $VIM_CONF
+augroup END
+
+" copy and paste
+vmap <leader>y "+y
+vmap <leader>d "+d
+nmap <leader>p "+p
+nmap <leader>P "+P
+vmap <leader>p "+p
+vmap <leader>P "+P
+
+" quickfix menu
+nnoremap <silent> <localleader>co :silent! belowright copen <BAR> silent! belowright lopen<CR>
+nnoremap <silent> <localleader>cc :silent! cclose <BAR> silent! lclose<CR>
+
+" Grep word under cursor
+nnoremap <silent> gK :silent grep! "<C-R><C-W>" `find -type f`<CR>:redraw!<CR>
+xnoremap gK :<C-u>call <SID>VSetSearch('/')<CR>:<C-U>silent! grep! "<C-R>=@/<CR>" `find -type f`<CR>:redraw!<CR>
 
 " -> Parenthesis/bracket
 """""""""""""""""""""""""
@@ -131,19 +172,59 @@ vnoremap $e <esc>`>a"<esc>`<i"<esc>
 inoremap $1 ()<esc>i
 inoremap $2 []<esc>i
 inoremap $3 {}<esc>i
-inoremap $4 {<esc>o}<esc>O
+inoremap $4 {<cr>}<esc>O
 inoremap $q ''<esc>i
 inoremap $e ""<esc>i
 
-" --> Window Panes
-"""""""""""""""""""""
-map <C-h> <C-w>h
-map <C-j> <C-w>j
-map <C-l> <C-w>l
-map <C-k> <C-w>k
+" Command mode related
+"""""""""""""""""""""""
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $j e ./
+cno $c e <C-\>eCurrentFileDir("e")<cr>
+cno $q <C-\>eDeleteTillSlash()<cr>
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
 
-nnoremap <leader>s :split<cr>
-nnoremap <leader>v :vsplit<cr>
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+command! MakeTags !ctags -f .tags -R .
+
+" Visual modes
+"""""""""""""""
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+nnoremap v <C-v>
+nnoremap <C-v> v
+vnoremap v <C-v>
+vnoremap <C-v> v
+
+
+" Windows and pane movement
+""""""""""""""""""""""""""""
+nnoremap 0 g^
+
+" Switch through panes
+map <C-j> <C-W>j
+map <C-k> <C-W>k
+map <C-h> <C-W>h
+map <C-l> <C-W>l
+
+" Splitting Commands
+map <silent> <leader>sk :belowright split<CR>
+map <silent> <leader>sj :split<CR>
+map <silent> <leader>sh :botright vsplit<CR>
+map <silent> <leader>sl :vsplit<CR>
+
+nmap <M-w> <C-W>\|<C-W>_
+nmap <M-k> <C-W>k<C-W>\|<C-W>_
+nmap <M-j> <C-W>j<C-W>\|<C-W>_
+nmap <M-h> <C-W>h<C-W>\|<C-W>_
+nmap <M-l> <C-W>l<C-W>\|<C-W>_
+nmap <M-r> <C-w>=
 
 nmap <C-Up> <C-W>+
 nmap <C-Down> <C-W>-
@@ -163,130 +244,141 @@ map <leader>tc :tabclose<cr>
 map <leader>tm :tabmove 
 map <leader>t<leader> :tabnext
 
-nnoremap <silent> <localleader>co :silent! copen <bar> silent! lopen<cr>
-nnoremap <silent> <localleader>cc :silent! cclose <bar> silent! lclose<cr>
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
 
-map <F9> :w!<cr>:silent make<cr>:cw<cr>
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
 
-nnoremap <tab> :b#<cr>
-
-
-nnoremap <leader>nn :let g:netrw_liststyle = 0<CR>:let g:netrw_browse_split = 0<CR>:Explore<CR>
-nnoremap <leader>nt :let g:netrw_liststyle = 3<CR>:let g:netrw_browse_split = 4<CR>:Vexplore<CR>
-
-map <F5> :UndotreeToggle<cr>
-
-nmap <leader><cr> <Plug>(LoupeClearHighlight)
-
-nmap <C-_> :Lines<cr>
-nmap <C-F> :Files<cr>
-nmap <leader>f :History<cr>
-nmap <leader>o :Buffers<cr>
-
+inoremap <C-E> <C-X><C-E>
+inoremap <C-Y> <C-X><C-Y>
 "}}}
 
-"{{{ --> Autocmds
-autocmd FileType c set makeprg=make\ %:t:r
+"{{{ Functions
 
-autocmd FileType netrw setl bufhidden=delete
-augroup netrw_mapping
-    autocmd!
-    autocmd filetype netrw call NetrwMapping()
-augroup END
+function! CmdLine(str)
+    exe "menu Foo.Bar :" . a:str
+    emenu Foo.Bar
+    unmenu Foo
+endfunction
 
-highlight SpecialKey ctermfg=DarkGrey guifg=DimGrey
-highlight OverLength ctermbg=red ctermfg=white guibg=#592929
-autocmd FileType c match OverLength /\%81v.\+/
-
-highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
-2match ExtraWhiteSpace /\s\+\%#\@<!$/
-
-autocmd InsertLeave * redraw!
-autocmd InsertEnter * :set nu | set rnu
-autocmd InsertLeave * :set nornu
-
-au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
-
-autocmd BufReadPost * call TabsOrSpaces()
-
-"}}}
-
-"{{{ --> Functions
-""""""""""""""""""
-
-command! Bclose call <SID>BufcloseCloseIt()
-command! Bnew call <SID>CreateNewBuf()
 command! StripWhitespace call StripTrailingWhitespace()
 
-function! GetEncoding()
-    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
-endfunction
-
-function! GetFileName()
-    let l:filename = expand('%:t')
-    return strlen(l:filename) > 0 ? ' ' . l:filename . ' ' : ''
-endfunction
-
-function TabsOrSpaces()
-    " Determines whether to use spaces or tabs on the current buffer.
-    if getfsize(bufname("%")) > 256000
-        " File is very large, just use the default.
-        return
-    endif
-
-    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
-    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
-
-    if numTabs > numSpaces
-        setlocal noexpandtab
-    endif
+function! StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal `z
+  endif
 endfunction
 
 function! StatuslineGit()
-    let l:branchname = fugitive#head()
-    return strlen(l:branchname) > 0 ? '('.l:branchname.'):' : ''
+	if exists('*fugitive#head')
+		return FugitiveStatusline()
+	else
+		return ''
+	endif
 endfunction
 
-function! GetMode()
-    let l:currmode = mode()
-    if l:currmode ==# 'n'
-        return 'NORMAL'
-    elseif l:currmode ==# 'i'
-        return 'INSERT'
-    elseif l:currmode ==# 'v'
-        return 'VISUAL'
-    elseif l:currmode ==# 'V'
-        return 'V-LINE'
-    elseif l:currmode ==# ''
-        return 'V-BLOCK'
-    elseif l:currmode ==# 's'
-        return 'SELECT'
-    elseif l:currmode ==# 'S'
-        return 'S-LINE'
-    elseif l:currmode ==# ''
-        return 'S-BLOCK'
-    elseif l:currmode ==# 'R'
-        return 'REPLACE'
+function! StatusLineFileFormat()
+	return &ff ==# 'unix' || &ff ==# 'none' ? '' : '['.&ff.']'
+endfunction
+
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+
+function! Internetify()
+    let l:currLine = getline('.')
+    let l:splice = join(split(l:currLine))
+
+    for l:name in ["-o-", "-ms-", "-moz-", "-webkit-"]
+        let l:compatLine = "\t" . l:name . l:splice . "\n"
+        let o = @o
+        let @o = l:compatLine
+        normal! "oP
+        let @o = o
+    endfor
+endfunction
+
+function! TabsOrSpaces()
+	" Determines whether to use spaces or tabs on the current buffer.
+	if getfsize(bufname("%")) > 256000
+		" File is very large, just use the default.
+		return
+	endif
+
+	let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+	let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+	if numTabs > numSpaces
+		setlocal noexpandtab
+	endif
+endfunction
+
+function! GotoFile(w)
+    let curword = expand("<cfile>")
+    if (strlen(curword) == 0)
+        return
     endif
-endfunction
-
-function! VisualSelection(direction, extra_filter) range
-    let l:saved_reg = @"
-    execute "normal! vgvy"
-
-    let l:pattern = escape(@", "\\/.*'$^~[]")
-    let l:pattern = substitute(l:pattern, "\n$", "", "")
-
-    if a:direction == 'gv'
-        call CmdLine("Ag '" . l:pattern . "' " )
-    elseif a:direction == 'replace'
-        call CmdLine("%s" . '/'. l:pattern . '/')
+    let matchstart = match(curword, ':\d\+$')
+    if matchstart > 0
+        let pos = '+' . strpart(curword, matchstart+1)
+        let fname = strpart(curword, 0, matchstart)
+    else
+        let pos = ""
+        let fname = curword
     endif
 
-    let @/ = l:pattern
-    let @" = l:saved_reg
+    " check exists file.
+    if filereadable(fname)
+        let fullname = fname
+    else
+        " try find file with prefix by working directory
+        let fullname = getcwd() . '/' . fname
+        if ! filereadable(fullname)
+            " the last try, using current directory based on file opened.
+            let fullname = expand('%:h') . '/' . fname
+        endif
+    endif
+
+   " Open new window if requested
+    if a:w == "new"
+		vert botright split
+    endif
+    " Use 'find' so path is searched like 'gf' would
+    try
+       execute 'find ' . pos . ' ' . fname
+    catch
+       let choice = confirm("Failed to find '" . fname . "'\nCreate file?", "&Yes\n&No", 2)
+       if choice == 1
+          exec "edit " . fname
+       endif
+    endtry
 endfunction
 
+function! TaskFinder(options)
+    cexpr system("taskfinder " . a:options)
+endfunction
+
+command! -bar -nargs=* TaskFind call TaskFinder(<q-args>)
+
+function! ScratchEdit(cmd, options)
+    exe a:cmd tempname()
+    setl buftype=nofile bufhidden=wipe nobuflisted
+    if !empty(a:options) | exe 'setl' a:options | endif
+endfunction
+
+command! -bar -nargs=* Sedit call ScratchEdit('edit', <q-args>)
+command! -bar -nargs=* Ssplit call ScratchEdit('split', <q-args>)
+command! -bar -nargs=* Svsplit call ScratchEdit('vsplit', <q-args>)
+command! -bar -nargs=* Stabedit call ScratchEdit('tabe', <q-args>)
+
+
+command! Bclose call <SID>BufcloseCloseIt()
 function! <SID>BufcloseCloseIt()
    let l:currentBufNum = bufnr("%")
    let l:alternateBufNum = bufnr("#")
@@ -306,26 +398,98 @@ function! <SID>BufcloseCloseIt()
    endif
 endfunction
 
-function! <SID>CreateNewBuf()
+command! Bnew call <SID>CreateNewBuf()
+fun! <SID>CreateNewBuf()
     new
     setlocal buftype=nofile
     setlocal bufhidden=wipe
     setlocal noswapfile
+endf
+
+function! CloseCodeBlock(filename, lower_bound, upper_bound)
+    exe "normal! gg\"iyG"
+    exe 'wincmd l'
+    exe a:lower_bound . ',' . a:upper_bound 'd'
+    exe (a:lower_bound - 1) . 'pu i'
+    echo a:lower_bound
 endfunction
 
-function StripTrailingWhitespace()
-  if !&binary && &filetype != 'diff'
-    normal mz
-    normal Hmy
-    %s/\s\+$//e
-    normal 'yz<CR>
-    normal `z
-  endif
+function! EditCodeBlock()
+    let g:saved_line = line('.')
+    let g:buf_name = expand('%:t')
+    let g:lower_bound = search("^```\\s*.*$", "bcn")
+    let g:upper_bound = search("^```\\s*$", "cn")
+    if g:lower_bound < g:upper_bound
+        try
+            let g:ft = split(getline(g:lower_bound), '\s')[1]
+            silent exe "silent " . (g:lower_bound + 1) . ',' . (g:upper_bound - 1) . 'y  u'
+            call ScratchEdit('vsplit', 0)
+            exe 'pu! u'
+            exe 'set ft=' . g:ft
+            autocmd BufWipeout <buffer> call CloseCodeBlock(g:buf_name, (g:lower_bound + 1), (g:upper_bound - 1))
+        catch
+            echo 'bad block'
+        endtry
+    else
+        echo 'Not valid code block'
+    endif
 endfunction
 
-function! NetrwMapping()
-    nmap <buffer> h -
-    nmap <buffer> l <cr>
-    nmap <buffer> <silent>qq :bd<cr>:silent! windo close<cr>l
+function! RenderMarkdown()
+	if !buffer_exists("!grip")
+		term  grip % 8090
+		file !grip
+		bprev
+		exec "sleep 30m"
+	endif
+	!firefox localhost:8090 2>/dev/null &
 endfunction
+
+function! RenderHtml()
+	if expand('%:t') ==# 'index.html'
+		if !buffer_exists("!SimpleHTTPServer")
+			term python2 -m SimpleHTTPServer 8080
+			file !SimpleHTTPServer
+			bprev
+			exec "sleep 30m"
+		endif
+		!firefox localhost:8080 2>/dev/null &
+	else
+		!firefox % 2>/dev/null &
+	endif
+endfunction
+
+func! DeleteTillSlash()
+    let g:cmd = getcmdline()
+
+    if has('win16') || has('win32')
+        let g:cmd_edited = substitute(g:cmd, '\\(.*\[\\\\]\\).*', '\\1', '')
+    else
+        let g:cmd_edited = substitute(g:cmd, '\\(.*\[/\]\\).*', '\\1', '')
+    endif
+
+    if g:cmd == g:cmd_edited
+        if has("win16") || has("win32")
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[\\\\\]\\).*\[\\\\\]", "\\1", "")
+        else
+            let g:cmd_edited = substitute(g:cmd, "\\(.*\[/\]\\).*/", "\\1", "")
+        endif
+    endif
+
+    return g:cmd_edited
+endfunc
+
+func! CurrentFileDir(cmd)
+    return a:cmd . ' ' . expand("%:p:h") . "/"
+endfunc
+"}}}
+
+"{{{ Source local environment
+source $VIM_CONFDIR/env.vim
+source $VIM_CONFDIR/plugins.vim
+source $VIM_CONFDIR/filetypes.vim
+try
+    source .local.vim
+catch
+endtry
 "}}}

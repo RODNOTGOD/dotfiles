@@ -1,6 +1,3 @@
-set nocompatible
-filetype off
-
 "{{{ Env Variables
 set rtp+=~/.fzf
 let $NVIM_CONF='~/.config/nvim/init.vim'
@@ -21,7 +18,9 @@ if exists('*minpac#init')
 
 	call minpac#add('sjl/gundo.vim')
 	call minpac#add('SirVer/ultisnips')
+	call minpac#add('gioele/vim-autoswap')
 	call minpac#add('romainl/Apprentice')
+	call minpac#add('RODNOTGOD/vim-colors-off')
 	call minpac#add('scrooloose/nerdtree')
 	call minpac#add('wellle/targets.vim')
 	call minpac#add('machakann/vim-highlightedyank')
@@ -73,10 +72,11 @@ nnoremap <silent> k gk
 nnoremap <silent> ^ g^
 nnoremap <silent> $ g$
 
-vnoremap <silent> j gj
-vnoremap <silent> k gk
-vnoremap <silent> ^ g^
-vnoremap <silent> $ g$
+xnoremap <silent> j gj
+xnoremap <silent> k gk
+xnoremap <silent> ^ g^
+xnoremap <silent> $ g$
+xnoremap <silent> 0 g^
 
 nnoremap <C-e> 3<C-e>
 noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
@@ -194,7 +194,7 @@ vnoremap <C-v> v
 
 " Windows and pane movement
 """"""""""""""""""""""""""""
-nnoremap 0 ^
+nnoremap 0 g^
 
 " Switch through panes
 map <C-j> <C-W>j

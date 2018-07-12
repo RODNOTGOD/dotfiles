@@ -1,0 +1,351 @@
+"  $$$$$$\  $$\                         $$\                 $$\    $$\ $$$$$$\ $$\      $$\ $$$$$$$\   $$$$$$\
+" $$  __$$\ \__|                        $$ |                $$ |   $$ |\_$$  _|$$$\    $$$ |$$  __$$\ $$  __$$\
+" $$ /  \__|$$\ $$$$$$\$$$$\   $$$$$$\  $$ | $$$$$$\        $$ |   $$ |  $$ |  $$$$\  $$$$ |$$ |  $$ |$$ /  \__|
+" \$$$$$$\  $$ |$$  _$$  _$$\ $$  __$$\ $$ |$$  __$$\       \$$\  $$  |  $$ |  $$\$$\$$ $$ |$$$$$$$  |$$ |
+"  \____$$\ $$ |$$ / $$ / $$ |$$ /  $$ |$$ |$$$$$$$$ |       \$$\$$  /   $$ |  $$ \$$$  $$ |$$  __$$< $$ |
+" $$\   $$ |$$ |$$ | $$ | $$ |$$ |  $$ |$$ |$$   ____|        \$$$  /    $$ |  $$ |\$  /$$ |$$ |  $$ |$$ |  $$\
+" \$$$$$$  |$$ |$$ | $$ | $$ |$$$$$$$  |$$ |\$$$$$$$\          \$  /   $$$$$$\ $$ | \_/ $$ |$$ |  $$ |\$$$$$$  |
+"  \______/ \__|\__| \__| \__|$$  ____/ \__| \_______|          \_/    \______|\__|     \__|\__|  \__| \______/
+"                             $$ |
+"                             $$ |
+"                             \__|
+"{{{ --> Env Settings
+set nocompatible
+set backspace=indent,eol,start
+set timeoutlen=1000 ttimeoutlen=0
+set hidden
+
+set undodir=~/.vim/undodir
+set undofile
+
+set encoding=utf-8 " Necessary to show Unicode glyphs
+
+set completeopt-=preview
+set completeopt+=noinsert
+set sidescroll=1 " The minimal number of columns to scroll horizontally.
+set t_Co=256 " 256 colors
+
+set wildmenu
+set path+=**
+
+set statusline=%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P
+set hlsearch
+
+set expandtab
+set shiftwidth=4
+set tabstop=4
+
+set number
+set magic
+set lazyredraw
+set hidden
+
+set ignorecase			        " case insensitive search
+set smartcase			        " case sensitive if uppercase
+set incsearch			        " move the cursor to first result
+set showmatch 	                " Show matching brackets.
+
+set list
+set listchars=tab:\ \ ,trail:⋅,extends:❯,precedes:❮
+set showbreak=↪
+set noshowmode
+
+set foldcolumn=1
+
+set foldmethod=marker
+set foldmarker={{{,}}}
+
+set mouse=n
+
+filetype plugin indent on
+"}}}
+
+"{{{ --> Plugin Configure
+let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
+let g:netrw_browse_split = 4
+let g:netrw_altv = 1
+let g:netrw_winsize = 15
+
+let g:mapleader = "\<Space>"
+let g:maplocalleader = ","
+"}}}
+
+"{{{ --> Mappings
+map <leader>ev :e ~/.vimrc<cr>
+
+map <leader>w :w!<cr>
+map <leader>x ZZ
+
+nnoremap <silent> 0 g^
+nnoremap <silent> j gj
+nnoremap <silent> k gk
+nnoremap <silent> ^ g^
+nnoremap <silent> $ g$
+
+nnoremap c* *Ncgn
+
+vnoremap >> >gv
+vnoremap << <gv
+
+inoremap <expr> <C-l> "\<Right>"
+inoremap <expr> <C-h> "\<Left>"
+
+nnoremap <C-e> 3<C-e>
+noremap <expr> <C-y> (line("w0") <= 1 ? "k" : "3\<C-y>")
+
+noremap v <C-v>
+noremap <C-v> v
+
+xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
+xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
+
+nnoremap v <C-v>
+nnoremap <C-v> v
+vnoremap v <C-v>
+vnoremap <C-v> v
+
+inoremap <C-E> <C-O>^
+inoremap <expr> <C-B> getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
+cnoremap        <C-B> <Left>
+
+inoremap <expr> <C-D> col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
+cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
+
+inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
+
+inoremap <expr> <C-F> col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
+cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
+
+noremap! <M-b> <S-Left>
+noremap! <M-d> <C-O>dw
+cnoremap <M-d> <S-Right><C-W>
+noremap! <M-BS> <C-W>
+noremap! <M-f> <S-Right>
+noremap! <M-n> <Down>
+noremap! <M-p> <Up>
+
+nnoremap <silent> gm :call cursor(0, len(getline('.')) / 2)<CR>
+
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+cab findtodo vim /\v\C<(TODO\|DEBUG\|HACK\|XXX\|NOTE\|FIXME\|BUG)>/
+
+" -> Parenthesis/bracket
+"""""""""""""""""""""""""
+vnoremap $1 <esc>`>a)<esc>`<i(<esc>
+vnoremap $2 <esc>`>a]<esc>`<i[<esc>
+vnoremap $3 <esc>`>a}<esc>`<i{<esc>
+vnoremap $$ <esc>`>a"<esc>`<i"<esc>
+vnoremap $q <esc>`>a'<esc>`<i'<esc>
+vnoremap $e <esc>`>a"<esc>`<i"<esc>
+
+" Map auto complete of (, ", ', [
+inoremap $1 ()<esc>i
+inoremap $2 []<esc>i
+inoremap $3 {}<esc>i
+inoremap $4 {<esc>o}<esc>O
+inoremap $q ''<esc>i
+inoremap $e ""<esc>i
+
+" --> Window Panes
+"""""""""""""""""""""
+map <C-h> <C-w>h
+map <C-j> <C-w>j
+map <C-l> <C-w>l
+map <C-k> <C-w>k
+
+nnoremap <leader>s :split<cr>
+nnoremap <leader>v :vsplit<cr>
+
+nmap <C-Up> <C-W>+
+nmap <C-Down> <C-W>-
+nmap <C-Left> <C-W><
+nmap <C-Right> <C-W>>
+
+" navigate quickfix locations
+nmap ]q :lnext<cr>
+nmap [q :lprevious<cr>
+
+" navigate location list
+nmap ]w :cnext<cr>
+nmap [w :cprevious<cr>
+
+" Move Lines [e and ]e (ALL MODES)
+" up
+nmap ]e mz:m-2<cr>`z==
+imap ]e <esc>:m-2<cr>==gi
+vmap ]e :m'<-2<cr>gv=`>my`<mzgv`yo`z
+
+" down
+nmap [e mz:m+<CR>`z==
+vmap [e :m'>+<CR>gv=`<my`>mzgv`yo`z
+imap [e <Esc>:m+<CR>==gi
+
+
+" buffer commands
+nnoremap <TAB> :b#<cr>
+map <leader>bd :Bclose<cr>:tabclose<cr>gT
+map <leader>ba :bufdo bd<cr>
+map <leader>bn :Bnew<cr><C-w>L
+
+" Tab commands
+map <leader>tn :tabnew<cr>
+map <leader>to :tabonly<cr>
+map <leader>tc :tabclose<cr>
+map <leader>tm :tabmove 
+map <leader>t<leader> :tabnext
+map <leader>te :tabedit <c-r>=expand("%:p:h")<cr>/
+
+" Command mode related
+"""""""""""""""""""""""
+cno $h e ~/
+cno $d e ~/Desktop/
+cno $j e ./
+cno $c e <C-\>eCurrentFileDir("e")<cr>
+cno $q <C-\>eDeleteTillSlash()<cr>
+cnoremap <C-A>      <Home>
+cnoremap <C-E>      <End>
+cnoremap <C-K>      <C-U>
+
+cnoremap <C-P> <Up>
+cnoremap <C-N> <Down>
+
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+nnoremap <silent> <localleader>co :silent! copen <bar> silent! lopen<cr>
+nnoremap <silent> <localleader>cc :silent! cclose <bar> silent! lclose<cr>
+
+map <F9> :w!<cr>:silent make<cr>:cw<cr>
+
+map <leader>cd :cd %:p:h<cr>:pwd<cr>
+
+" Grep word under cursor
+nnoremap <silent> gK :silent grep! "<C-R><C-W>" `find -type f`<CR>:redraw!<CR>
+xnoremap gK :<C-u>call <SID>VSetSearch('/')<CR>:<C-U>silent! grep! "<C-R>=@/<CR>" `find -type f`<CR>:redraw!<CR>
+
+nnoremap <tab> :b#<cr>
+
+nnoremap <leader>nn :let g:netrw_liststyle = 0<CR>:let g:netrw_browse_split = 0<CR>:Explore<CR>
+nnoremap <leader>nt :let g:netrw_liststyle = 3<CR>:let g:netrw_browse_split = 4<CR>:Vexplore<CR>
+"}}}
+
+"{{{ --> Autocmds
+autocmd FileType c set makeprg=make\ %:t:r
+
+autocmd FileType netrw setl bufhidden=delete
+augroup netrw_mapping
+    autocmd!
+    autocmd filetype netrw call NetrwMapping()
+augroup END
+
+highlight SpecialKey ctermfg=DarkGrey guifg=DimGrey
+highlight OverLength ctermbg=red ctermfg=white guibg=#592929
+autocmd FileType c match OverLength /\%81v.\+/
+
+highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
+2match ExtraWhiteSpace /\s\+\%#\@<!$/
+
+autocmd InsertLeave * redraw!
+autocmd InsertEnter * :set nu | set rnu
+autocmd InsertLeave * :set nornu
+
+au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
+
+autocmd BufReadPost * call TabsOrSpaces()
+
+"}}}
+
+"{{{ --> Functions
+""""""""""""""""""
+
+command! Bclose call <SID>BufcloseCloseIt()
+command! Bnew call <SID>CreateNewBuf()
+command! StripWhitespace call StripTrailingWhitespace()
+
+function! GetEncoding()
+    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
+endfunction
+
+function! GetFileName()
+    let l:filename = expand('%:t')
+    return strlen(l:filename) > 0 ? ' ' . l:filename . ' ' : ''
+endfunction
+
+function TabsOrSpaces()
+    " Determines whether to use spaces or tabs on the current buffer.
+    if getfsize(bufname("%")) > 256000
+        " File is very large, just use the default.
+        return
+    endif
+
+    let numTabs=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^\\t"'))
+    let numSpaces=len(filter(getbufline(bufname("%"), 1, 250), 'v:val =~ "^ "'))
+
+    if numTabs > numSpaces
+        setlocal noexpandtab
+    endif
+endfunction
+
+function! s:VSetSearch(cmdtype)
+  let temp = @s
+  norm! gv"sy
+  let @/ = '\V' . substitute(escape(@s, a:cmdtype.'\'), '\n', '\\n', 'g')
+  let @s = temp
+endfunction
+
+function! <SID>BufcloseCloseIt()
+   let l:currentBufNum = bufnr("%")
+   let l:alternateBufNum = bufnr("#")
+
+   if buflisted(l:alternateBufNum)
+     buffer #
+   else
+     bnext
+   endif
+
+   if bufnr("%") == l:currentBufNum
+     new
+   endif
+
+   if buflisted(l:currentBufNum)
+     execute("bdelete! ".l:currentBufNum)
+   endif
+endfunction
+
+function! <SID>CreateNewBuf()
+    new
+    setlocal buftype=nofile
+    setlocal bufhidden=wipe
+    setlocal noswapfile
+endfunction
+
+function StripTrailingWhitespace()
+  if !&binary && &filetype != 'diff'
+    normal mz
+    normal Hmy
+    %s/\s\+$//e
+    normal 'yz<CR>
+    normal `z
+  endif
+endfunction
+
+function! NetrwMapping()
+    nmap <buffer> h -
+    nmap <buffer> l <cr>
+    nmap <buffer> <silent>qq :bd<cr>:silent! windo close<cr>l
+endfunction
+"}}}
+
+"{{{ -> Colors
+try
+    syntax on
+    colorscheme off
+catch
+    syntax off
+endtry
+
+augroup PatchDiffHighlight
+    autocmd!
+    autocmd FileType diff syntax enable
+augroup END
+"}}}

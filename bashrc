@@ -149,18 +149,30 @@ fork() {
 }
 
 tvim() {
-	nvim -q <(taskfinder $@)
+	vim -q <(taskfinder $@)
 }
 
 vgrep() {
-	nvim -q <(grep -nHIs $@)
+	vim -q <(grep -nHIs $@)
 }
 
 
-export EDITOR="nvim"
+export EDITOR="vim"
 export NOTES_DIRECTORY=".notes"
 
 alias mkd="mkdir -p"
+
+alias rm="rm -I --preserve-root"
+
+# confirmation #
+alias mv='mv -i'
+alias cp='cp -i'
+alias ln='ln -i'
+
+# Parenting changing perms on / #
+alias chown='chown --preserve-root'
+alias chmod='chmod --preserve-root'
+alias chgrp='chgrp --preserve-root'
 
 alias tm="tmux-menu"
 alias tl="tmux list-sessions"
@@ -213,11 +225,12 @@ bind '\C-w:unix-filename-rubout'
 
 # User specific aliases and functions
 
-export EDITOR=nvim
+export EDITOR=vim
 export BROWSER=firefox
 export XKB_DEFAULT_OPTIONS=ctrl:nocaps
 export LESS="--RAW-CONTROL-CHARS"
 
+export PATH="$PATH:~/.scripts/"
 
 [ -f ~/.fzf.bash ] && source ~/.fzf.bash
 [ -f ~/.LESS_TERMCAP ] && source ~/.LESS_TERMCAP

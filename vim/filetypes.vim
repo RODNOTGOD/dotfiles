@@ -1,7 +1,7 @@
 "{{{ -> Terminal Buffer
 """"""""""""""""""""""""""""""
 augroup term_enter
-	au TermOpen * set nonu | set nornu
+	au TerminalOpen * set nonu | set nornu
 augroup end
 "}}}
 
@@ -166,5 +166,6 @@ au FileType cpp setlocal commentstring=//\ %s
 "}}}
 
 " -> Quickfix {{{
-autocmd QuickFixCmdPost [^l]* cwindow
+autocmd QuickFixCmdPost [^l]* belowright cwindow
+autocmd QuitPre * nested if &filetype != 'qf' | silent! lclose | endif
 " }}} -> Quickfix

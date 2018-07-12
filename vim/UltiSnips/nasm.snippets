@@ -1,0 +1,31 @@
+snippet base
+section .data
+	${1:$}
+section .text
+	global _start
+_start:
+	$0
+endsnippet
+
+
+snippet macro
+%macro ${1:macro_name} ${2:params}
+	$0
+%endmacro
+endsnippet
+
+snippet inc
+%include '${1:file}'
+$0
+endsnippet
+
+snippet stack
+enter ${1:0}, 0
+${2:$}
+leave
+ret
+endsnippet
+
+snippet def
+%define ${1:$}
+endsnippet

@@ -1,0 +1,9 @@
+snippet class
+class ${1:`!v expand("%:t:r")`} {
+private:
+	$0
+public:
+	$1(${2});
+	virtual ~$1();
+};
+endsnippet
