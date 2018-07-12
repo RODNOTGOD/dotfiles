@@ -1,50 +1,39 @@
-# CONFIGURE
-mpd_music_dir = "~/Music/FLAC Music/"
+mpd_music_dir = "/home/kragendor/Music/FLAC Music"
+mpd_crossfade_time = "5"
+
+# Visualizer
 visualizer_fifo_path = "/tmp/mpd.fifo"
-visualizer_output_name = "Visualizer feed"
+visualizer_output_name = "fifo"
+visualizer_type = "ellipse" (ellipse/spectrum)
 
 # Playlist
-song_columns_list_format = "(6f)[blue]{l} (25)[red]{a} (40)[green]{t|f} (30)[yellow]{b}"
-now_playing_prefix = "$b$5»$7»$1» "
-now_playing_suffix = "$/b"
+song_columns_list_format = "(2)[]{} (40)[white]{t} (30)[cyan]{b} (1)[green]{a}"
+song_status_format = " $3%t $0 $7%a "
 playlist_display_mode = "columns" (classic/columns)
 autocenter_mode = "yes"
 centered_cursor = "yes"
 
-# Bars
-song_status_format = "$2%a $1• $3%t $1• $4%b {(Disc %d) }$1• $5%y$1"
-progressbar_look = "─╼·"
+now_playing_prefix = "$3>"
+now_playing_suffix = "$8$/b"
+header_visibility = "no"
+display_remaining_time = "no"
 titles_visibility = "no"
+
+# Bars
+progressbar_look = "─╼╌"
 
 # Browser
 media_library_primary_tag = "album_artist"
 ignore_leading_the = "yes"
-browser_playlist_prefix = "$2plist »$9 "
 browser_display_mode = "columns" (classic/columns)
 
 # Colors
-discard_colors_if_item_is_selected = "yes"
-header_window_color = "cyan"
-volume_color = "cyan"
-state_line_color = "cyan"
-state_flags_color = "yellow"
-main_window_color = "white"
-color1 = "default"
-color2 = "green"
-# current_item_prefix = "$(red)$r"
-# current_item_suffix = "$/r$(end)"
-main_window_highlight_color = "red"
-progressbar_color = "yellow"
-statusbar_color = "cyan"
-# current_item_inactive_column_prefix = "$(white)$r"
-# current_item_inactive_column_suffix = "$/r$(end)"
-active_column_color = "red"
-visualizer_color = "yellow"
-
-# Othersl
-song_window_title_format = "MPD: {%a > }{%t}{ [%b{ Disc %d}]}|{%f}"
-search_engine_display_mode = "columns" (classic/columns)
-follow_now_playing_lyrics = "yes"
-
-##### colors definitions #####
 colors_enabled = "yes"
+empty_tag_color = "cyan"
+statusbar_color = "cyan"
+state_line_color = "black"
+state_flags_color = "green"
+main_window_color = "white"
+header_window_color = "black"
+main_window_highlight_color = "white"
+active_column_color = "cyan"
