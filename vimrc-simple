@@ -29,6 +29,7 @@ set wildmenu
 set path+=**
 
 set statusline=%<%f%m%r\ %y\ %w%=%-14.(%l,%c%V%)\ %P
+set laststatus=2
 set hlsearch
 
 set expandtab
@@ -46,7 +47,7 @@ set incsearch			        " move the cursor to first result
 set showmatch 	                " Show matching brackets.
 
 set list
-set listchars=tab:\ \ ,trail:⋅,extends:❯,precedes:❮
+set listchars=tab:\ \ ,trail:·,extends:❯,precedes:❮
 set showbreak=↪
 set noshowmode
 
@@ -62,9 +63,7 @@ filetype plugin indent on
 
 "{{{ --> Plugin Configure
 let g:netrw_list_hide = '\(^\|\s\s\)\zs\.\S\+'
-let g:netrw_browse_split = 4
-let g:netrw_altv = 1
-let g:netrw_winsize = 15
+let g:netrw_banner = 0
 
 let g:mapleader = "\<Space>"
 let g:maplocalleader = ","
@@ -99,19 +98,20 @@ noremap <C-v> v
 xnoremap * :<C-u>call <SID>VSetSearch('/')<CR>/<C-R>=@/<CR><CR>
 xnoremap # :<C-u>call <SID>VSetSearch('?')<CR>?<C-R>=@/<CR><CR>
 
+nnoremap <silent> <leader><cr> :noh<cr>
+
 nnoremap v <C-v>
 nnoremap <C-v> v
 vnoremap v <C-v>
 vnoremap <C-v> v
 
-inoremap <C-E> <C-O>^
+inoremap <C-A> <C-O>g^
+inoremap <C-E> <C-O>g$
 inoremap <expr> <C-B> getline('.')=~'^\s*$'&&col('.')>strlen(getline('.'))?"0\<Lt>C-D>\<Lt>Esc>kJs":"\<Lt>Left>"
-cnoremap        <C-B> <Left>
+cnoremap <C-B> <Left>
 
 inoremap <expr> <C-D> col('.')>strlen(getline('.'))?"\<Lt>C-D>":"\<Lt>Del>"
 cnoremap <expr> <C-D> getcmdpos()>strlen(getcmdline())?"\<Lt>C-D>":"\<Lt>Del>"
-
-inoremap <expr> <C-E> col('.')>strlen(getline('.'))<bar><bar>pumvisible()?"\<Lt>C-E>":"\<Lt>End>"
 
 inoremap <expr> <C-F> col('.')>strlen(getline('.'))?"\<Lt>C-F>":"\<Lt>Right>"
 cnoremap <expr> <C-F> getcmdpos()>strlen(getcmdline())?&cedit:"\<Lt>Right>"
@@ -149,13 +149,17 @@ inoremap $e ""<esc>i
 
 " --> Window Panes
 """""""""""""""""""""
+map <silent> - :e.<cr>
+
 map <C-h> <C-w>h
 map <C-j> <C-w>j
 map <C-l> <C-w>l
 map <C-k> <C-w>k
 
-nnoremap <leader>s :split<cr>
-nnoremap <leader>v :vsplit<cr>
+map <silent> <leader>sk :belowright split<CR>
+map <silent> <leader>sj :split<CR>
+map <silent> <leader>sh :botright vsplit<CR>
+map <silent> <leader>sl :vsplit<CR>
 
 nmap <C-Up> <C-W>+
 nmap <C-Down> <C-W>-
@@ -163,23 +167,19 @@ nmap <C-Left> <C-W><
 nmap <C-Right> <C-W>>
 
 " navigate quickfix locations
-nmap ]q :lnext<cr>
-nmap [q :lprevious<cr>
-
-" navigate location list
-nmap ]w :cnext<cr>
-nmap [w :cprevious<cr>
+nmap ]q :cnext<cr>
+nmap [q :cprevious<cr>
+nmap ]Q :clast<cr>
+nmap [Q :cfirst<cr>
 
 " Move Lines [e and ]e (ALL MODES)
 " up
-nmap ]e mz:m-2<cr>`z==
-imap ]e <esc>:m-2<cr>==gi
-vmap ]e :m'<-2<cr>gv=`>my`<mzgv`yo`z
+nmap [e mz:m-2<cr>`z==
+vmap [e :m'<-2<cr>gv=`>my`<mzgv`yo`z
 
 " down
-nmap [e mz:m+<CR>`z==
-vmap [e :m'>+<CR>gv=`<my`>mzgv`yo`z
-imap [e <Esc>:m+<CR>==gi
+nmap ]e mz:m+<CR>`z==
+vmap ]e :m'>+<CR>gv=`<my`>mzgv`yo`z
 
 
 " buffer commands
@@ -238,21 +238,27 @@ augroup netrw_mapping
     autocmd filetype netrw call NetrwMapping()
 augroup END
 
+augroup PatchDiffHighlight
+    autocmd!
+    autocmd FileType diff syntax enable
+augroup END
+
 highlight SpecialKey ctermfg=DarkGrey guifg=DimGrey
 highlight OverLength ctermbg=red ctermfg=white guibg=#592929
 autocmd FileType c match OverLength /\%81v.\+/
 
-highlight ExtraWhiteSpace ctermbg=red ctermfg=white guibg=#592929
-2match ExtraWhiteSpace /\s\+\%#\@<!$/
+highlight ExtraWhitespace ctermbg=red guibg=red
+match ExtraWhitespace /\s\+$/
+autocmd BufWinEnter * match ExtraWhitespace /\s\+$/
+autocmd InsertEnter * match ExtraWhitespace /\s\+\%#\@<!$/
+autocmd InsertLeave * match ExtraWhitespace /\s\+$/
 
-autocmd InsertLeave * redraw!
 autocmd InsertEnter * :set nu | set rnu
 autocmd InsertLeave * :set nornu
 
 au BufReadPost * if line("'\"") > 1 && line("'\"") <= line("$") | exe "normal! g'\"" | endif
 
 autocmd BufReadPost * call TabsOrSpaces()
-
 "}}}
 
 "{{{ --> Functions
@@ -261,15 +267,6 @@ autocmd BufReadPost * call TabsOrSpaces()
 command! Bclose call <SID>BufcloseCloseIt()
 command! Bnew call <SID>CreateNewBuf()
 command! StripWhitespace call StripTrailingWhitespace()
-
-function! GetEncoding()
-    return strlen(&fileencoding) > 0 ? ' ' . &fileencoding . ' ' : ''
-endfunction
-
-function! GetFileName()
-    let l:filename = expand('%:t')
-    return strlen(l:filename) > 0 ? ' ' . l:filename . ' ' : ''
-endfunction
 
 function TabsOrSpaces()
     " Determines whether to use spaces or tabs on the current buffer.
@@ -342,10 +339,37 @@ try
     colorscheme off
 catch
     syntax off
-endtry
+    hi LineNr ctermfg=8
+    hi CursorLineNr ctermfg=153 ctermbg=236
 
-augroup PatchDiffHighlight
-    autocmd!
-    autocmd FileType diff syntax enable
-augroup END
+    hi Search ctermfg=black ctermbg=gray
+    hi IncSearch ctermfg=black ctermbg=gray
+
+    hi StatusLine ctermbg=231 ctermfg=240
+    hi StatusLineNC ctermbg=240 ctermfg=236
+
+    hi MatchParen cterm=none ctermbg=236 ctermfg=231
+
+    hi Pmenu ctermbg=gray ctermfg=black
+    hi PmenuSel ctermbg=240 ctermfg=white
+
+    hi WildMenu ctermbg=white ctermfg=black
+
+    hi CursorLine cterm=none ctermbg=236
+
+    hi DiffAdd ctermfg=black ctermbg=green
+    hi DiffDelete ctermfg=white ctermbg=red
+    hi DiffChange ctermfg=white ctermbg=236
+    hi DiffText ctermfg=167 ctermbg=236
+
+    hi Folded ctermbg=236 ctermfg=8
+    hi FoldColumn ctermbg=236 ctermfg=8
+endtry
+"}}}
+
+"{{{ -> Local
+try
+    source .local.vim
+catch
+endtry
 "}}}
