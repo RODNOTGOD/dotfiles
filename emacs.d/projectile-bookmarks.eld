@@ -1,0 +1,1 @@
+("~/Documents/Code/web/odin/ruby-rails/sample_app/" "~/Documents/Code/web/odin/ruby-rails/re-former/" "~/Documents/Code/web/odin/blogger/" "~/Documents/Code/web/odin/ruby-rails/micro_reddit/" "~/Documents/Code/web/odin/ruby-rails/toy_app/" "~/Documents/Code/web/odin/ruby-rails/rest-tester/" "~/git/plasma-active-window-control/" "~/git/dotfiles/")
