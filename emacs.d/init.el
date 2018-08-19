@@ -81,6 +81,8 @@
   (define-key evil-normal-state-map "k" 'evil-previous-visual-line)
   (define-key evil-normal-state-map "\C-u" 'evil-scroll-up)
 
+  (define-key evil-normal-state-map "K" 'helm-man-woman)
+
   (define-key evil-normal-state-map "0" 'evil-first-non-blank-of-visual-line)
   (define-key evil-visual-state-map "0" 'evil-first-non-blank-of-visual-line)
 
@@ -102,7 +104,8 @@
   (define-key evil-normal-state-map "\C-h" 'evil-window-left)
 
   (define-key evil-insert-state-map "\C-a" 'evil-first-non-blank)
-  (define-key evil-insert-state-map "\C-e" 'move-end-of-line))
+  (define-key evil-insert-state-map "\C-e" 'move-end-of-line)
+  (define-key evil-insert-state-map "\C-k" 'kill-line))
 
 (use-package evil-collection
   :after evil
@@ -161,28 +164,38 @@
   :config
   (evil-leader/set-leader "<SPC>")
   (evil-leader/set-key
-    "!" 'shell-command
-    "p" 'clipboard-yank
-    "w" 'save-buffer
-    "x" 'evil-quit
-    "br" 'rename-buffer
-    "b/" 'helm-multi-swoop
-    "gs" 'magit-status
-    "gb" 'magit-blame
-    "sl" 'split-window-right
-    "sh" 'split-window-left
-    "sj" 'split-window-below
-    "sk" 'split-window-above
-    "tc" 'hide/show-comments-toggle
-    "tt" 'neotree-toggle
-    "ts" 'flyspell-mode
-    "ff" 'helm-find
-    "fs" 'helm-rg
-    "f/" 'helm-swoop
+    "!"   'shell-command
+    "w"   'save-buffer
+    "x"   'save-buffers-kill-terminal
+    "br"  'rename-buffer
+    "b/"  'helm-multi-swoop
+    "cc"  'compile
+    "gs"  'magit-status
+    "gb"  'magit-blame
+    "gc"  'magit-clone
+    "hh"  'helm-apropos
+    "hdk" 'describe-key
+    "hdm" 'describe-mode
+    "hdf" 'describe-function
+    "hdp" 'describe-package
+    "hn"  'view-emacs-news
+    "hf"  'view-emacs-FAQ
+    "pp"  'projectile-switch-project
+    "pf"  'projectile-find-file
+    "sl"  'split-window-right
+    "sh"  'split-window-left
+    "sj"  'split-window-below
+    "sk"  'split-window-above
+    "tc"  'hide/show-comments-toggle
+    "tt"  'neotree-toggle
+    "ts"  'flyspell-mode
+    "ff"  'helm-find
+    "fs"  'helm-rg
+    "f/"  'helm-swoop
     "fed" 'edit-config
     "feb" 'edit-bash
-    "uu" 'undo-tree-visualize
-    "'" 'create-mini-term
+    "uu"  'undo-tree-visualize
+    "'"   'create-mini-term
     "<SPC>" 'helm-M-x))
 
 (add-to-list 'load-path (expand-file-name "~/.emacs.d/packages/hide-comnt"))
@@ -208,10 +221,29 @@
   :config
   (global-undo-tree-mode 1))
 
+(require 's)
+(defun helm-kill-buffer ()
+  "Use helm to kill targeted buffer."
+  (interactive)
+  (block safe-exit
+    (let ((active-buffers nil) (target-buffer))
+      (dolist (buffer (buffer-list) active-buffers)
+	(if (not (s-starts-with-p " " (buffer-name buffer)))
+	    (setq active-buffers (cons (buffer-name buffer) active-buffers))))
+      (setq target-buffer (helm :sources (helm-build-sync-source "kill-buffer"
+					     :candidates 'active-buffers
+					     :fuzzy-match t)
+				  :preselect (buffer-name (current-buffer))
+				  :buffer "*helm kill*"))
+    (if (null target-buffer)
+	(return-from safe-exit))
+    (kill-buffer target-buffer))))
+
 (use-package helm
   :ensure t
   :bind (("C-x b" . helm-mini)
-	 ("C-x C-f" . helm-find-files))
+	 ("C-x C-f" . helm-find-files)
+	 ("C-x k" . helm-kill-buffer))
   :config
   (define-key helm-map (kbd "TAB") #'helm-execute-persistent-action)
   (define-key helm-map (kbd "<tab>") #'helm-execute-persistent-action)
@@ -227,8 +259,8 @@
   :diminish
   :config
   (projectile-mode 1)
-  (setq projectile-completion-system 'helm))
-
+  (setq projectile-completion-system 'helm)
+  (define-key projectile-mode-map (kbd "C-c C-p") 'projectile-command-map))
 
 (use-package helm-projectile
   :ensure t
@@ -246,8 +278,13 @@
 (use-package company
   :ensure t
   :diminish
-  :init
-  (global-company-mode t))
+  :init (global-company-mode t)
+  :config
+  (use-package company-irony :ensure t)
+  (setq company-idle-delay              0.2
+	company-minimum-prefix-length   2
+	company-tooltip-limit           20
+	company-dabbrev-downcase        nil))
 
 ;; flycheck
 (use-package flycheck
@@ -308,7 +345,7 @@
 ;; yasnippets
 (use-package yasnippet
   :ensure t
-  :diminish  yas-minor-mode
+  :diminish yas-minor-mode
   :config
   (yas-global-mode 1))
 
@@ -325,12 +362,10 @@
 				 (dot        . t)
 				 (css        . t)))
   (setq org-src-fontify-natively t
-	org-todo-keywords '((sequence "TODO(t)" "DOING(g)" "|" "DONE(d)")
+	org-log-done 'time
+	org-todo-keywords '((sequence "TODO(t)" "DOING(g)" "WAITING(w)" "|" "DONE(d)")
 			    (sequence "|" "CANCELED(c)"))
 	org-ellipsis "⤵"))
-
-;; (use-package org-beautify-theme
-;;   :ensure t)
 
 (use-package org-bullets
   :ensure t
@@ -461,16 +496,43 @@
 	    (lambda () (define-key evil-normal-state-map "gh" 'dired-omit-mode)))
   (setq dired-omit-files "^\\(?:\\..*\\|.*~\\)$"))
 
+;; Prog languages
+(add-hook 'prog-mode-hook
+	  (lambda () (linum-mode 1)))
+
+;; C
 (defun my-c-style-formats ()
   (setq c-default-style "linux"
 	c-basic-offset 4))
 
-(add-hook 'prog-mode-hook
-	  (lambda () (linum-mode 1)))
+(defun my/c-mode-hook ()
+  "Add irony support to company."
+  (add-to-list 'company-backends 'company-irony))
 
+(add-hook 'c-mode-common-hook 'ggtags-mode)
 (add-hook 'c-mode-common-hook 'my-c-style-formats)
+(add-hook 'c-mode-common-hook 'my/c-mode-hook)
 
+;; MAKEFILE
 (add-hook 'makefile-mode-hook '(lambda () (setq indent-tabs-mode t)))
+
+;; PYTHON
+(when (executable-find "ipython")
+  (setq python-shell-interpreter "ipython"
+	python-shell-interpreter-args "--simple-prompt -i"))
+
+(defun my/python-mode-hook ()
+  "Add jedi support to company."
+  (add-to-list 'company-backends 'company-jedi))
+
+(use-package company-jedi
+  :ensure t
+  :init
+  (setq jedi:complete-on-dot t)
+  :config
+  (add-hook 'ptyhon-mode-hook 'jedi:setup))
+
+(add-hook 'python-mode-hook 'my/python-mode-hook)
 
 ;; DONT TOUCH ME DOWN HERE!
 (custom-set-variables
@@ -528,7 +590,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (yaml-mode markdown-mode helm-swoop solarized-theme magit-todos hl-todo helm-rg linum-relative diffview babel diff-hl diminish all-the-icons neotree helm-projectile multi-term evil-numbers ox-twbs yasnippet-snippets yasnippet avy company flycheck evil-org org-bullets highlight-parentheses ## evil-commentary web-mode emmet-mode helm-ag magit projectile color-theme-sanityinc-tomorrow minimal-theme helm evil-surround evil-leader evil)))
+    (ggtags yaml-mode markdown-mode helm-swoop solarized-theme magit-todos hl-todo helm-rg linum-relative diffview babel diff-hl diminish all-the-icons neotree helm-projectile multi-term evil-numbers ox-twbs yasnippet-snippets yasnippet avy company flycheck evil-org org-bullets highlight-parentheses ## evil-commentary web-mode emmet-mode helm-ag magit projectile color-theme-sanityinc-tomorrow minimal-theme helm evil-surround evil-leader evil)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
