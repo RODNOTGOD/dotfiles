@@ -27,6 +27,7 @@
 (tool-bar-mode -1)
 (menu-bar-mode -1)
 
+
 ;; emacs-backups
 (defvar --backup-directory (concat user-emacs-directory "backups"))
 (if (not (file-exists-p --backup-directory))
@@ -68,7 +69,29 @@
   (let ((indent-tabs-mode nil))
     ad-do-it))
 
-(use-package diminish)
+(use-package diminish
+  :ensure t)
+
+(use-package ggtags
+  :ensure t)
+
+(use-package all-the-icons
+  :ensure t)
+
+(use-package powerline
+  :ensure t
+  :config
+  (setq powerline-default-separator (quote wave)))
+
+(use-package spaceline
+  :ensure t
+  :config
+  (spaceline-spacemacs-theme))
+
+;; (use-package powerline
+;;   :ensure t
+;;   :config
+;;   (powerline-center-evil-theme))
 
 ;; evil mode
 (use-package evil
@@ -166,7 +189,6 @@
   (evil-leader/set-key
     "!"   'shell-command
     "w"   'save-buffer
-    "x"   'save-buffers-kill-terminal
     "br"  'rename-buffer
     "b/"  'helm-multi-swoop
     "cc"  'compile
@@ -228,7 +250,7 @@
   (block safe-exit
     (let ((active-buffers nil) (target-buffer))
       (dolist (buffer (buffer-list) active-buffers)
-	(if (not (s-starts-with-p " " (buffer-name buffer)))
+	(unless (s-starts-with-p " " (buffer-name buffer))
 	    (setq active-buffers (cons (buffer-name buffer) active-buffers))))
       (setq target-buffer (helm :sources (helm-build-sync-source "kill-buffer"
 					     :candidates 'active-buffers
@@ -418,10 +440,12 @@
       (setq web-mode-script-padding 1)
       (setq web-mode-block-padding 0))
     (add-hook 'web-mode-hook  'my-web-mode-hook)
-    (eval-after-load "web-mode"
-      '(set-face-background 'web-mode-current-element-highlight-face "color-88")))
 
-  :ensure t)
+
+    ;; (eval-after-load "web-mode"
+    ;;   '(set-face-background 'web-mode-current-element-highlight-face "color-88")))
+
+    :ensure t))
 
 (use-package emmet-mode
   :ensure t
@@ -550,10 +574,10 @@
  '(cua-normal-cursor-color "#657b83")
  '(cua-overwrite-cursor-color "#b58900")
  '(cua-read-only-cursor-color "#859900")
- '(custom-enabled-themes (quote (sanityinc-tomorrow-night)))
+ '(custom-enabled-themes (quote (sanityinc-solarized-light)))
  '(custom-safe-themes
    (quote
-    ("8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" default)))
+    ("4cf3221feff536e2b3385209e9b9dc4c2e0818a69a1cdb4b522756bcdf4e00a4" "8aebf25556399b58091e533e455dd50a6a9cba958cc4ebb0aab175863c25b9a4" "a8245b7cc985a0610d71f9852e9f2767ad1b852c2bdea6f4aadc12cce9c4d6d0" "d677ef584c6dfc0697901a44b885cc18e206f05114c8a3b7fde674fce6180879" "3e335d794ed3030fefd0dbd7ff2d3555e29481fe4bbb0106ea11c660d6001767" "1b8d67b43ff1723960eb5e0cba512a2c7a2ad544ddb2533a90101fd1852b426e" "bb08c73af94ee74453c90422485b29e5643b73b05e8de029a6909af6a3fb3f58" "06f0b439b62164c6f8f84fdda32b62fb50b6d00e8b01c2208e55543a6337433a" "628278136f88aa1a151bb2d6c8a86bf2b7631fbea5f0f76cba2a0079cd910f7d" "82d2cac368ccdec2fcc7573f24c3f79654b78bf133096f9b40c20d97ec1d8016" "cc0dbb53a10215b696d391a90de635ba1699072745bf653b53774706999208e3" default)))
  '(electric-pair-mode t)
  '(fci-rule-color "#515151" t)
  '(flycheck-color-mode-line-face-to-color (quote mode-line-buffer-id))
@@ -590,7 +614,7 @@
     ("#dc322f" "#cb4b16" "#b58900" "#546E00" "#B4C342" "#00629D" "#2aa198" "#d33682" "#6c71c4")))
  '(package-selected-packages
    (quote
-    (ggtags yaml-mode markdown-mode helm-swoop solarized-theme magit-todos hl-todo helm-rg linum-relative diffview babel diff-hl diminish all-the-icons neotree helm-projectile multi-term evil-numbers ox-twbs yasnippet-snippets yasnippet avy company flycheck evil-org org-bullets highlight-parentheses ## evil-commentary web-mode emmet-mode helm-ag magit projectile color-theme-sanityinc-tomorrow minimal-theme helm evil-surround evil-leader evil)))
+    (spaceline color-theme-sanityinc-solarized ggtags yaml-mode markdown-mode helm-swoop solarized-theme magit-todos hl-todo helm-rg linum-relative diffview babel diff-hl diminish all-the-icons neotree helm-projectile multi-term evil-numbers ox-twbs yasnippet-snippets yasnippet avy company flycheck evil-org org-bullets highlight-parentheses ## evil-commentary web-mode emmet-mode helm-ag magit projectile color-theme-sanityinc-tomorrow minimal-theme helm evil-surround evil-leader evil)))
  '(pos-tip-background-color "#eee8d5")
  '(pos-tip-foreground-color "#586e75")
  '(smartrep-mode-line-active-bg (solarized-color-blend "#859900" "#eee8d5" 0.2))
@@ -634,4 +658,6 @@
  ;; If there is more than one, they won't work right.
  '(default ((t (:inherit nil :stipple nil :inverse-video nil :box nil :strike-through nil :overline nil :underline nil :slant normal :weight normal :height 136 :width normal :foundry "PfEd" :family "Fantasque Sans Mono"))))
  '(term-color-black ((t (:background "dim gray" :foreground "dim gray"))))
- '(term-color-white ((t (:background "white" :foreground "white")))))
+ '(term-color-white ((t (:background "white" :foreground "dark gray"))))
+ '(web-mode-current-column-highlight-face ((t (:background "gray88"))))
+ '(web-mode-current-element-highlight-face ((t (:background "color-250" :foreground "sky blue")))))
