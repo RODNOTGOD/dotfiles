@@ -99,11 +99,11 @@ highlight Normal ctermbg=none
 
 " -> Color
 """""""""""
-set termguicolors
+" set termguicolors
 set background=dark
 
 try
-	color off
+	color onedark
 catch
 endtry
 

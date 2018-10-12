@@ -6,6 +6,9 @@
  doom-font (font-spec :family "Fantasque Sans Mono" :size 18)
  doom-big-font (font-spec :family "Fantasque San Mono" :size 20))
 
+(setq doom-theme 'doom-one)
+
+
 (doom! :feature
       ;debugger          ; FIXME stepping through code, to help you add bugs
        eval              ; run code, run (also, repls)
